@@ -3,6 +3,7 @@
  */
 package net.basilwang.trade;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -55,6 +56,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
+			Intent intent = new Intent(getActivity(),AddCustomerActivity.class);
+			startActivity(intent);
 			Toast.makeText(getActivity(), "sadadsa", Toast.LENGTH_SHORT).show();
 			break;
 
@@ -62,6 +65,12 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			break;
 		}
 		
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	
