@@ -29,11 +29,13 @@
         <TextView
             android:id="@+id/add_customer_title_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:gravity="center"
             android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="23sp"
+            android:textStyle="bold"
+            android:text="添加客户" />
 
         <RelativeLayout
             android:id="@+id/add_customer_title_bar_btn_sure"

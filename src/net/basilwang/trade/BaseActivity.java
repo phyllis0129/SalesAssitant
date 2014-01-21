@@ -97,7 +97,6 @@ public class BaseActivity extends SlidingFragmentActivity implements
 //		parent.
 		switch (parent.getChildAt(groupPosition).getId()) {
 		case R.id.title_bar_nav:
-			Toast.makeText(this, "sadadsa", Toast.LENGTH_SHORT).show();
 			toggle();
 			break;
 
