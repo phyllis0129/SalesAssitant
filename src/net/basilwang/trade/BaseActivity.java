@@ -3,23 +3,18 @@
  */
 package net.basilwang.trade;
 
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.LayoutParams;
-import com.actionbarsherlock.view.MenuItem;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 /**
@@ -27,15 +22,12 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
  * 
  */
 public class BaseActivity extends SlidingFragmentActivity implements
-		OnClickListener , OnGroupClickListener{
+		OnClickListener, OnGroupClickListener {
 
 	private TextView titleTV;
 	private View title_bar;
-	private FrameLayout qwer;
-	private RelativeLayout titleNav,titleBack,titleAdd,titleDel;
+	private RelativeLayout titleNav, titleBack, titleAdd, titleDel;
 
-	
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,24 +52,22 @@ public class BaseActivity extends SlidingFragmentActivity implements
 	}
 
 	private void initView() {
-		titleTV = (TextView)title_bar.findViewById(R.id.title_tv);
-		titleNav = (RelativeLayout)title_bar.findViewById(R.id.title_bar_nav);
-		titleBack = (RelativeLayout)title_bar.findViewById(R.id.title_bar_back);
-		titleAdd = (RelativeLayout)title_bar.findViewById(R.id.title_bar_btn_add);
-		titleDel = (RelativeLayout)title_bar.findViewById(R.id.title_bar_btn_del);
+		titleTV = (TextView) title_bar.findViewById(R.id.title_tv);
+		titleNav = (RelativeLayout) title_bar.findViewById(R.id.title_bar_nav);
+		titleBack = (RelativeLayout) title_bar
+				.findViewById(R.id.title_bar_back);
+		titleAdd = (RelativeLayout) title_bar
+				.findViewById(R.id.title_bar_btn_add);
+		titleDel = (RelativeLayout) title_bar
+				.findViewById(R.id.title_bar_btn_del);
 		titleNav.setOnClickListener(this);
-		
-//		qwer = (FrameLayout)title_bar.findViewById(R.id.qwer);
-////		qwer.getChildAt(1).setVisibility(View.GONE);
-//		qwer.getChildAt(0).setVisibility(View.GONE);
-//		qwer.setOnClickListener(this);
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_bar_nav:
-			Toast.makeText(this, "sadadsa", Toast.LENGTH_SHORT).show();
 			toggle();
 			break;
 
@@ -86,15 +76,15 @@ public class BaseActivity extends SlidingFragmentActivity implements
 		}
 
 	}
-	
-	public void setTitle(String title){
+
+	public void setTitle(String title) {
 		titleTV.setText(title);
 	}
 
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v,
 			int groupPosition, long id) {
-//		parent.
+		// parent.
 		switch (parent.getChildAt(groupPosition).getId()) {
 		case R.id.title_bar_nav:
 			toggle();
@@ -105,7 +95,7 @@ public class BaseActivity extends SlidingFragmentActivity implements
 		}
 		return false;
 	}
-	
+
 	public RelativeLayout getTitleBack() {
 		return titleBack;
 	}
@@ -117,6 +107,5 @@ public class BaseActivity extends SlidingFragmentActivity implements
 	public RelativeLayout getTitleDel() {
 		return titleDel;
 	}
-
 
 }

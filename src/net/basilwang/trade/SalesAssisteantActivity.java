@@ -1,10 +1,9 @@
 package net.basilwang.trade;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Window;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class SalesAssisteantActivity extends BaseActivity {
 
@@ -20,6 +19,7 @@ public class SalesAssisteantActivity extends BaseActivity {
 //		getSupportFragmentManager().beginTransaction().replace(R.layout.content_frame, new SlideMenuFragment());
 //		setBehindContentView(R.layout.menu_frame);
 //		getSupportFragmentManager().beginTransaction().replace(R.layout.menu_frame, new SlideMenuFragment());
+		
 	}
 	
 	private void initSlidingMenu() {

@@ -10,11 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SlideMenuFragment extends ListFragment implements OnClickListener{
 
@@ -87,7 +84,6 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 	public void onListItemClick(ListView lv, View v, int position, long id) {
 		Fragment newContent = null;
 		String title = "";
-		Toast.makeText(getActivity(), lv.getAdapter().getItem(position).toString(), Toast.LENGTH_LONG).show();
 		switch (position) {
 		case 0:
 			title = "客户信息";

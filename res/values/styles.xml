@@ -16,5 +16,14 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="ActivityAnimation" >
+        <item name="android:windowEnterAnimation">@anim/fadding_in</item>
+        <item name="android:windowExitAnimation">@anim/fadding_out</item>
+    </style>
+    
+    <style name="ActivityFaddingAnim" parent="@style/AppTheme">
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+    </style>
 
 </resources>
