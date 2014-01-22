@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login"
+    android:paddingTop="90dp" >
+
+
+    <LinearLayout
+        android:id="@+id/edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/login_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dip"
+            android:background="@drawable/login_name_edit"
+            android:drawableLeft="@drawable/login_user"
+            android:hint="(2-10个字符)"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColorHint="#ffdddddd"
+            android:typeface="monospace" />
+
+        <EditText
+            android:id="@+id/login_psw"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_password_edit"
+            android:drawableLeft="@drawable/login_password"
+            android:hint="(6-18个字符)"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="#ffdddddd"
+            android:typeface="monospace" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit"
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_cancel_bg"
+            android:text="取  消"
+            android:textColor="#ffffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_login_bg"
+            android:text="登  录"
+            android:textColor="#ffffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
+
+</RelativeLayout>

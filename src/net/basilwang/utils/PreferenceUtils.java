@@ -15,7 +15,7 @@ public class PreferenceUtils {
 
 	public static Boolean getPreferIsFirstUsed(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getBoolean("IsFirstUsed", false);
+				.getBoolean("IsFirstUsed", true);
 	}
 	
 	public static void modifyBooleanValueInPreferences(Context context,String key,Boolean value){
