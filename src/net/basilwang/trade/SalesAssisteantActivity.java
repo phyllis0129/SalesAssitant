@@ -2,6 +2,8 @@ package net.basilwang.trade;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -31,14 +33,28 @@ public class SalesAssisteantActivity extends BaseActivity {
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
 	}
-
+	
 	public void switchContent(Fragment fragment,String title){
 		setTitle(title);
 		
 		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 		getSlidingMenu().showContent();
 	}
-	
-	
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			if(this.getSupportFragmentManager().getBackStackEntryCount()>0)
+				getSupportFragmentManager().popBackStack();
+			else if(getSlidingMenu().isMenuShowing())
+				this.finish();
+			else{
+				Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+				showMenu();
+			}
+		}
+		return true;
+	}
+
 
 }

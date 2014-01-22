@@ -19,7 +19,6 @@
     
     <style name="ActivityAnimation" >
         <item name="android:windowEnterAnimation">@anim/fadding_in</item>
-        <item name="android:windowExitAnimation">@anim/fadding_out</item>
     </style>
     
     <style name="ActivityFaddingAnim" parent="@style/AppTheme">
