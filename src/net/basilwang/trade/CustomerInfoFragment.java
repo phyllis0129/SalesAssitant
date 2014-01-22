@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author phyllis
@@ -71,14 +72,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
 		case -1:
-			Bundle bundle = data.getExtras();
-			bundle.getString("name");
-			bundle.getString("phone");
-			bundle.getString("address");
-			bundle.getString("comment");
-			Customer customer = new Customer(bundle.getString("name"),
-					bundle.getString("phone"), bundle.getString("address"),
-					bundle.getString("comment"));
+			Customer customer = data.getParcelableExtra("newCustomer");
+			Toast.makeText(getActivity(), customer.getName(), Toast.LENGTH_SHORT).show();
 			break;
 
 		default:
