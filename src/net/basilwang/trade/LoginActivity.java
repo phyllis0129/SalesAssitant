@@ -2,10 +2,13 @@ package net.basilwang.trade;
 
 import net.basilwang.utils.NetworkUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -37,6 +40,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		//隐藏软键盘
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 		switch (v.getId()) {
 		case R.id.login_btn:
 			checkLogin();
@@ -60,6 +66,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			Toast.makeText(this, "succedd", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(this, SalesAssisteantActivity.class);
 			startActivity(intent);
+			this.finish();
 		} else {
 			Toast.makeText(this, "网络未连接，请检查！", Toast.LENGTH_SHORT).show();
 		}

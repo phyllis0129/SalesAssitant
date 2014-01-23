@@ -15,7 +15,7 @@
         android:textColor="@android:color/background_dark"
          />
     <ListView 
-        android:id="@+id/list"
+        android:id="@+id/customer_list"
         android:background="@android:color/darker_gray"
         android:layout_below="@id/customer_list_describe"
         android:layout_width="match_parent"

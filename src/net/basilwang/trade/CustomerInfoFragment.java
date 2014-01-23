@@ -32,7 +32,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.customer_list, container, false);
+		mView = inflater.inflate(R.layout.fragment_customer_list, container, false);
 		initView();
 		return mView;
 	}
@@ -42,7 +42,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		String user = "		100982";
 		mTxtView.setText(getResources().getString(
 				R.string.customer_list_describe, user));
-		mListView = (ListView) mView.findViewById(R.id.list);
+		mListView = (ListView) mView.findViewById(R.id.customer_list);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);

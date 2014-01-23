@@ -66,7 +66,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.menu_item, null);
+						R.layout.sliding_menu_item, null);
 			}
 //			ImageView icon = (ImageView) convertView
 //					.findViewById(R.id.row_icon);
@@ -91,7 +91,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 			break;
 		case 1:
 			title = "商品信息";
-//			newContent = new PlaceOrderFragment();
+			newContent = new OrderInfoFragment();
 			break;
 		case 2:
 			title = "交易记录";
