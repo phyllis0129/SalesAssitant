@@ -48,7 +48,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener {
 
 	private void bindData() {
 		mOrderItemList = new ArrayList<OrderItem>();
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 5; i++) {
 			OrderItem mOrderItem = new OrderItem("string" + i);
 			mOrderItemList.add(mOrderItem);
 		}

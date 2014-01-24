@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.basilwang.trade.R;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,26 +79,35 @@ public class OrderAdapter extends BaseAdapter implements OnClickListener {
 		} else {
 			mHolder = (Holder) convertView.getTag(R.id.tag_first);
 		}
-		final int showPosition = (Integer) convertView.getTag();
-		convertView.setOnTouchListener(new OnTouchListener() {
+//		final int showPosition = (Integer) convertView.getTag();
+		mHolder.orderItemScrollView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+//				Log.v("convertView onTouch ", ""+v);
+				Log.v("convertView onTouch position", ""+position);
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_UP:
 					Holder viewHolder = (Holder) v.getTag(R.id.tag_first);
-					int scrollX = viewHolder.orderItemScrollView.getScrollX();
+					Log.v("convertView onTouch TextView", viewHolder.mTextView.getText().toString());
+					int scrollX = ((HorizontalScrollView) v).getScrollX();
 					int actionW = viewHolder.action.getWidth();
 					if (scrollX < actionW / 2) {
-						viewHolder.orderItemScrollView.smoothScrollTo(0, 0);
+						((HorizontalScrollView) v).smoothScrollTo(0, 0);
 					} else {
-						mShowPosition = showPosition;
-						if(position == mShowPosition){
-						viewHolder.orderItemScrollView.smoothScrollTo(actionW,
-								0);}
-						notifyDataSetChanged();
+						Log.v("convertView onTouch up position", ""+position);
+						Log.v("convertView onTouch up mShowPosition start", ""+mShowPosition);
+						mShowPosition = (Integer) v.getTag();
+						Log.v("convertView onTouch up mShowPosition end", ""+mShowPosition);
+//						if(position == mShowPosition){
+							Log.v("convertView onTouch TextView 2", viewHolder.mTextView.getText().toString());
+						((HorizontalScrollView) v).smoothScrollTo(actionW,
+								0);
+						Log.v("convertView onTouch scrollview position", viewHolder.orderItemScrollView.getTag().toString());
+//						}
 					}
-					return true;
+					notifyDataSetChanged();
+					break;
 				}
 				return false;
 			}
@@ -123,7 +133,9 @@ public class OrderAdapter extends BaseAdapter implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		Log.v("btn onclick mShowPosition start", ""+mShowPosition);
 		int position = (Integer) v.getTag();
+		Log.v("btn onclick Position", ""+position);
 		switch (v.getId()) {
 		case R.id.order_item_btn_delete:
 			mOrderItemList.remove(position);
@@ -134,6 +146,7 @@ public class OrderAdapter extends BaseAdapter implements OnClickListener {
 		}
 		mShowPosition = -1;
 		notifyDataSetChanged();
+		Log.v("btn onclick mShowPosition end", ""+mShowPosition);
 	}
 
 }
