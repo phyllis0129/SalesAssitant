@@ -27,6 +27,7 @@ import android.widget.Toast;
 public class OrderInfoFragment extends ListFragment implements OnClickListener {
 
 	private View mView;
+	private int mScreenWidth;
 	private ListView orderList;
 	private TextView recrivableCounts;
 	private Button sureBtn, cancelBtn;
@@ -36,6 +37,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		mScreenWidth = getActivity().getWindowManager().getDefaultDisplay()
+				.getWidth();
 		mView = inflater
 				.inflate(R.layout.fragment_order_info, container, false);
 		initView();
@@ -49,10 +52,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener {
 			OrderItem mOrderItem = new OrderItem("string" + i);
 			mOrderItemList.add(mOrderItem);
 		}
-		orderList
-				.setAdapter(new OrderAdapter(getActivity(), mOrderItemList,
-						getActivity().getWindowManager().getDefaultDisplay()
-								.getWidth()));
+		orderList.setAdapter(new OrderAdapter(getActivity(), mOrderItemList,
+				mScreenWidth));
 	}
 
 	private void initView() {
