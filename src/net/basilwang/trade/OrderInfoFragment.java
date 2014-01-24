@@ -8,6 +8,9 @@ import java.util.List;
 
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
+import net.basilwang.view.SlideCutListView;
+import net.basilwang.view.SlideCutListView.RemoveDirection;
+import net.basilwang.view.SlideCutListView.RemoveListener;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -24,10 +27,10 @@ import android.widget.Toast;
  * @author phyllis
  * 
  */
-public class OrderInfoFragment extends ListFragment implements OnClickListener {
+public class OrderInfoFragment extends ListFragment implements OnClickListener,RemoveListener {
 
 	private View mView;
-	private ListView orderList;
+	private SlideCutListView orderList;
 	private TextView recrivableCounts;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
@@ -56,7 +59,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener {
 	}
 
 	private void initView() {
-		orderList = (ListView) mView.findViewById(android.R.id.list);
+		orderList = (SlideCutListView) mView.findViewById(android.R.id.list);
+		orderList.setRemoveListener(this);
 		recrivableCounts = (TextView) mView
 				.findViewById(R.id.counts_receivable);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
@@ -80,6 +84,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener {
 			break;
 		}
 
+	}
+
+	@Override
+	public void removeItem(RemoveDirection direction, int position) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

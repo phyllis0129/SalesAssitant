@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/order_info_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="@drawable/round_pressed_bg"
         android:orientation="vertical"
         android:padding="3dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="3dp"
+            android:layout_weight="2"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -32,12 +35,12 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/btn_dropdown1" />
-            
-            <ImageButton 
+
+            <ImageButton
                 android:id="@+id/sweep_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/sweep" />"
+                android:background="@drawable/sweep" />
         </LinearLayout>
 
         <ImageView
@@ -49,7 +52,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:baselineAligned="true"
             android:orientation="horizontal" >
 
@@ -74,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="2"
-                    android:text="12333"
+                    android:text="12345678"
+                    android:textColor="#000"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -98,22 +103,36 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:inputType="number" />
+                    android:gravity="center_vertical"
+                    android:hint="实收货款"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
+    <!--
+         <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/order_info_header" />
+        android:layout_height="0dp"
+        android:dividerHeight="1dp"
+        android:layout_weight="7"
+        android:cacheColorHint="#00000000" />
+    -->
+
+    <net.basilwang.view.SlideCutListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="1dp" />
 
     <LinearLayout
         android:id="@+id/order_btn"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal" >
 
         <Button
@@ -137,4 +156,4 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
