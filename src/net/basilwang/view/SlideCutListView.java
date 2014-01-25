@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Scroller;
+import android.widget.Toast;
 
 /**
  * @blog http://blog.csdn.net/xiaanming
@@ -42,6 +43,7 @@ public class SlideCutListView extends ListView {
 	 * 滑动类
 	 */
 	private Scroller scroller;
+	private Context mContext;
 	private static final int SNAP_VELOCITY = 600;
 	/**
 	 * 速度追踪对象
@@ -83,6 +85,7 @@ public class SlideCutListView extends ListView {
 		screenWidth = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
 		scroller = new Scroller(context);
 		mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+		mContext = context;
 	}
 	
 	/**

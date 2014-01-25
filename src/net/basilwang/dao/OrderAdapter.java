@@ -23,13 +23,16 @@ public class OrderAdapter extends BaseAdapter {
 	
 	private Context mContext;
 	private List<OrderItem> mOrderItemList; 
-	private int mScreenWidth;
 	
-	public OrderAdapter(Context context,List<OrderItem> orderItemList,int screenWidth){
+	public OrderAdapter(Context context,List<OrderItem> orderItemList){
 		this.mContext = context;
 		this.mOrderItemList = orderItemList;
-		this.mScreenWidth = screenWidth;
 		
+	}
+	
+	public void remove(int position){
+		mOrderItemList.remove(position);
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -55,8 +58,6 @@ public class OrderAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.order_item,null);
 			mHolder.mTextView = (TextView)convertView.findViewById(R.id.order_item_string);
 			mHolder.content = (LinearLayout)convertView.findViewById(R.id.order_item_content);
-			LayoutParams lp =(LayoutParams) mHolder.content.getLayoutParams();
-			lp.width = mScreenWidth;
 			convertView.setTag(mHolder);
 		}else{
 			mHolder = (Holder)convertView.getTag();

@@ -27,13 +27,15 @@ import android.widget.Toast;
  * @author phyllis
  * 
  */
-public class OrderInfoFragment extends ListFragment implements OnClickListener,RemoveListener {
+public class OrderInfoFragment extends ListFragment implements OnClickListener,
+		RemoveListener {
 
 	private View mView;
-	private SlideCutListView orderList;
+	private SlideCutListView orderListView;
 	private TextView recrivableCounts;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
+	private OrderAdapter orderAdapter;
 	private List<OrderItem> mOrderItemList;
 
 	@Override
@@ -52,15 +54,14 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,R
 			OrderItem mOrderItem = new OrderItem("string" + i);
 			mOrderItemList.add(mOrderItem);
 		}
-		orderList
-				.setAdapter(new OrderAdapter(getActivity(), mOrderItemList,
-						getActivity().getWindowManager().getDefaultDisplay()
-								.getWidth()));
+		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList);
+		orderListView.setAdapter(orderAdapter);
 	}
 
 	private void initView() {
-		orderList = (SlideCutListView) mView.findViewById(android.R.id.list);
-		orderList.setRemoveListener(this);
+		orderListView = (SlideCutListView) mView
+				.findViewById(android.R.id.list);
+		orderListView.setRemoveListener(this);
 		recrivableCounts = (TextView) mView
 				.findViewById(R.id.counts_receivable);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
@@ -88,8 +89,21 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,R
 
 	@Override
 	public void removeItem(RemoveDirection direction, int position) {
-		// TODO Auto-generated method stub
-		
+		orderAdapter.remove(position);
+		String tip = mOrderItemList.get(position).getmString() + " 订单";
+		switch (direction) {
+		case RIGHT:
+			Toast.makeText(getActivity(), "向右删除  " + tip, 100)
+					.show();
+			break;
+		case LEFT:
+			Toast.makeText(getActivity(), "向左删除  " + tip, 100)
+					.show();
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }
