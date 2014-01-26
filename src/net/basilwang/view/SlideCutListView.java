@@ -284,4 +284,10 @@ public class SlideCutListView extends ListView {
 		public void removeItem(RemoveDirection direction, int position);
 	}
 
+	public int getSlidePosition() {
+		return slidePosition;
+	}
+	
+	
+
 }

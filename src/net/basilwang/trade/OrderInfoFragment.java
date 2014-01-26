@@ -54,7 +54,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			OrderItem mOrderItem = new OrderItem("string人当然当然当然当然" + i);
 			mOrderItemList.add(mOrderItem);
 		}
-		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList);
+		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList, orderListView);
 		orderListView.setAdapter(orderAdapter);
 	}
 
