@@ -41,7 +41,7 @@ public class OrderAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public OrderItem getItem(int position) {
 		return mOrderItemList.get(position);
 	}
 
@@ -56,7 +56,7 @@ public class OrderAdapter extends BaseAdapter {
 		if(convertView == null){
 			mHolder = new Holder();
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.order_item,null);
-			mHolder.mTextView = (TextView)convertView.findViewById(R.id.order_item_string);
+			mHolder.mTextView = (TextView)convertView.findViewById(R.id.goods_name);
 			mHolder.content = (LinearLayout)convertView.findViewById(R.id.order_item_content);
 			convertView.setTag(mHolder);
 		}else{

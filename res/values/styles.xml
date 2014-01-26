@@ -24,5 +24,67 @@
     <style name="ActivityFaddingAnim" parent="@style/AppTheme">
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
     </style>
+    
+    <style name="myStyle" parent="@android:style/Widget" />
+
+    <style name="myStyle.BlackContentTitleText" parent="@style/myStyle">
+        <item name="android:textSize">18.0dip</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
+
+    <style name="myStyle.BlackHugeText" parent="@style/myStyle">
+        <item name="android:textSize">20.0dip</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
+    
+    <style name="myStyle.BlackBigText" parent="@style/myStyle">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
+
+    <style name="myStyle.BlackSmallText" parent="@style/myStyle">
+        <item name="android:textSize">12.0dip</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
+
+    <style name="myStyle.BlueBigText" parent="@style/myStyle">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">#ff0da6df</item>
+    </style>
+
+    <style name="myStyle.OrangeContentTitleText" parent="@style/myStyle">
+        <item name="android:textSize">18.0dip</item>
+        <item name="android:textColor">#fff7941d</item>
+    </style>
+
+    <style name="myStyle.OrangeNormalText" parent="@style/myStyle">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">#fff7941d</item>
+    </style>
+
+    <style name="myStyle.GrayNormalText" parent="@style/myStyle">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">#ff7f8081</item>
+    </style>
+
+    <style name="myStyle.WhiteHugeText" parent="@style/myStyle">
+        <item name="android:textSize">20.0dip</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="myStyle.WhiteNormalText" parent="@style/myStyle">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="myStyle.WhiteBigText" parent="@style/myStyle">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="myStyle.BlackNormalText" parent="@style/myStyle">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
 
 </resources>

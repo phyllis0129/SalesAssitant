@@ -110,23 +110,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!--
-         <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:dividerHeight="1dp"
-        android:layout_weight="7"
-        android:cacheColorHint="#00000000" />
-    -->
-
     <net.basilwang.view.SlideCutListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:cacheColorHint="#00000000"
-        android:dividerHeight="1dp" />
+        android:cacheColorHint="#00000000" />
 
     <LinearLayout
         android:id="@+id/order_btn"

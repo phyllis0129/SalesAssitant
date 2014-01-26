@@ -51,7 +51,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void bindData() {
 		mOrderItemList = new ArrayList<OrderItem>();
 		for (int i = 0; i < 15; i++) {
-			OrderItem mOrderItem = new OrderItem("string" + i);
+			OrderItem mOrderItem = new OrderItem("string人当然当然当然当然" + i);
 			mOrderItemList.add(mOrderItem);
 		}
 		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList);
@@ -89,8 +89,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	@Override
 	public void removeItem(RemoveDirection direction, int position) {
+		String tip = orderAdapter.getItem(position).getmString() + " 订单";
 		orderAdapter.remove(position);
-		String tip = mOrderItemList.get(position).getmString() + " 订单";
 		switch (direction) {
 		case RIGHT:
 			Toast.makeText(getActivity(), "向右删除  " + tip, 100)
