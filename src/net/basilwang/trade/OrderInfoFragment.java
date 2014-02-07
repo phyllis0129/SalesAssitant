@@ -8,12 +8,15 @@ import java.util.List;
 
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
+import net.basilwang.view.ResizeLayout;
+import net.basilwang.view.ResizeLayout.OnResizeListener;
 import net.basilwang.view.SlideCutListView;
 import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +24,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private OrderAdapter orderAdapter;
 	private List<OrderItem> mOrderItemList;
 
+	private ResizeLayout headerLinearLayout;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -53,8 +57,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private void bindData() {
 		mOrderItemList = new ArrayList<OrderItem>();
-		for (int i = 0; i < 15; i++) {
-			OrderItem mOrderItem = new OrderItem("极光剑", "200*2", "瓶");
+		for (int i = 0; i < 1; i++) {
+			OrderItem mOrderItem = new OrderItem("极光剑 " + i, "200*2", "瓶");
 			mOrderItemList.add(mOrderItem);
 		}
 		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList,
@@ -76,6 +80,21 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
 		addBtn.setOnClickListener(this);
+
+		headerLinearLayout = (ResizeLayout) mView
+				.findViewById(R.id.origin);
+		headerLinearLayout.setOnResizeListener(new OnResizeListener() {
+
+			@Override
+			public void OnResize(int t, int oldt) {
+				// TODO Auto-generated method stub
+				if (t!=oldt) {
+					Log.v("sas", "oldb="+oldt+",b="+t);
+				}
+				Log.v("sas", "oldb="+oldt+",b="+t);
+				orderAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	@Override
@@ -83,6 +102,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
 			Toast.makeText(getActivity(), "添加订单", Toast.LENGTH_SHORT).show();
+			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
+			mOrderItemList.add(mOrderItem);
+			orderAdapter.notifyDataSetChanged();
 			break;
 
 		default:
@@ -107,15 +129,15 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			break;
 		}
 	}
-	
+
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		InputMethodManager imm = (InputMethodManager) getActivity()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		        if (imm.isActive() && keyCode == KeyEvent.KEYCODE_BACK) {
-		        	Toast.makeText(getActivity(), "InputMethodManager back", 2000).show();
-		        }
-		        return true;
-		    }
-
+		if (imm.isActive() && keyCode == KeyEvent.KEYCODE_BACK) {
+			Toast.makeText(getActivity(), "InputMethodManager back", 2000)
+					.show();
+		}
+		return true;
+	}
 
 }

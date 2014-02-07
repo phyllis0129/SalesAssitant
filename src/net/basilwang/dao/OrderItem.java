@@ -7,15 +7,16 @@ public class OrderItem {
 	private String goodsSpecification;
 	private Integer goodsCounts = 1;
 	private String goodsUnit;
-	private Double goodsPrice = 0.0;
+	private Double goodsPrice = 1.0;
 	private String goodsPriceUnit;
-	private Double goodsTotalPrice = 0.0;
+	private Double goodsTotalPrice;
 
 	public OrderItem(String name, String specification, String unit) {
 		this.goodsName = name;
 		this.goodsSpecification = specification;
 		this.goodsUnit = unit;
 		this.goodsPriceUnit = "元/" + unit;
+		setGoodsTotalPrice();
 	}
 
 	public String getGoodsStock() {

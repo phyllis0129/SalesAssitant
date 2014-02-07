@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<net.basilwang.view.ResizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/origin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -145,4 +146,4 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-</LinearLayout>
+</net.basilwang.view.ResizeLayout>
