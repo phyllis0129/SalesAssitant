@@ -59,6 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:focusable="true"
                 android:gravity="center_horizontal" >
 
                 <EditText
@@ -68,8 +69,8 @@
                     android:layout_height="40dp"
                     android:layout_alignParentTop="true"
                     android:ems="4"
+                    android:focusableInTouchMode="true"
                     android:gravity="bottom"
-                    android:hint="11234"
                     android:inputType="numberDecimal" />
 
                 <TextView
