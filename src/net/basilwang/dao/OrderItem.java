@@ -7,7 +7,7 @@ public class OrderItem {
 	private String goodsSpecification;
 	private Integer goodsCounts = 1;
 	private String goodsUnit;
-	private Double goodsPrice = 1.0;
+	private Double goodsPrice = 0.0;
 	private String goodsPriceUnit;
 	private Double goodsTotalPrice;
 

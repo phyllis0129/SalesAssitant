@@ -17,10 +17,25 @@ public class PreferenceUtils {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getBoolean("IsFirstUsed", true);
 	}
-	
-	public static void modifyBooleanValueInPreferences(Context context,String key,Boolean value){
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+
+	public static String getPreferToken(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("userToken", null);
+	}
+
+	public static void modifyBooleanValueInPreferences(Context context,
+			String key, Boolean value) {
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(context).edit();
 		editor.putBoolean(key, value);
+		editor.commit();
+	}
+
+	public static void modifyStringValueInPreference(Context context, String key,
+			String value) {
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(context).edit();
+		editor.putString(key, value);
 		editor.commit();
 	}
 }
