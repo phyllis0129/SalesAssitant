@@ -58,10 +58,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private void bindData() {
 		mOrderItemList = new ArrayList<OrderItem>();
-		for (int i = 0; i < 1; i++) {
-			OrderItem mOrderItem = new OrderItem("极光剑 " + i, "200*2", "瓶");
-			mOrderItemList.add(mOrderItem);
-		}
 		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList,
 				orderListView);
 		orderListView.setAdapter(orderAdapter);
@@ -70,21 +66,25 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void initView() {
 		orderListView = (SlideCutListView) mView
 				.findViewById(android.R.id.list);
-		orderListView.setRemoveListener(this);
 		recrivableCounts = (TextView) mView
 				.findViewById(R.id.counts_receivable);
 		realCounts = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
-		sureBtn.setOnClickListener(this);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
-		cancelBtn.setOnClickListener(this);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
-		addBtn.setOnClickListener(this);
 
 		btnLinearLayout = (LinearLayout) mView.findViewById(R.id.order_btn);
 		headerLinearLayout = (ResizeLayout) mView.findViewById(R.id.origin);
+		setListener();
+	}
+	
+	public void setListener(){
+		orderListView.setRemoveListener(this);
+		sureBtn.setOnClickListener(this);
+		cancelBtn.setOnClickListener(this);
+		addBtn.setOnClickListener(this);
 		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
 			@Override
@@ -113,8 +113,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				}
 			}
 		});
-
 	}
+	
 
 	public void refreshRealCounts() {
 		Double totalCounts = 0.0;
@@ -131,6 +131,11 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			Toast.makeText(getActivity(), "添加订单", Toast.LENGTH_SHORT).show();
 			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
 			mOrderItemList.add(mOrderItem);
+			orderAdapter.notifyDataSetChanged();
+			refreshRealCounts();
+			break;
+		case R.id.order_cancel_btn:
+			mOrderItemList.clear();
 			orderAdapter.notifyDataSetChanged();
 			refreshRealCounts();
 			break;

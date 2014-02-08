@@ -10,6 +10,7 @@ import net.basilwang.view.SlideCutListView;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -67,6 +67,19 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 		mHolder = new Holder();
 		convertView = LayoutInflater.from(mContext).inflate(
 				R.layout.order_item, null);
+		initView(convertView);
+
+		// convertView.setTag(mHolder);
+		// } else {
+		// mHolder = (Holder) convertView.getTag();
+		// }
+		setContent(position);
+		setListener();
+
+		return convertView;
+	}
+
+	private void initView(View convertView) {
 		mHolder.goodsStockTV = (TextView) convertView
 				.findViewById(R.id.goods_stock);
 		mHolder.goodsNameTV = (TextView) convertView
@@ -83,12 +96,18 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 				.findViewById(R.id.price_unit);
 		mHolder.goodsTotalPriceTV = (TextView) convertView
 				.findViewById(R.id.goods_total_price);
-		mHolder.content = (LinearLayout) convertView
-				.findViewById(R.id.order_item_content);
-		// convertView.setTag(mHolder);
-		// } else {
-		// mHolder = (Holder) convertView.getTag();
-		// }
+	}
+
+	private void setListener() {
+		mHolder.goodsCountsET.addTextChangedListener(new MyTextChangedListener(
+				"count"));
+		mHolder.goodsCountsET.setOnTouchListener(this);
+		mHolder.goodsPriceET.addTextChangedListener(new MyTextChangedListener(
+				"price"));
+		mHolder.goodsPriceET.setOnTouchListener(this);
+	}
+
+	private void setContent(int position) {
 		mHolder.goodsStockTV.setText(mOrderItemList.get(position)
 				.getGoodsStock());
 		mHolder.goodsNameTV
@@ -97,9 +116,7 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 				.getGoodsSpecification());
 		mHolder.goodsCountsET.setText(mOrderItemList.get(position)
 				.getGoodsCounts().toString());
-		mHolder.goodsCountsET.addTextChangedListener(new MyTextChangedListener(
-				"count"));
-		mHolder.goodsCountsET.setOnTouchListener(this);
+
 		mHolder.goodsCountsET.setTag(position);
 		mHolder.goodsUnitTV
 				.setText(mOrderItemList.get(position).getGoodsUnit());
@@ -107,22 +124,15 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 			mHolder.goodsPriceET.setText(mOrderItemList.get(position)
 					.getGoodsPrice().toString());
 		}
-		mHolder.goodsPriceET.addTextChangedListener(new MyTextChangedListener(
-				"price"));
-		mHolder.goodsPriceET.setOnTouchListener(this);
+
 		mHolder.goodsPriceUnitTV.setText(mOrderItemList.get(position)
 				.getGoodsPriceUnit());
 		mHolder.goodsTotalPriceTV.setText(mOrderItemList.get(position)
 				.getGoodsTotalPrice().toString()
 				+ "￥");
-		return convertView;
 	}
 
-	class Holder {
-		public Holder() {
-		}
-
-		LinearLayout content;
+	private class Holder {
 		TextView goodsStockTV;
 		TextView goodsNameTV;
 		TextView goodsSpecificationTV;
@@ -155,6 +165,7 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 
 		@Override
 		public void afterTextChanged(Editable s) {
+			Log.v("1111111`", "2222222222");
 			int position = mOrderListView.getSlidePosition();
 			if (flag.equals("count")) {
 				mOrderItemList.get(position)

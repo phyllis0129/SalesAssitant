@@ -141,7 +141,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_login_bg"
-            android:text="取  消"
+            android:text="清  空"
             android:textColor="#ffffffff"
             android:textSize="20sp" />
     </LinearLayout>
