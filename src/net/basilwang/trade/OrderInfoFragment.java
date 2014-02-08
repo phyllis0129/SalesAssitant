@@ -9,21 +9,20 @@ import java.util.List;
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
 import net.basilwang.view.ResizeLayout;
-import net.basilwang.view.ResizeLayout.OnResizeListener;
+import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
 import net.basilwang.view.SlideCutListView;
 import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,12 +37,14 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private View mView;
 	private SlideCutListView orderListView;
 	private TextView recrivableCounts;
+	private EditText realCounts;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
 	private OrderAdapter orderAdapter;
 	private List<OrderItem> mOrderItemList;
 
 	private ResizeLayout headerLinearLayout;
+	private LinearLayout btnLinearLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +73,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		orderListView.setRemoveListener(this);
 		recrivableCounts = (TextView) mView
 				.findViewById(R.id.counts_receivable);
+		realCounts = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		sureBtn.setOnClickListener(this);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
@@ -81,20 +83,45 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		addBtn.setVisibility(View.VISIBLE);
 		addBtn.setOnClickListener(this);
 
-		headerLinearLayout = (ResizeLayout) mView
-				.findViewById(R.id.origin);
-		headerLinearLayout.setOnResizeListener(new OnResizeListener() {
+		btnLinearLayout = (LinearLayout) mView.findViewById(R.id.order_btn);
+		headerLinearLayout = (ResizeLayout) mView.findViewById(R.id.origin);
+		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
 			@Override
-			public void OnResize(int t, int oldt) {
-				// TODO Auto-generated method stub
-				if (t!=oldt) {
-					Log.v("sas", "oldb="+oldt+",b="+t);
+			public void onKeyBoardStateChange(int state) {
+				Log.v("sadsadsadaasdsa", "saddddddddddd");
+				EditText onTouchedEditText = orderAdapter
+						.getonTouchedEditText();
+				switch (state) {
+				case ResizeLayout.KEYBOARD_STATE_HIDE:
+					btnLinearLayout.setVisibility(View.VISIBLE);
+					orderAdapter.onTouchedTag = "";
+					refreshRealCounts();
+					Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
+							.show();
+					break;
+				case ResizeLayout.KEYBOARD_STATE_SHOW:
+					btnLinearLayout.setVisibility(View.INVISIBLE);
+					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
+							.show();
+					if (onTouchedEditText != null) {
+						onTouchedEditText.requestFocus();
+						onTouchedEditText.setSelection(onTouchedEditText
+								.getText().length());
+					}
+					break;
 				}
-				Log.v("sas", "oldb="+oldt+",b="+t);
-				orderAdapter.notifyDataSetChanged();
 			}
 		});
+
+	}
+
+	public void refreshRealCounts() {
+		Double totalCounts = 0.0;
+		for (int i = 0; i < this.mOrderItemList.size(); i++) {
+			totalCounts += mOrderItemList.get(i).getGoodsTotalPrice();
+		}
+		this.recrivableCounts.setText(totalCounts.toString());
 	}
 
 	@Override
@@ -105,6 +132,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
 			mOrderItemList.add(mOrderItem);
 			orderAdapter.notifyDataSetChanged();
+			refreshRealCounts();
 			break;
 
 		default:
@@ -117,27 +145,20 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	public void removeItem(RemoveDirection direction, int position) {
 		String tip = orderAdapter.getItem(position).getGoodsName() + " 订单";
 		orderAdapter.remove(position);
+		refreshRealCounts();
 		switch (direction) {
 		case RIGHT:
-			Toast.makeText(getActivity(), "向右删除  " + tip, 100).show();
+			Toast.makeText(getActivity(), "向右删除  " + tip, Toast.LENGTH_SHORT)
+					.show();
 			break;
 		case LEFT:
-			Toast.makeText(getActivity(), "向左删除  " + tip, 100).show();
+			Toast.makeText(getActivity(), "向左删除  " + tip, Toast.LENGTH_SHORT)
+					.show();
 			break;
 
 		default:
 			break;
 		}
-	}
-
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		InputMethodManager imm = (InputMethodManager) getActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (imm.isActive() && keyCode == KeyEvent.KEYCODE_BACK) {
-			Toast.makeText(getActivity(), "InputMethodManager back", 2000)
-					.show();
-		}
-		return true;
 	}
 
 }

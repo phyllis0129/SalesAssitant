@@ -10,14 +10,11 @@ import net.basilwang.view.SlideCutListView;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,12 +24,13 @@ import android.widget.TextView;
  * @author Basilwang
  * 
  */
-public class OrderAdapter extends BaseAdapter implements OnFocusChangeListener,OnKeyListener {
+public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 
 	private Context mContext;
 	private List<OrderItem> mOrderItemList;
 	private SlideCutListView mOrderListView;
 	private Holder mHolder;
+	public String onTouchedTag = "";
 
 	public OrderAdapter(Context context, List<OrderItem> orderItemList,
 			SlideCutListView orderListView) {
@@ -101,8 +99,7 @@ public class OrderAdapter extends BaseAdapter implements OnFocusChangeListener,O
 				.getGoodsCounts().toString());
 		mHolder.goodsCountsET.addTextChangedListener(new MyTextChangedListener(
 				"count"));
-		mHolder.goodsCountsET.setOnFocusChangeListener(this);
-		mHolder.goodsCountsET.setOnKeyListener(this);
+		mHolder.goodsCountsET.setOnTouchListener(this);
 		mHolder.goodsCountsET.setTag(position);
 		mHolder.goodsUnitTV
 				.setText(mOrderItemList.get(position).getGoodsUnit());
@@ -110,13 +107,14 @@ public class OrderAdapter extends BaseAdapter implements OnFocusChangeListener,O
 			mHolder.goodsPriceET.setText(mOrderItemList.get(position)
 					.getGoodsPrice().toString());
 		}
-		mHolder.goodsPriceET.setOnFocusChangeListener(this);
-		mHolder.goodsPriceET.addTextChangedListener(new MyTextChangedListener("price"));
-		mHolder.goodsPriceET.setOnKeyListener(this);
+		mHolder.goodsPriceET.addTextChangedListener(new MyTextChangedListener(
+				"price"));
+		mHolder.goodsPriceET.setOnTouchListener(this);
 		mHolder.goodsPriceUnitTV.setText(mOrderItemList.get(position)
 				.getGoodsPriceUnit());
 		mHolder.goodsTotalPriceTV.setText(mOrderItemList.get(position)
-				.getGoodsTotalPrice().toString()+"￥");
+				.getGoodsTotalPrice().toString()
+				+ "￥");
 		return convertView;
 	}
 
@@ -146,22 +144,18 @@ public class OrderAdapter extends BaseAdapter implements OnFocusChangeListener,O
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void afterTextChanged(Editable s) {
 			int position = mOrderListView.getSlidePosition();
-			// Log.v("test", ""+position+","+et.getId());
-			Log.v("test", "" + position + "," + s.toString());
 			if (flag.equals("count")) {
 				mOrderItemList.get(position)
 						.setGoodsCounts(s.toString().trim());
@@ -169,76 +163,39 @@ public class OrderAdapter extends BaseAdapter implements OnFocusChangeListener,O
 			if (flag.equals("price")) {
 				mOrderItemList.get(position).setGoodsPrice(s.toString().trim());
 			}
-			Log.v("test", "" + position + ","
-					+ mOrderItemList.get(position).getGoodsCounts());
 			mOrderItemList.get(position).setGoodsTotalPrice();
-//			notifyDataSetChanged();
 		}
 
 	}
 
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		InputMethodManager imm = (InputMethodManager) mContext
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		Log.v("childId 0", "onFocusChange imm.isActive" + imm.isActive(v));
-//		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		View parrent = (View) v.getParent();
-		switch (v.getId()) {
-		case R.id.goods_counts:
-//			if (!hasFocus) {
-//				v.setFocusable(true);
-				Log.v("childId", "onFocusChange imm.isActive" + imm.isActive(v));
-//				 notifyDataSetChanged();
-//				 parrent.requestFocus();
-				// RelativeLayout wg = (RelativeLayout) v.getParent();
-				// // Log.v("childId", ""+wg.getChildAt(1).getId());
-				// Toast.makeText(mContext, "有反应", 200).show();
-//				Log.v("childId", "onFocusChange " + hasFocus);
-//			}
-			break;
+	/*
+	 * @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+	 * InputMethodManager imm = (InputMethodManager) mContext
+	 * .getSystemService(Context.INPUT_METHOD_SERVICE); switch (keyCode) { case
+	 * KeyEvent.KEYCODE_BACK: if (imm.isActive()) notifyDataSetChanged(); break;
+	 * case KeyEvent.KEYCODE_ESCAPE: case KeyEvent.KEYCODE_ENTER:
+	 * notifyDataSetChanged(); imm.hideSoftInputFromWindow(v.getWindowToken(),
+	 * 0); break; default: break; } return false; }
+	 */
 
-		default:
-			break;
-		}
-		Log.v("childId", "break isFocusable" + v.isFocusable());
-		Log.v("childId",
-				"break isFocusableInTouchMode" + v.isFocusableInTouchMode());
-		// v.requestFocus();
-		// if(!hasFocus){
-		// int position = mOrderListView.getSlidePosition();
-		// double counts =
-		// Double.parseDouble(mOrderItemList.get(position).getGoodsCounts().);
-		// mOrderItemList.get().setGoodsTotalPrice(goodsTotalPrice)
-		// }
+	public EditText getonTouchedEditText() {
+		if (onTouchedTag.equals("count"))
+			return mHolder.goodsCountsET;
+		else if (onTouchedTag.equals("price"))
+			return mHolder.goodsPriceET;
+		return null;
+	}
 
+	public void setonTouchedTag(String str) {
+		this.onTouchedTag = str;
 	}
 
 	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		Log.v("childId",
-				"onkeyDown" + keyCode);
-		InputMethodManager imm = (InputMethodManager) mContext
-		.getSystemService(Context.INPUT_METHOD_SERVICE);
-		if(event.getAction() == KeyEvent.ACTION_DOWN){
-			Log.v("onkeyDown",
-					"onkeyDown imm.isActive() " + imm.isActive());
-		}
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK :
-			if(imm.isActive())
-				notifyDataSetChanged();
-			break;
-		case KeyEvent.KEYCODE_ESCAPE :
-		case KeyEvent.KEYCODE_ENTER :
-			notifyDataSetChanged();
-			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-			Log.v("childId",
-					"onkeyDown imm.isActive() " + imm.isActive());
-			break;
-		default:
-			break;
-		}
+	public boolean onTouch(View v, MotionEvent event) {
+		if (v.getId() == R.id.goods_counts)
+			onTouchedTag = "count";
+		else if (v.getId() == R.id.goods_price)
+			onTouchedTag = "price";
 		return false;
 	}
 
