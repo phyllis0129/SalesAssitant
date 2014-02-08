@@ -11,7 +11,7 @@
         android:padding="0dp" >
 
         <RelativeLayout
-            android:id="@+id/add_customer_title_bar_back"
+            android:id="@+id/customer_title_bar_back"
             android:layout_width="50dp"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/add_customer_title_tv"
+            android:id="@+id/customer_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -38,7 +38,7 @@
             android:text="添加客户" />
 
         <RelativeLayout
-            android:id="@+id/add_customer_title_bar_btn_sure"
+            android:id="@+id/customer_title_bar_btn_sure"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

@@ -92,7 +92,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					Log.v("sas", "oldb="+oldt+",b="+t);
 				}
 				Log.v("sas", "oldb="+oldt+",b="+t);
-				orderAdapter.notifyDataSetChanged();
+//				orderAdapter.notifyDataSetChanged();
 			}
 		});
 	}
