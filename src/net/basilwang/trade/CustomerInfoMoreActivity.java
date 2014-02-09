@@ -2,6 +2,7 @@ package net.basilwang.trade;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -38,7 +39,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 
 	private void init() {
 		cName.setText("李先生");
-		cTel.setText("电话:13000000000");
+		cTel.setText("电话:13000000000；053189090090");
+		Linkify.addLinks(cTel, Linkify.PHONE_NUMBERS);// 增加点击电话号码后，可以拨打电话的功能
 		cAddress.setText("地址：济南七里铺");
 		cReceivable.setText("应收货款:1000");
 		cPaid.setText("实收货款:500");
@@ -66,7 +68,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		default:
 			break;
 		}
-		
+
 	}
 
 }
