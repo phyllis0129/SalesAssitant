@@ -13,13 +13,16 @@ import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
 import net.basilwang.view.SlideCutListView;
 import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -97,12 +100,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					btnLinearLayout.setVisibility(View.VISIBLE);
 					orderAdapter.onTouchedTag = "";
 					refreshRealCounts();
-					Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
+					Toast.makeText(getActivity(), "软键盘隐�, Toast.LENGTH_SHORT)
 							.show();
 					break;
 				case ResizeLayout.KEYBOARD_STATE_SHOW:
 					btnLinearLayout.setVisibility(View.INVISIBLE);
-					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
+					Toast.makeText(getActivity(), "软键盘弹�, Toast.LENGTH_SHORT)
 							.show();
 					if (onTouchedEditText != null) {
 						onTouchedEditText.requestFocus();
@@ -129,7 +132,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
 			Toast.makeText(getActivity(), "添加订单", Toast.LENGTH_SHORT).show();
-			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
+			OrderItem mOrderItem = new OrderItem("极光�new", "200*2", "�);
 			mOrderItemList.add(mOrderItem);
 			orderAdapter.notifyDataSetChanged();
 			refreshRealCounts();

@@ -7,10 +7,6 @@ import java.util.List;
 
 import net.basilwang.entity.ValidateResult;
 import net.basilwang.utils.NetworkUtils;
-import net.basilwang.utils.PreferenceUtils;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -42,11 +38,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ProgressBar mProgress;
 	private EditText loginName, loginPsw;
 	private Button loginBtn, cancelBtn;
+	private Context mContext;
+	private static String TAG = "LoginActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		mContext = this;
 		initView();
 
 	}
@@ -63,7 +62,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// 隐藏软键盘
+		// 隐藏软键�
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 		switch (v.getId()) {
@@ -86,14 +85,53 @@ public class LoginActivity extends Activity implements OnClickListener {
 		if (name.equals("") || psw.equals("")) {
 			Toast.makeText(this, "请将登录信息填写完整", Toast.LENGTH_SHORT).show();
 		} else if (isNetAvailable()) {
-			Toast.makeText(this, "succedd", Toast.LENGTH_SHORT).show();
-			LoginTask loginTask = new LoginTask();
-			loginTask.execute(name,psw);
+			loginPost(name, psw);
+			Intent intent = new Intent(this, SalesAssisteantActivity.class);
+			startActivity(intent);
 			this.finish();
 		} else {
 			Toast.makeText(this, "网络未连接，请检查！", Toast.LENGTH_SHORT).show();
 		}
 
+	}
+
+	private void loginPost(String loginName, String Password) {
+		SaLog.log(TAG, "loginName=" + loginName + ";Password=" + Password);
+		AjaxParams params = new AjaxParams();
+		params.put("loginName", loginName);
+		params.put("Password", Password);
+		FinalHttp fh = new FinalHttp();
+		fh.post("", params, new AjaxCallBack<Object>() {
+
+			@Override
+			public void onFailure(Throwable t, int errorNo, String strMsg) {
+				// TODO Auto-generated method stub
+				super.onFailure(t, errorNo, strMsg);
+				Toast.makeText(mContext, "用户�密码错误" + strMsg,
+						Toast.LENGTH_SHORT).show();
+				SaLog.log(TAG, "error=" + t.toString() + ";No=" + errorNo
+						+ ";msg=" + strMsg);
+			}
+
+			@Override
+			public void onLoading(long count, long current) {
+				// TODO Auto-generated method stub
+				super.onLoading(count, current);
+			}
+
+			@Override
+			public void onSuccess(Object t) {
+				// TODO Auto-generated method stub
+				super.onSuccess(t);
+				Toast.makeText(mContext, "succedd", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(mContext,
+						SalesAssisteantActivity.class);
+				startActivity(intent);
+				((Activity) mContext).finish();
+				SaLog.log(TAG, "success=" + t.toString());
+			}
+
+		});
 	}
 
 	private Boolean isNetAvailable() {
