@@ -14,23 +14,20 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
-	private ProgressBar mProgress;
 	private EditText edloginName, loginPsw;
 	private Button loginBtn, cancelBtn;
 	private Context mContext;
 	private static String TAG = "LoginActivity";
-	private SharedPreferences preferences;
 
 	private String loginName, Password;
 
@@ -39,14 +36,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		mContext = this;
-		preferences = getSharedPreferences(SharpParameter.dataBase,
-				Context.MODE_PRIVATE);
 		initView();
 
 	}
 
 	private void initView() {
-		mProgress = (ProgressBar) findViewById(R.id.progress_bar);
 		edloginName = (EditText) findViewById(R.id.login_name);
 		loginPsw = (EditText) findViewById(R.id.login_psw);
 		loginBtn = (Button) findViewById(R.id.login_btn);
@@ -114,7 +108,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 				try {
 					JSONObject json = new JSONObject(t.toString());
 					if (json.getBoolean("isSuccess")) {
-						saveLoginInfo(name, psd, json.getString("token"));
+						// 保存token信息
+						PreferenceManager.getDefaultSharedPreferences(mContext)
+								.edit()
+								.putString("token", json.getString("token"));
 						Intent intent = new Intent(mContext,
 								SalesAssisteantActivity.class);
 						startActivity(intent);
@@ -129,13 +126,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 
 		});
-	}
-
-	public void saveLoginInfo(String name, String psd, String token) {
-		preferences.edit().putString("loginName", name);
-		preferences.edit().putString("Password",
-				SharpParameter.sharpDES.encrypt(psd));
-		preferences.edit().putString("token", token);
 	}
 
 	private Boolean isNetAvailable() {
