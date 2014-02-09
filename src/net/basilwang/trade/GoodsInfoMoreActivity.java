@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 /**
  * @author Basilwang
@@ -17,7 +17,7 @@ import android.widget.ListView;
  */
 public class GoodsInfoMoreActivity extends Activity implements OnClickListener{
 	
-	private Button backBtn,sureBtn;
+	private RelativeLayout backBtn,sureBtn;
 	private ListView goodsListView;
 	
 
@@ -30,9 +30,9 @@ public class GoodsInfoMoreActivity extends Activity implements OnClickListener{
 
 
 	private void initView() {
-		backBtn = (Button)findViewById(R.id.goods_title_bar_back);
+		backBtn = (RelativeLayout)findViewById(R.id.goods_title_bar_back);
 		backBtn.setOnClickListener(this);
-		sureBtn = (Button)findViewById(R.id.goods_title_bar_btn_sure);
+		sureBtn = (RelativeLayout)findViewById(R.id.goods_title_bar_btn_sure);
 		sureBtn.setOnClickListener(this);
 		goodsListView = (ListView)findViewById(R.id.goods_list);
 	}

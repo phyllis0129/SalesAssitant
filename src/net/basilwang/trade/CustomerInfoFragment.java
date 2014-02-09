@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.alibaba.fastjson.JSON;
 
+import net.basilwang.dao.CustomerListAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.PreferenceUtils;
@@ -54,7 +55,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private static final int ADD_CUSTOMER_INFO = 102;
 	public static final int RESULT_OK = 1001;
 	public static final int RESULT_ERROR = 1002;
-	private ArrayAdapter<String> customerAdapter;
+	private CustomerListAdapter customerAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,10 +93,6 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		customers = new ArrayList<Customer>();
 		customerNameList = new ArrayList<String>();
 		getCustomerList();
-		customerAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_expandable_list_item_1,
-				customerNameList);
-		mListView.setAdapter(customerAdapter);
 	}
 
 	@Override
@@ -125,6 +122,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				for (int i = 0; i < customers.size(); i++) {
 					customerNameList.add(customers.get(i).getName());
 				}
+				customerAdapter = new CustomerListAdapter(getActivity(),customerNameList);
+				mListView.setAdapter(customerAdapter);
 				progressDialog.dismiss();
 			}
 
@@ -151,9 +150,9 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		case ADD_CUSTOMER_INFO:
 			if (resultCode == getActivity().RESULT_OK) {
 				Customer customer = data.getParcelableExtra("newCustomer");
-				// customers.add(customer);
-				// customerNameList.add(customer.getName());
-				// customerAdapter.notifyDataSetChanged();
+				 customers.add(customer);
+				 customerNameList.add(customer.getName());
+				 customerAdapter.notifyDataSetChanged();
 				Toast.makeText(getActivity(), customer.getName(),
 						Toast.LENGTH_SHORT).show();
 			}
