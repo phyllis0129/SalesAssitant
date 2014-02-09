@@ -7,6 +7,14 @@ import java.util.List;
 
 import net.basilwang.entity.ValidateResult;
 import net.basilwang.utils.NetworkUtils;
+import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.SaLog;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -62,7 +70,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// 隐藏软键�
+		// 隐藏软键�
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 		switch (v.getId()) {
@@ -107,7 +115,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				// TODO Auto-generated method stub
 				super.onFailure(t, errorNo, strMsg);
-				Toast.makeText(mContext, "用户�密码错误" + strMsg,
+				Toast.makeText(mContext, "用户/密码错误" + strMsg,
 						Toast.LENGTH_SHORT).show();
 				SaLog.log(TAG, "error=" + t.toString() + ";No=" + errorNo
 						+ ";msg=" + strMsg);

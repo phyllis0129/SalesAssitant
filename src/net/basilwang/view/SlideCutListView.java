@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Scroller;
-import android.widget.Toast;
 
 /**
  * @blog http://blog.csdn.net/xiaanming
