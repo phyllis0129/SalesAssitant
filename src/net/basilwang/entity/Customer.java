@@ -12,17 +12,23 @@ import android.os.Parcelable;
  */
 public class Customer implements Parcelable {
 
-	private int id;
+	private String id;
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	private String name;
 	private String phone;
 	private String address;
-	private String comment;
+	private String description;
 
-	public Customer(String name, String phone, String address, String comment) {
+	public Customer(String name, String phone, String address,
+			String description) {
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
-		this.comment = comment;
+		this.description = description;
 	}
 
 	// 1.必须实现Parcelable.Creator接口,否则在获取Person数据的时候，会报错，如下：
@@ -73,15 +79,15 @@ public class Customer implements Parcelable {
 		this.address = address;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -92,10 +98,11 @@ public class Customer implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
 		dest.writeString(name);
 		dest.writeString(phone);
 		dest.writeString(address);
-		dest.writeString(comment);
+		dest.writeString(description);
 	}
 
 }

@@ -20,7 +20,7 @@ import android.widget.ImageView;
  * 
  */
 public class SplashActivity extends Activity {
-	
+
 	private ImageView splashImg;
 
 	@Override
@@ -31,33 +31,32 @@ public class SplashActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		setContentView(R.layout.activity_splash);
-		splashImg = (ImageView)findViewById(R.id.splash);
+		splashImg = (ImageView) findViewById(R.id.splash);
 		Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash);
 		splashImg.setAnimation(animation);
 		new Handler().postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				jump();
-				
+
 			}
 		}, 2100);
 	}
-	
+
 	private void jump() {
 		splashImg.setVisibility(View.GONE);
 		Intent intent = new Intent();
 		boolean isFirstUsed = PreferenceUtils.getPreferIsFirstUsed(this);
-		if(isFirstUsed){
+		String token = PreferenceUtils.getPreferToken(this);
+		if (token == null) {
 			intent.setClass(this, LoginActivity.class);
-		}
-		else{
+		} else {
 			intent.setClass(this, SalesAssisteantActivity.class);
 		}
 		this.startActivity(intent);
 		this.finish();
-		
-		
+
 	}
 
 }

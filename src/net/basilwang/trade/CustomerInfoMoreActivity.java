@@ -2,6 +2,7 @@ package net.basilwang.trade;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -22,6 +23,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	private TextView cAddress;
 	private TextView cReceivable;
 	private TextView cPaid;
+	private TextView cDesc;
 	private Button cReturn;
 	private RelativeLayout cBack;
 	private RelativeLayout cEdit;
@@ -38,10 +40,12 @@ public class CustomerInfoMoreActivity extends Activity implements
 
 	private void init() {
 		cName.setText("李先生");
-		cTel.setText("电话:13000000000");
+		cTel.setText("电话:13000000000；053189090090");
+		Linkify.addLinks(cTel, Linkify.PHONE_NUMBERS);// 增加点击电话号码后，可以拨打电话的功能
 		cAddress.setText("地址：济南七里铺");
 		cReceivable.setText("应收货款:1000");
 		cPaid.setText("实收货款:500");
+		cDesc.setText("备注:无");
 		cBack.setOnClickListener(this);
 	}
 
@@ -51,6 +55,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cAddress = (TextView) findViewById(R.id.customer_address);
 		cReceivable = (TextView) findViewById(R.id.customer_receivable);
 		cPaid = (TextView) findViewById(R.id.customer_paid);
+		cDesc = (TextView) findViewById(R.id.customer_description);
 		cReturn = (Button) findViewById(R.id.customer_returnGoods);
 		cBack = (RelativeLayout) findViewById(R.id.customer_title_bar_back);
 		cEdit = (RelativeLayout) findViewById(R.id.customer_title_bar_btn_sure);
@@ -66,7 +71,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		default:
 			break;
 		}
-		
+
 	}
 
 }
