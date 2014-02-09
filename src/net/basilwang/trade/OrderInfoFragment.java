@@ -6,6 +6,7 @@ package net.basilwang.trade;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.basilwang.dao.CustomerSpinnerAdapter;
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
 import net.basilwang.view.ResizeLayout;
@@ -13,6 +14,7 @@ import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
 import net.basilwang.view.SlideCutListView;
 import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,8 +89,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		headerLinearLayout = (ResizeLayout) mView.findViewById(R.id.origin);
 		setListener();
 	}
-
-	public void setListener() {
+	
+	public void setListener(){
 		orderListView.setRemoveListener(this);
 		sureBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
@@ -99,9 +102,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				Log.v("sadsadsadaasdsa", "saddddddddddd");
 				EditText onTouchedEditText = orderAdapter
 						.getonTouchedEditText();
-				InputMethodManager imm = (InputMethodManager) getActivity()
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-
 				switch (state) {
 				case ResizeLayout.KEYBOARD_STATE_HIDE:
 					btnLinearLayout.setVisibility(View.VISIBLE);
@@ -115,20 +115,15 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
 							.show();
 					if (onTouchedEditText != null) {
-//						imm.showSoftInputFromInputMethod(
-//								onTouchedEditText.getWindowToken(),
-//								InputMethodManager.SHOW_FORCED);
-
-//						onTouchedEditText.requestFocus();
-//						onTouchedEditText.setSelection(onTouchedEditText
-//								.getText().length());
+						onTouchedEditText.requestFocus();
+						onTouchedEditText.setSelection(onTouchedEditText
+								.getText().length());
 					}
 					break;
 				}
 			}
 		});
 	}
-
 	
 
 	public void refreshRealCounts() {

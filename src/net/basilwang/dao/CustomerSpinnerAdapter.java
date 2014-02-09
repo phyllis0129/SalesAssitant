@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
  *
  */
 public class CustomerSpinnerAdapter extends BaseAdapter {
+	
 
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getCount()
