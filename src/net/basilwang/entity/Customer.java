@@ -23,6 +23,10 @@ public class Customer implements Parcelable {
 	private String address;
 	private String description;
 
+	public Customer() {
+
+	}
+
 	public Customer(String name, String phone, String address,
 			String description) {
 		this.name = name;

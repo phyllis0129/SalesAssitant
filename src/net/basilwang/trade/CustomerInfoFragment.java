@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,7 +83,17 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
 		addBtn.setOnClickListener(this);
-		new InitTask().execute();
+		bindData();
+	}
+
+	private void bindData() {
+		customers = new ArrayList<Customer>();
+		customerNameList = new ArrayList<String>();
+		getCustomerList();
+		customerAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_expandable_list_item_1,
+				customerNameList);
+		mListView.setAdapter(customerAdapter);
 	}
 
 	@Override
@@ -90,7 +101,9 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-	private List<String> getCustomerList() {
+	private void getCustomerList() {
+		progressDialog = ProgressDialog.show(getActivity(), "",
+				"数据加载中，请稍候....", true, false);
 		AjaxParams params = new AjaxParams();
 		params.put("token", PreferenceUtils.getPreferToken(getActivity()));
 		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
@@ -99,41 +112,44 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
-				// TODO Auto-generated method stub
 				super.onFailure(t, errorNo, strMsg);
+				progressDialog.dismiss();
 			}
 
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
+				Log.v("customer list get", t.toString());
 				try {
 					JSONArray json = new JSONArray(t.toString());
-					customers = new ArrayList<Customer>();
-					customerNameList = new ArrayList<String>();
 					int max = json.length();
-					for (int i = 0; i <= max; i++) {
-						customers.get(i).setName(
+					Log.v("error", ""+max);
+					for (int i = 0; i < max; i++) {
+						Customer customer = new Customer();
+						customer.setName(
 								json.getJSONObject(i).getString("Name"));
-						customers.get(i).setId(
+						customer.setId(
 								json.getJSONObject(i).getString("Id"));
-						customers.get(i).setAddress(
+						customer.setAddress(
 								json.getJSONObject(i).getString("Address"));
-						customers.get(i).setDescription(
+						customer.setDescription(
 								json.getJSONObject(i).getString("Description"));
-						customers.get(i).setPhone(
+						customer.setPhone(
 								json.getJSONObject(i).getString("Tel"));
-						customerNameList.add(customers.get(i).getName());
+						customers.add(customer);
+						customerNameList.add(customer.getName());
+						progressDialog.dismiss();
 
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
+					Log.v("error", e.toString());
 					Toast.makeText(getActivity(), "读取失败!", Toast.LENGTH_SHORT)
 							.show();
 				}
 			}
 
 		});
-		return customerNameList;
 	}
 
 	@Override
@@ -154,9 +170,11 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case ADD_CUSTOMER_INFO:
-			if (resultCode == RESULT_OK) {
+			if (resultCode == getActivity().RESULT_OK) {
 				Customer customer = data.getParcelableExtra("newCustomer");
-
+//				customers.add(customer);
+//				customerNameList.add(customer.getName());
+//				customerAdapter.notifyDataSetChanged();
 				Toast.makeText(getActivity(), customer.getName(),
 						Toast.LENGTH_SHORT).show();
 			}
@@ -173,16 +191,15 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private class InitTask extends AsyncTask<String, integer, TaskResult> {
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			progressDialog = ProgressDialog.show(getActivity(), "",
-					"数据加载中，请稍候....", true, false);
-		}
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			
+//		}
 
 		@Override
 		protected TaskResult doInBackground(String... params) {
-			customerNameList = getCustomerList();
+//			customerNameList = getCustomerList();
 			if (customerNameList == null) {
 				return TaskResult.FAILED;
 			}
