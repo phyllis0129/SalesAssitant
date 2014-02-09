@@ -1,13 +1,19 @@
-/**
- * 
- */
 package net.basilwang.trade;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import net.basilwang.entity.Customer;
+import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.SaLog;
 import net.basilwang.utils.TaskResult;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
 import android.R.integer;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -38,7 +44,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private TextView mTxtView;
 	private ListView mListView;
 	private RelativeLayout addBtn;
-	private List<String> customerList;
+	private List<String> customerNameList;
+	private List<Customer> customers;
 	private ProgressDialog progressDialog;
 	private static final int OPEN_CUSTOMER_INFO = 101;
 	private static final int ADD_CUSTOMER_INFO = 102;
@@ -84,11 +91,49 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	}
 
 	private List<String> getCustomerList() {
-		customerList = new ArrayList<String>();
-		customerList.add("王先生");
-		customerList.add("李先生");
-		customerList.add("张先生");
-		return customerList;
+		AjaxParams params = new AjaxParams();
+		params.put("token", PreferenceUtils.getPreferToken(getActivity()));
+		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
+		FinalHttp fh = new FinalHttp();
+		fh.get(StaticParameter.getCustomer, params, new AjaxCallBack<Object>() {
+
+			@Override
+			public void onFailure(Throwable t, int errorNo, String strMsg) {
+				// TODO Auto-generated method stub
+				super.onFailure(t, errorNo, strMsg);
+			}
+
+			@Override
+			public void onSuccess(Object t) {
+				super.onSuccess(t);
+				try {
+					JSONArray json = new JSONArray(t.toString());
+					customers = new ArrayList<Customer>();
+					customerNameList = new ArrayList<String>();
+					int max = json.length();
+					for (int i = 0; i <= max; i++) {
+						customers.get(i).setName(
+								json.getJSONObject(i).getString("Name"));
+						customers.get(i).setId(
+								json.getJSONObject(i).getString("Id"));
+						customers.get(i).setAddress(
+								json.getJSONObject(i).getString("Address"));
+						customers.get(i).setDescription(
+								json.getJSONObject(i).getString("Description"));
+						customers.get(i).setPhone(
+								json.getJSONObject(i).getString("Tel"));
+						customerNameList.add(customers.get(i).getName());
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					Toast.makeText(getActivity(), "读取失败!", Toast.LENGTH_SHORT)
+							.show();
+				}
+			}
+
+		});
+		return customerNameList;
 	}
 
 	@Override
@@ -137,7 +182,10 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 		@Override
 		protected TaskResult doInBackground(String... params) {
-			customerList = getCustomerList();
+			customerNameList = getCustomerList();
+			if (customerNameList == null) {
+				return TaskResult.FAILED;
+			}
 			return TaskResult.OK;
 		}
 
@@ -152,7 +200,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				// customerList));
 				customerAdapter = new ArrayAdapter<String>(getActivity(),
 						android.R.layout.simple_expandable_list_item_1,
-						customerList);
+						customerNameList);
 				mListView.setAdapter(customerAdapter);
 				break;
 

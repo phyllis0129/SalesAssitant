@@ -1,6 +1,6 @@
 package net.basilwang.trade;
 
-import net.basilwang.libray.SharpParameter;
+import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -92,7 +92,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		params.put("loginName", name);
 		params.put("Password", psd);
 		FinalHttp fh = new FinalHttp();
-		fh.post(SharpParameter.loginUrl, params, new AjaxCallBack<Object>() {
+		fh.post(StaticParameter.loginUrl, params, new AjaxCallBack<Object>() {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
@@ -111,7 +111,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 						// 保存token信息
 						PreferenceManager.getDefaultSharedPreferences(mContext)
 								.edit()
-								.putString("token", json.getString("token"));
+								.putString("token", json.getString("token"))
+								.commit();
 						Intent intent = new Intent(mContext,
 								SalesAssisteantActivity.class);
 						startActivity(intent);

@@ -20,7 +20,7 @@ public class PreferenceUtils {
 
 	public static String getPreferToken(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getString("userToken", null);
+				.getString("token", null);
 	}
 
 	public static void modifyBooleanValueInPreferences(Context context,
@@ -31,8 +31,8 @@ public class PreferenceUtils {
 		editor.commit();
 	}
 
-	public static void modifyStringValueInPreference(Context context, String key,
-			String value) {
+	public static void modifyStringValueInPreference(Context context,
+			String key, String value) {
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(context).edit();
 		editor.putString(key, value);

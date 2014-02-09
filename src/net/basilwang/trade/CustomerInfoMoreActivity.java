@@ -23,6 +23,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	private TextView cAddress;
 	private TextView cReceivable;
 	private TextView cPaid;
+	private TextView cDesc;
 	private Button cReturn;
 	private RelativeLayout cBack;
 	private RelativeLayout cEdit;
@@ -44,6 +45,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cAddress.setText("地址：济南七里铺");
 		cReceivable.setText("应收货款:1000");
 		cPaid.setText("实收货款:500");
+		cDesc.setText("备注:无");
 		cBack.setOnClickListener(this);
 	}
 
@@ -53,6 +55,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cAddress = (TextView) findViewById(R.id.customer_address);
 		cReceivable = (TextView) findViewById(R.id.customer_receivable);
 		cPaid = (TextView) findViewById(R.id.customer_paid);
+		cDesc = (TextView) findViewById(R.id.customer_description);
 		cReturn = (Button) findViewById(R.id.customer_returnGoods);
 		cBack = (RelativeLayout) findViewById(R.id.customer_title_bar_back);
 		cEdit = (RelativeLayout) findViewById(R.id.customer_title_bar_btn_sure);
