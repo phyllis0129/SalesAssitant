@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.alibaba.fastjson.JSON;
+
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.PreferenceUtils;
@@ -65,7 +67,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private void initView() {
 		mTxtView = (TextView) mView.findViewById(R.id.customer_list_describe);
-		String user = "		100982";
+		String user = "		"+PreferenceUtils.getPreferLoginName(getActivity());
 		mTxtView.setText(getResources().getString(
 				R.string.customer_list_describe, user));
 		mListView = (ListView) mView.findViewById(R.id.customer_list);
@@ -119,34 +121,11 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
-				Log.v("customer list get", t.toString());
-				try {
-					JSONArray json = new JSONArray(t.toString());
-					int max = json.length();
-					Log.v("error", ""+max);
-					for (int i = 0; i < max; i++) {
-						Customer customer = new Customer();
-						customer.setName(
-								json.getJSONObject(i).getString("Name"));
-						customer.setId(
-								json.getJSONObject(i).getString("Id"));
-						customer.setAddress(
-								json.getJSONObject(i).getString("Address"));
-						customer.setDescription(
-								json.getJSONObject(i).getString("Description"));
-						customer.setPhone(
-								json.getJSONObject(i).getString("Tel"));
-						customers.add(customer);
-						customerNameList.add(customer.getName());
-						progressDialog.dismiss();
-
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					Log.v("error", e.toString());
-					Toast.makeText(getActivity(), "读取失败!", Toast.LENGTH_SHORT)
-							.show();
+				customers = JSON.parseArray(t.toString(), Customer.class);
+				for (int i = 0; i < customers.size(); i++) {
+					customerNameList.add(customers.get(i).getName());
 				}
+				progressDialog.dismiss();
 			}
 
 		});
@@ -172,9 +151,9 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		case ADD_CUSTOMER_INFO:
 			if (resultCode == getActivity().RESULT_OK) {
 				Customer customer = data.getParcelableExtra("newCustomer");
-//				customers.add(customer);
-//				customerNameList.add(customer.getName());
-//				customerAdapter.notifyDataSetChanged();
+				// customers.add(customer);
+				// customerNameList.add(customer.getName());
+				// customerAdapter.notifyDataSetChanged();
 				Toast.makeText(getActivity(), customer.getName(),
 						Toast.LENGTH_SHORT).show();
 			}
@@ -188,48 +167,5 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			break;
 		}
 	}
-
-	private class InitTask extends AsyncTask<String, integer, TaskResult> {
-
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//			
-//		}
-
-		@Override
-		protected TaskResult doInBackground(String... params) {
-//			customerNameList = getCustomerList();
-			if (customerNameList == null) {
-				return TaskResult.FAILED;
-			}
-			return TaskResult.OK;
-		}
-
-		@Override
-		protected void onPostExecute(TaskResult result) {
-			super.onPostExecute(result);
-			progressDialog.dismiss();
-			switch (result) {
-			case OK:
-				// mListView.setAdapter(new ArrayAdapter<String>(getActivity(),
-				// android.R.layout.simple_expandable_list_item_1,
-				// customerList));
-				customerAdapter = new ArrayAdapter<String>(getActivity(),
-						android.R.layout.simple_expandable_list_item_1,
-						customerNameList);
-				mListView.setAdapter(customerAdapter);
-				break;
-
-			case FAILED:
-
-				break;
-
-			default:
-				break;
-			}
-		}
-
-	};
 
 }

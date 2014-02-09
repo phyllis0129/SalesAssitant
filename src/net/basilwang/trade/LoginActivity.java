@@ -2,6 +2,7 @@ package net.basilwang.trade;
 
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.NetworkUtils;
+import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
@@ -83,8 +84,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	}
 
-	public void loginNow(final Context context, final String name,
-			final String psd) {
+	public void loginNow(final Context context, final String name, String psd) {
 		SaLog.log(TAG, "loginName=" + name + ";Password=" + psd);
 		final ProgressDialog mProgressDialog = ProgressDialog.show(context,
 				null, "正在登录");
@@ -108,11 +108,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 				try {
 					JSONObject json = new JSONObject(t.toString());
 					if (json.getBoolean("isSuccess")) {
-						// 保存token信息
-						PreferenceManager.getDefaultSharedPreferences(mContext)
-								.edit()
-								.putString("token", json.getString("token"))
-								.commit();
+						// 保存token信息和用户名
+						PreferenceUtils.modifyStringValueInPreference(context,
+								"token", json.getString("token"));
+						PreferenceUtils.modifyStringValueInPreference(context,
+								"loginName", name);
 						Intent intent = new Intent(mContext,
 								SalesAssisteantActivity.class);
 						startActivity(intent);

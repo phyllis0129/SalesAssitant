@@ -22,6 +22,11 @@ public class PreferenceUtils {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("token", null);
 	}
+	
+	public static String getPreferLoginName(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("loginName", null);
+	}
 
 	public static void modifyBooleanValueInPreferences(Context context,
 			String key, Boolean value) {
