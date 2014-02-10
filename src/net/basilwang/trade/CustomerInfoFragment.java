@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import net.basilwang.dao.CustomerListAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.CustomerListUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.basilwang.utils.TaskResult;
@@ -48,7 +49,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private TextView mTxtView;
 	private ListView mListView;
 	private RelativeLayout addBtn;
-	private List<String> customerNameList;
+//	private List<String> customerNameList;
 	private List<Customer> customers;
 	private ProgressDialog progressDialog;
 	private static final int OPEN_CUSTOMER_INFO = 101;
@@ -91,8 +92,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private void bindData() {
 		customers = new ArrayList<Customer>();
-		customerNameList = new ArrayList<String>();
-		getCustomerList();
+		CustomerListUtils.getCustomerList(getActivity(),customers,customerAdapter,mListView,true);
+//		getCustomerList();
 	}
 
 	@Override
@@ -118,11 +119,12 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
+				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
+				Log.v("customer id", customers.get(0).getId());
 				for (int i = 0; i < customers.size(); i++) {
-					customerNameList.add(customers.get(i).getName());
 				}
-				customerAdapter = new CustomerListAdapter(getActivity(),customerNameList);
+				customerAdapter = new CustomerListAdapter(getActivity(),customers);
 				mListView.setAdapter(customerAdapter);
 				progressDialog.dismiss();
 			}
@@ -151,7 +153,6 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			if (resultCode == getActivity().RESULT_OK) {
 				Customer customer = data.getParcelableExtra("newCustomer");
 				 customers.add(customer);
-				 customerNameList.add(customer.getName());
 				 customerAdapter.notifyDataSetChanged();
 				Toast.makeText(getActivity(), customer.getName(),
 						Toast.LENGTH_SHORT).show();

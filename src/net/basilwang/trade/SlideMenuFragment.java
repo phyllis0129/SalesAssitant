@@ -90,7 +90,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 			newContent = new CustomerInfoFragment();
 			break;
 		case 1:
-			title = "商品信息";
+			title = "订单信息";
 			newContent = new OrderInfoFragment();
 			break;
 		case 2:

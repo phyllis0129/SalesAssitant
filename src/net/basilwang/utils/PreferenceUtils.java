@@ -43,4 +43,11 @@ public class PreferenceUtils {
 		editor.putString(key, value);
 		editor.commit();
 	}
+	
+	public static void clearData(Context context){
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(context).edit();
+		editor.clear();
+		editor.commit();
+	}
 }

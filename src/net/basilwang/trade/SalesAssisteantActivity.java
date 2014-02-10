@@ -10,10 +10,12 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 public class SalesAssisteantActivity extends BaseActivity {
 
 	private Fragment mContent;
+	public static SalesAssisteantActivity INSTANCE;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		INSTANCE = this;
 		setTitle("订单信息");
 		initSlidingMenu();
 		if (savedInstanceState != null) {

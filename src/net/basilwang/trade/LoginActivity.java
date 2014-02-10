@@ -104,7 +104,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
-				mProgressDialog.dismiss();
 				try {
 					JSONObject json = new JSONObject(t.toString());
 					if (json.getBoolean("isSuccess")) {
@@ -124,6 +123,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				mProgressDialog.dismiss();
 			}
 
 		});

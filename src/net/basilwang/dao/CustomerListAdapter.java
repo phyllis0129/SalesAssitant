@@ -5,6 +5,7 @@ package net.basilwang.dao;
 
 import java.util.List;
 
+import net.basilwang.entity.Customer;
 import net.basilwang.trade.R;
 
 import android.content.Context;
@@ -20,11 +21,11 @@ import android.widget.TextView;
  */
 public class CustomerListAdapter extends BaseAdapter {
 
-	private List<String> customerNameList;
+	private List<Customer> customers;
 	private Context context;
 
-	public CustomerListAdapter(Context context, List<String> customerNameList) {
-		this.customerNameList = customerNameList;
+	public CustomerListAdapter(Context context, List<Customer> customers) {
+		this.customers = customers;
 		this.context = context;
 	}
 
@@ -35,7 +36,7 @@ public class CustomerListAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return customerNameList.size();
+		return customers.size();
 	}
 
 	/*
@@ -45,7 +46,7 @@ public class CustomerListAdapter extends BaseAdapter {
 	 */
 	@Override
 	public Object getItem(int position) {
-		return customerNameList.get(position);
+		return customers.get(position);
 	}
 
 	/*
@@ -77,7 +78,7 @@ public class CustomerListAdapter extends BaseAdapter {
 		}else{
 			mHolder = (Holder) convertView.getTag();
 		}
-		mHolder.customerName.setText(customerNameList.get(position));
+		mHolder.customerName.setText(customers.get(position).getName());
 		
 		return convertView;
 	}
