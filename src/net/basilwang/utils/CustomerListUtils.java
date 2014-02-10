@@ -47,7 +47,6 @@ public class CustomerListUtils {
 			mProgressDialog = ProgressDialog.show(context, "", "数据加载中，请稍候....",
 					true, false);
 		AjaxParams params = new AjaxParams();
-		// params.put("X-Token", PreferenceUtils.getPreferToken(context));
 		SaLog.log("token", PreferenceUtils.getPreferToken(context));
 		FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(context));

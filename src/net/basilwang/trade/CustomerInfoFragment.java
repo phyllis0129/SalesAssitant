@@ -92,8 +92,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private void bindData() {
 		customers = new ArrayList<Customer>();
-		CustomerListUtils.getCustomerList(getActivity(),customers,customerAdapter,mListView,true);
-//		getCustomerList();
+//		CustomerListUtils.getCustomerList(getActivity(),customers,customerAdapter,mListView,true);
+		getCustomerList();
 	}
 
 	@Override
@@ -105,25 +105,33 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		progressDialog = ProgressDialog.show(getActivity(), "",
 				"数据加载中，请稍候....", true, false);
 		AjaxParams params = new AjaxParams();
-		params.put("token", PreferenceUtils.getPreferToken(getActivity()));
 		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
 		FinalHttp fh = new FinalHttp();
-		fh.get(StaticParameter.getCustomer, params, new AjaxCallBack<Object>() {
+		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
+		fh.get(StaticParameter.getCustomer, new AjaxCallBack<Object>() {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
+				t.printStackTrace();
+				if (errorNo == 401) {
+					Toast.makeText(getActivity(), "您的账号异常，请重新登录", Toast.LENGTH_SHORT)
+					.show();
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), LoginActivity.class);
+					getActivity().startActivity(intent);
+					SalesAssisteantActivity.INSTANCE.finish();
+					PreferenceUtils.clearData(getActivity());
+				}
+				Log.v("error", errorNo + strMsg + t.toString());
 				progressDialog.dismiss();
 			}
-
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				Log.v("customer id", customers.get(0).getId());
-				for (int i = 0; i < customers.size(); i++) {
-				}
 				customerAdapter = new CustomerListAdapter(getActivity(),customers);
 				mListView.setAdapter(customerAdapter);
 				progressDialog.dismiss();
@@ -138,6 +146,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		case R.id.title_bar_btn_add:
 			Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
 			startActivityForResult(intent, ADD_CUSTOMER_INFO);
+			Toast.makeText(getActivity(), customers.size()+"",
+					Toast.LENGTH_SHORT).show();
 			break;
 
 		default:
