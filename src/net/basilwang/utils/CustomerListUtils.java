@@ -5,7 +5,7 @@ package net.basilwang.utils;
 
 import java.util.List;
 
-import net.basilwang.dao.CustomerListAdapter;
+import net.basilwang.dao.CustomerAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.trade.LoginActivity;
@@ -78,7 +78,7 @@ public class CustomerListUtils {
 				Log.v("customer id", mCustomers.get(0).getId());
 				for (int i = 0; i < mCustomers.size(); i++) {
 				}
-				mBaseAdapter = new CustomerListAdapter(mContext, mCustomers);
+				mBaseAdapter = new CustomerAdapter(mContext, mCustomers);
 				mAdapterView.setAdapter(mBaseAdapter);
 				if (isNeedProgressDialog)
 					mProgressDialog.dismiss();

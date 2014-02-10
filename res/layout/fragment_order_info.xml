@@ -21,26 +21,44 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="指定客户:"
-                android:textSize="21sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" >
 
-            <Spinner
-                android:id="@+id/customer_spinner"
-                android:layout_width="120dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/btn_dropdown1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="指定客户:"
+                    android:textSize="21sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/sweep_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/sweep" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <Spinner
+                    android:id="@+id/customer_spinner"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <ImageButton
+                    android:id="@+id/sweep_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sweep" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -103,21 +121,13 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:inputType="numberDecimal"
                     android:hint="实收货款"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <net.basilwang.view.SlideCutListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/order_info_header"
-        android:cacheColorHint="#00000000"
-        android:paddingBottom="46dp" />
-
+    
     <LinearLayout
         android:id="@+id/order_btn"
         android:layout_width="match_parent"
@@ -145,5 +155,16 @@
             android:textColor="#ffffffff"
             android:textSize="20sp" />
     </LinearLayout>
+
+    <net.basilwang.view.SlideCutListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/order_btn"
+        android:layout_below="@id/order_info_header"
+        android:cacheColorHint="#00000000"
+        android:layout_margin="0dp"  />
+
+    
 
 </net.basilwang.view.ResizeLayout>

@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import com.alibaba.fastjson.JSON;
 
-import net.basilwang.dao.CustomerListAdapter;
+import net.basilwang.dao.CustomerAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.CustomerListUtils;
@@ -56,7 +56,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private static final int ADD_CUSTOMER_INFO = 102;
 	public static final int RESULT_OK = 1001;
 	public static final int RESULT_ERROR = 1002;
-	private CustomerListAdapter customerAdapter;
+	private CustomerAdapter customerAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,7 +132,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				Log.v("customer id", customers.get(0).getId());
-				customerAdapter = new CustomerListAdapter(getActivity(),customers);
+				customerAdapter = new CustomerAdapter(getActivity(),customers);
 				mListView.setAdapter(customerAdapter);
 				progressDialog.dismiss();
 			}

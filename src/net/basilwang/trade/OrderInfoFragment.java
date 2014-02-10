@@ -4,20 +4,12 @@
 package net.basilwang.trade;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import com.alibaba.fastjson.JSON;
-
-import net.basilwang.dao.CustomerListAdapter;
-import net.basilwang.dao.CustomerSpinnerAdapter;
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.CustomerListUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.basilwang.view.ResizeLayout;
@@ -28,7 +20,6 @@ import net.basilwang.view.SlideCutListView.RemoveListener;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -39,14 +30,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * @author phyllis
@@ -57,19 +51,21 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private View mView;
 	private SlideCutListView orderListView;
-	private ListView spinnerLsit;
 	private TextView recrivableCounts;
 	private EditText realCounts;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
 	private OrderAdapter orderAdapter;
-	private CustomerSpinnerAdapter customerAdapter;
 	private List<OrderItem> mOrderItemList;
 	private List<Customer> customers;
 	private Spinner customerSpinner;
 
 	private ResizeLayout headerLinearLayout;
 	private LinearLayout btnLinearLayout;
+
+	private Customer assignedCustomer = null;
+
+	private ArrayAdapter<String> customerAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,8 +84,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		orderListView.setAdapter(orderAdapter);
 		customers = new ArrayList<Customer>();
 		getCustomerList();
-//		CustomerListUtils.getCustomerList(getActivity(), customers,
-//				customerAdapter, customerSpinner, false);
+		// CustomerListUtils.getCustomerList(getActivity(), customers,
+		// customerAdapter, customerSpinner, false);
 	}
 
 	private void initView() {
@@ -116,6 +112,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		sureBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
 		addBtn.setOnClickListener(this);
+		customerSpinner.setOnItemSelectedListener(this);
 		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
 			@Override
@@ -145,7 +142,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			}
 		});
 	}
-	
+
 	private void getCustomerList() {
 		AjaxParams params = new AjaxParams();
 		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
@@ -158,8 +155,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
 				if (errorNo == 401) {
-					Toast.makeText(getActivity(), "您的账号异常，请重新登录", Toast.LENGTH_SHORT)
-					.show();
+					Toast.makeText(getActivity(), "您的账号异常，请重新登录",
+							Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), LoginActivity.class);
 					getActivity().startActivity(intent);
@@ -168,14 +165,24 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				}
 				Log.v("error", errorNo + strMsg + t.toString());
 			}
+
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
+				ArrayList<String> customerNamelist = new ArrayList<String>();
+				customerNamelist.add("请选择");
 				Log.v("customer id", customers.get(0).getId());
-				customerAdapter = new CustomerSpinnerAdapter(getActivity(),customers);
+				for (int i = 0; i < customers.size(); i++) {
+					customerNamelist.add(i + 1, customers.get(i).getName());
+				}
+				customerAdapter = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_spinner_item, customerNamelist);
+				customerAdapter
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				customerSpinner.setAdapter(customerAdapter);
+				customerSpinner.setPrompt("请选择客户");
 			}
 
 		});
@@ -244,7 +251,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-
+		assignedCustomer = customers.get(position);
+		Log.v("selected", assignedCustomer.getName());
+		parent.setVisibility(View.VISIBLE);
 	}
 
 	@Override
