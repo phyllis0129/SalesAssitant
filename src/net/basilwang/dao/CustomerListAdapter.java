@@ -45,8 +45,8 @@ public class CustomerListAdapter extends BaseAdapter {
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
-	public Object getItem(int position) {
-		return customers.get(position);
+	public String getItem(int position) {
+		return customers.get(position).getName();
 	}
 
 	/*
@@ -56,7 +56,6 @@ public class CustomerListAdapter extends BaseAdapter {
 	 */
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
@@ -72,13 +71,13 @@ public class CustomerListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			mHolder = new Holder();
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.customer_item, null, false);
+					R.layout.customer_list_item, null, false);
 			mHolder.customerName = (TextView)convertView.findViewById(R.id.customer_item_name);
 			convertView.setTag(mHolder);
 		}else{
 			mHolder = (Holder) convertView.getTag();
 		}
-		mHolder.customerName.setText(customers.get(position).getName());
+		mHolder.customerName.setText(getItem(position));
 		
 		return convertView;
 	}

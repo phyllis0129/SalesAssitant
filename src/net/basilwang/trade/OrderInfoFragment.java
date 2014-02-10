@@ -4,11 +4,16 @@
 package net.basilwang.trade;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import net.basilwang.dao.CustomerSpinnerAdapter;
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
+import net.basilwang.entity.Customer;
+import net.basilwang.utils.CustomerListUtils;
 import net.basilwang.view.ResizeLayout;
 import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
 import net.basilwang.view.SlideCutListView;
@@ -27,6 +32,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +47,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private View mView;
 	private SlideCutListView orderListView;
+	private ListView spinnerLsit;
 	private TextView recrivableCounts;
 	private EditText realCounts;
 	private Button sureBtn, cancelBtn;
@@ -48,6 +55,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private OrderAdapter orderAdapter;
 	private CustomerSpinnerAdapter customerAdapter;
 	private List<OrderItem> mOrderItemList;
+	private List<Customer> customers;
 	private Spinner customerSpinner;
 
 	private ResizeLayout headerLinearLayout;
@@ -68,7 +76,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList,
 				orderListView);
 		orderListView.setAdapter(orderAdapter);
-		
+		customers = new ArrayList<Customer>();
+		CustomerListUtils.getCustomerList(getActivity(), customers,
+				customerAdapter, customerSpinner, false);
 	}
 
 	private void initView() {
@@ -79,7 +89,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		realCounts = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
-		customerSpinner = (Spinner)mView.findViewById(R.id.customer_spinner);
+		customerSpinner = (Spinner) mView.findViewById(R.id.customer_spinner);
 		customerSpinner.setOnItemSelectedListener(this);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
@@ -89,8 +99,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		headerLinearLayout = (ResizeLayout) mView.findViewById(R.id.origin);
 		setListener();
 	}
-	
-	public void setListener(){
+
+	public void setListener() {
 		orderListView.setRemoveListener(this);
 		sureBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
@@ -124,7 +134,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			}
 		});
 	}
-	
 
 	public void refreshRealCounts() {
 		Double totalCounts = 0.0;
@@ -142,8 +151,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
 			mOrderItemList.add(mOrderItem);
 			orderAdapter.notifyDataSetChanged();
-			Intent intent = new Intent(getActivity(),GoodsInfoMoreActivity.class);
-			
+			Intent intent = new Intent(getActivity(),
+					GoodsInfoMoreActivity.class);
+
 			startActivityForResult(intent, 0);
 			refreshRealCounts();
 			break;
@@ -188,12 +198,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		
+
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		
+
 	}
 
 }

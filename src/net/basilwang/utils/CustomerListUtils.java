@@ -16,10 +16,9 @@ import net.tsz.afinal.http.AjaxParams;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.sax.StartElementListener;
 import android.util.Log;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,16 +33,16 @@ public class CustomerListUtils {
 	private static Context mContext;
 	private static ProgressDialog mProgressDialog;
 	private static List<Customer> mCustomers;
-	private static CustomerListAdapter mCustomerAdapter;
-	private static ListView mListView;
+	private static BaseAdapter mBaseAdapter;
+	private static AdapterView mAdapterView;
 
 	public static void getCustomerList(Context context,
-			List<Customer> customers, CustomerListAdapter customerAdapter,
-			ListView listView, final boolean isNeedProgressDialog) {
+			List<Customer> customers, BaseAdapter baseAdapter,
+			AdapterView adapterView, final boolean isNeedProgressDialog) {
 		mContext = context;
 		mCustomers = customers;
-		mCustomerAdapter = customerAdapter;
-		mListView = listView;
+		mBaseAdapter = baseAdapter;
+		mAdapterView = adapterView;
 		if (isNeedProgressDialog)
 			mProgressDialog = ProgressDialog.show(context, "", "数据加载中，请稍候....",
 					true, false);
@@ -68,7 +67,8 @@ public class CustomerListUtils {
 					PreferenceUtils.clearData(mContext);
 				}
 				Log.v("error", errorNo + strMsg + t.toString());
-				mProgressDialog.dismiss();
+				if (isNeedProgressDialog)
+					mProgressDialog.dismiss();
 			}
 
 			@Override
@@ -79,9 +79,10 @@ public class CustomerListUtils {
 				Log.v("customer id", mCustomers.get(0).getId());
 				for (int i = 0; i < mCustomers.size(); i++) {
 				}
-				mCustomerAdapter = new CustomerListAdapter(mContext, mCustomers);
-				mListView.setAdapter(mCustomerAdapter);
-				mProgressDialog.dismiss();
+				mBaseAdapter = new CustomerListAdapter(mContext, mCustomers);
+				mAdapterView.setAdapter(mBaseAdapter);
+				if (isNeedProgressDialog)
+					mProgressDialog.dismiss();
 			}
 
 		});
