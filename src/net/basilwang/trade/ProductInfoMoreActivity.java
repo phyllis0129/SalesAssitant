@@ -6,8 +6,8 @@ package net.basilwang.trade;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
-
+import net.basilwang.dao.ProductAdapter;
+import net.basilwang.dao.ProductAdapter.ViewHolder;
 import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.PreferenceUtils;
@@ -20,23 +20,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 /**
  * @author Basilwang
  * 
  */
 public class ProductInfoMoreActivity extends Activity implements
-		OnClickListener {
+		OnClickListener,OnItemClickListener {
 
 	private RelativeLayout backBtn, sureBtn;
 	private ListView productListView;
 	private ProgressDialog progressDialog;
 	private List<Product> products;
-	private ArrayAdapter<String> productNameAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class ProductInfoMoreActivity extends Activity implements
 		sureBtn = (RelativeLayout) findViewById(R.id.goods_title_bar_btn_sure);
 		sureBtn.setOnClickListener(this);
 		productListView = (ListView) findViewById(R.id.goods_list);
+		productListView.setOnItemClickListener(this);
 		bindData();
 	}
 
@@ -75,16 +79,15 @@ public class ProductInfoMoreActivity extends Activity implements
 			public void onSuccess(Object t) {
 				Log.v("product", t.toString());
 				products = JSON.parseArray(t.toString(), Product.class);
+				JSONArray jsonA= JSON.parseArray(t.toString());
+				
 				List<String> productNames = new ArrayList<String>();
 				for (int i = 0; i < products.size(); i++) {
 					productNames.add(products.get(i).getName());
 				}
 				productListView
-						.setAdapter(new ArrayAdapter<String>(
-								ProductInfoMoreActivity.this,
-								android.R.layout.simple_list_item_checked,
-								productNames));
-				productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+						.setAdapter(new ProductAdapter(ProductInfoMoreActivity.this, products));
+//				productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 				Log.v("product name", products.get(0).getName());
 				Log.v("product id", products.get(0).getId());
 				progressDialog.dismiss();
@@ -111,6 +114,13 @@ public class ProductInfoMoreActivity extends Activity implements
 			break;
 		}
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		showDialog();
+		ViewHolder _ViewHolder = (ViewHolder) parent.getTag();
 	}
 
 }
