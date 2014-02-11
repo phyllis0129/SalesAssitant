@@ -205,7 +205,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			mOrderItemList.add(mOrderItem);
 			orderAdapter.notifyDataSetChanged();
 			Intent intent = new Intent(getActivity(),
-					GoodsInfoMoreActivity.class);
+					ProductInfoMoreActivity.class);
 
 			startActivityForResult(intent, 0);
 			refreshRealCounts();
