@@ -110,9 +110,9 @@ public class CustomerInfoMoreActivity extends Activity implements
 		switch (requestCode) {
 		case EDIT_CUSTOMER:
 			if (resultCode == RESULT_OK) {
-
+				mCustomer = data.getParcelableExtra("customer_edit");
+				init();
 			}
-
 			break;
 
 		default:

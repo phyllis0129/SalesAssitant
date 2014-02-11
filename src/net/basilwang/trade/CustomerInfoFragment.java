@@ -16,8 +16,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -42,10 +40,6 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private RelativeLayout addBtn;
 	private List<Customer> customers;
 	private ProgressDialog progressDialog;
-	private static final int OPEN_CUSTOMER_INFO = 101;
-	private static final int ADD_CUSTOMER_INFO = 102;
-	public static final int RESULT_OK = 1001;
-	public static final int RESULT_ERROR = 1002;
 	private CustomerAdapter customerAdapter;
 
 	@Override
@@ -71,24 +65,21 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				Intent intent = new Intent();
 				intent.putExtra("customer", customers.get(position));
 				intent.setClass(getActivity(), CustomerInfoMoreActivity.class);
-				startActivityForResult(intent, OPEN_CUSTOMER_INFO);
+				startActivity(intent);
 			}
 		});
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
 		addBtn.setOnClickListener(this);
-		bindData();
 	}
 
+	/**
+	 * 绑定用户列表数据
+	 */
 	private void bindData() {
 		customers = new ArrayList<Customer>();
 		getCustomerList();
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	private void getCustomerList() {
@@ -136,9 +127,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
 			Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
-			startActivityForResult(intent, ADD_CUSTOMER_INFO);
-			Toast.makeText(getActivity(), customers.size() + "",
-					Toast.LENGTH_SHORT).show();
+			startActivity(intent);
 			break;
 
 		default:
@@ -148,25 +137,9 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case ADD_CUSTOMER_INFO:
-			if (resultCode == getActivity().RESULT_OK) {
-				Customer customer = data.getParcelableExtra("newCustomer");
-				customers.add(customer);
-				customerAdapter.notifyDataSetChanged();
-				Toast.makeText(getActivity(), customer.getName(),
-						Toast.LENGTH_SHORT).show();
-			}
-
-			break;
-
-		case OPEN_CUSTOMER_INFO:
-			break;
-
-		default:
-			break;
-		}
+	public void onResume() {
+		super.onResume();
+		bindData();
 	}
 
 }

@@ -55,6 +55,11 @@
             android:label="@string/app_name"
             android:theme="@style/ActivityFaddingAnim" >
         </activity>
+        <activity
+            android:name="EditCustomerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/ActivityFaddingAnim" >
+        </activity>
     </application>
 
 </manifest>
