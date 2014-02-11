@@ -32,10 +32,10 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:text="添加客户"
             android:textColor="#fff"
             android:textSize="23sp"
-            android:textStyle="bold"
-            android:text="添加客户" />
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/customer_title_bar_btn_sure"
@@ -158,12 +158,12 @@
             android:id="@+id/customer_other_ed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minLines="3"
             android:background="@drawable/round_normal_bg"
             android:ems="10"
             android:gravity="left"
             android:hint="可输入客户其他信息"
             android:lineSpacingExtra="3dp"
+            android:minLines="3"
             android:padding="3dp"
             android:textColorHint="#DDD"
             android:textSize="21sp" />

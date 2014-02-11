@@ -12,16 +12,33 @@ import android.os.Parcelable;
  */
 public class Customer implements Parcelable {
 
+	private String name;
+	private String tel;
+	private String address;
+	private String description;
 	private String id;
+	private String paid;
+	private String receivable;
+
+	public String getPaid() {
+		return paid;
+	}
+
+	public void setPaid(String paid) {
+		this.paid = paid;
+	}
+
+	public String getReceivable() {
+		return receivable;
+	}
+
+	public void setReceivable(String receivable) {
+		this.receivable = receivable;
+	}
 
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	private String name;
-	private String phone;
-	private String address;
-	private String description;
 
 	public Customer() {
 
@@ -30,9 +47,20 @@ public class Customer implements Parcelable {
 	public Customer(String name, String phone, String address,
 			String description) {
 		this.name = name;
-		this.phone = phone;
+		this.tel = phone;
 		this.address = address;
 		this.description = description;
+	}
+
+	public Customer(String name, String phone, String address,
+			String description, String id, String paid, String receivable) {
+		this.id = id;
+		this.name = name;
+		this.tel = phone;
+		this.address = address;
+		this.description = description;
+		this.paid = paid;
+		this.receivable = receivable;
 	}
 
 	// 1.必须实现Parcelable.Creator接口,否则在获取Person数据的时候，会报错，如下：
@@ -54,7 +82,8 @@ public class Customer implements Parcelable {
 		public Customer createFromParcel(Parcel source) {
 			Customer customer = new Customer(source.readString(),
 					source.readString(), source.readString(),
-					source.readString());
+					source.readString(), source.readString(),
+					source.readString(), source.readString());
 			return customer;
 		}
 	};
@@ -67,12 +96,12 @@ public class Customer implements Parcelable {
 		this.name = name;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getTel() {
+		return tel;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
 
 	public String getAddress() {
@@ -102,11 +131,13 @@ public class Customer implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(id);
 		dest.writeString(name);
-		dest.writeString(phone);
+		dest.writeString(tel);
 		dest.writeString(address);
 		dest.writeString(description);
+		dest.writeString(id);
+		dest.writeString(paid);
+		dest.writeString(receivable);
 	}
 
 }
