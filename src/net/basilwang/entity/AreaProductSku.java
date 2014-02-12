@@ -13,10 +13,16 @@ import android.os.Parcelable.Creator;
  */
 public class AreaProductSku  {
 
+	private String id;
 	private int amount;
 	private ProductSku productSku;
 	
-	private AreaProductSku(int amount,ProductSku productSku){
+	public AreaProductSku(){
+	
+	}
+	
+	private AreaProductSku(String id,int amount,ProductSku productSku){
+		this.id = id;
 		this.amount = amount;
 		this.productSku = productSku;
 	}
@@ -55,6 +61,14 @@ public class AreaProductSku  {
 //		dest.writeValue(productSku);
 //	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	public int getAmount() {
 		return amount;
 	}

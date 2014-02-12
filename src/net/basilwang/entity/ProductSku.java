@@ -15,6 +15,10 @@ public class ProductSku {
 	private String id;
 	private String name;
 	
+	public ProductSku(){
+		
+	}
+	
 	public ProductSku(String id, String name){
 		this.id = id;
 		this.name = name;
