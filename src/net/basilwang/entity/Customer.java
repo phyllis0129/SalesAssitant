@@ -17,24 +17,6 @@ public class Customer implements Parcelable {
 	private String address;
 	private String description;
 	private String id;
-	private String paid;
-	private String receivable;
-
-	public String getPaid() {
-		return paid;
-	}
-
-	public void setPaid(String paid) {
-		this.paid = paid;
-	}
-
-	public String getReceivable() {
-		return receivable;
-	}
-
-	public void setReceivable(String receivable) {
-		this.receivable = receivable;
-	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -53,14 +35,12 @@ public class Customer implements Parcelable {
 	}
 
 	public Customer(String name, String phone, String address,
-			String description, String id, String paid, String receivable) {
+			String description, String id) {
 		this.id = id;
 		this.name = name;
 		this.tel = phone;
 		this.address = address;
 		this.description = description;
-		this.paid = paid;
-		this.receivable = receivable;
 	}
 
 	// 1.必须实现Parcelable.Creator接口,否则在获取Person数据的时候，会报错，如下：
@@ -81,7 +61,6 @@ public class Customer implements Parcelable {
 		@Override
 		public Customer createFromParcel(Parcel source) {
 			Customer customer = new Customer(source.readString(),
-					source.readString(), source.readString(),
 					source.readString(), source.readString(),
 					source.readString(), source.readString());
 			return customer;
@@ -136,8 +115,6 @@ public class Customer implements Parcelable {
 		dest.writeString(address);
 		dest.writeString(description);
 		dest.writeString(id);
-		dest.writeString(paid);
-		dest.writeString(receivable);
 	}
 
 }

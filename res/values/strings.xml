@@ -6,5 +6,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="customer_list_describe">%1$s 您好，您当前所负责的客户有：</string>
     <string name="goods_list_describe">库存现有商品：</string>
+    <string name="return_goods">退货</string>
+    <string name="record">交易记录:</string>
+    <string name="customer_info">客户资料</string>
+    <string name="customer_info_name">姓名:</string>
+    <string name="customer_info_tel">电话:</string>
+    <string name="customer_info_address">地址:</string>
+    <string name="customer_info_des">备注:</string>
 
 </resources>

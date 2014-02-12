@@ -9,5 +9,8 @@ public class StaticParameter {
 	public static String getGoods = http + "api/product/area";
 	public static String postEditCustomer = http + "api/customer/edit/";
 	public static String postAddCustomer = http + "api/customer/add";
+	public static String getPayment = http + "api/customer/paymentsummary/";
+	public static String getSummayproductsku = http
+			+ "api/customer/summayproductsku/";
 
 }
