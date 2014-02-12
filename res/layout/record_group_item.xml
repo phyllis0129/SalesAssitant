@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_pressed_bg" >
+
+    <TextView
+        android:id="@+id/record_group_child_name"
+        style="@style/myStyle.BlackHugeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="35dip"
+        android:text="总类"
+        android:textSize="23sp" />
+
+    <TextView
+        android:id="@+id/record_group_child_sum"
+        style="@style/myStyle.BlackHugeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignParentRight="true"
+        android:text="数量"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/record_group_child_amount"
+        style="@style/myStyle.BlackHugeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/record_group_child_sum"
+        android:layout_alignBottom="@+id/record_group_child_sum"
+        android:layout_marginRight="15dip"
+        android:layout_toLeftOf="@+id/textView2"
+        android:text="总额"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/record_group_child_name"
+        android:layout_alignBottom="@+id/record_group_child_name"
+        android:layout_toLeftOf="@+id/record_group_child_amount"
+        android:text="总量:" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_toLeftOf="@+id/record_group_child_sum"
+        android:text="总额:" />
+
+</RelativeLayout>

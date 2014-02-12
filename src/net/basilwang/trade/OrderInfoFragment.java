@@ -166,7 +166,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				ArrayList<String> customerNamelist = new ArrayList<String>();
 				customerNamelist.add("请选择");
-				Log.v("customer id", customers.get(0).getId());
+//				Log.v("customer id", customers.get(0).getId());
 				for (int i = 0; i < customers.size(); i++) {
 					customerNamelist.add(i + 1, customers.get(i).getName());
 				}
