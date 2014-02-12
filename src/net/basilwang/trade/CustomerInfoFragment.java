@@ -50,7 +50,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 	private TextView mTxtView;
 	private ListView mListView;
 	private RelativeLayout addBtn;
-//	private List<String> customerNameList;
+	// private List<String> customerNameList;
 	private List<Customer> customers;
 	private ProgressDialog progressDialog;
 	private static final int OPEN_CUSTOMER_INFO = 101;
@@ -70,7 +70,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private void initView() {
 		mTxtView = (TextView) mView.findViewById(R.id.customer_list_describe);
-		String user = "		"+PreferenceUtils.getPreferLoginName(getActivity());
+		String user = "		" + PreferenceUtils.getPreferLoginName(getActivity());
 		mTxtView.setText(getResources().getString(
 				R.string.customer_list_describe, user));
 		mListView = (ListView) mView.findViewById(R.id.customer_list);
@@ -93,7 +93,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 
 	private void bindData() {
 		customers = new ArrayList<Customer>();
-//		CustomerListUtils.getCustomerList(getActivity(),customers,customerAdapter,mListView,true);
+		// CustomerListUtils.getCustomerList(getActivity(),customers,customerAdapter,mListView,true);
 		getCustomerList();
 	}
 
@@ -115,19 +115,18 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
-				if (errorNo == 401) {
-					AuthorizedFailedUtils.reLogin(getActivity());
-				}
+				AuthorizedFailedUtils.checkReLogin((SalesAssisteantActivity)getActivity(),errorNo);
 				Log.v("error", errorNo + strMsg + t.toString());
 				progressDialog.dismiss();
 			}
+
 			@Override
 			public void onSuccess(Object t) {
 				super.onSuccess(t);
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				Log.v("customer id", customers.get(0).getId());
-				customerAdapter = new CustomerAdapter(getActivity(),customers);
+				customerAdapter = new CustomerAdapter(getActivity(), customers);
 				mListView.setAdapter(customerAdapter);
 				progressDialog.dismiss();
 			}
@@ -141,7 +140,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		case R.id.title_bar_btn_add:
 			Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
 			startActivityForResult(intent, ADD_CUSTOMER_INFO);
-			Toast.makeText(getActivity(), customers.size()+"",
+			Toast.makeText(getActivity(), customers.size() + "",
 					Toast.LENGTH_SHORT).show();
 			break;
 
@@ -157,8 +156,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		case ADD_CUSTOMER_INFO:
 			if (resultCode == getActivity().RESULT_OK) {
 				Customer customer = data.getParcelableExtra("newCustomer");
-				 customers.add(customer);
-				 customerAdapter.notifyDataSetChanged();
+				customers.add(customer);
+				customerAdapter.notifyDataSetChanged();
 				Toast.makeText(getActivity(), customer.getName(),
 						Toast.LENGTH_SHORT).show();
 			}

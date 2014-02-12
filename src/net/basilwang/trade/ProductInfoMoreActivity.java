@@ -15,6 +15,7 @@ import net.basilwang.dao.ProductAdapter.ViewHolder;
 import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.FinalHttp;
@@ -84,21 +85,18 @@ public class ProductInfoMoreActivity extends Activity implements
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				Log.v("error", strMsg);
+				AuthorizedFailedUtils.checkReLogin(ProductInfoMoreActivity.this, errorNo);
 				Toast.makeText(ProductInfoMoreActivity.this, "数据获取失败，稍后重试",
 						Toast.LENGTH_SHORT).show();
 				ProductInfoMoreActivity.this.finish();
 				progressDialog.dismiss();
 				
-				//TODO token验证失败的情况
-
 			}
 
 			@Override
 			public void onSuccess(Object t) {
 				Log.v("product", t.toString());
 				products = JSON.parseArray(t.toString(), Product.class);
-				JSONArray jsonA = JSON.parseArray(t.toString());
-
 				List<String> productNames = new ArrayList<String>();
 				for (int i = 0; i < products.size(); i++) {
 					productNames.add(products.get(i).getName());

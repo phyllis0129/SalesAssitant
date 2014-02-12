@@ -10,6 +10,7 @@ import net.basilwang.dao.OrderAdapter;
 import net.basilwang.dao.OrderItem;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.basilwang.view.ResizeLayout;
@@ -154,15 +155,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
-				if (errorNo == 401) {
-					Toast.makeText(getActivity(), "您的账号异常，请重新登录",
-							Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), LoginActivity.class);
-					getActivity().startActivity(intent);
-					SalesAssisteantActivity.INSTANCE.finish();
-					PreferenceUtils.clearData(getActivity());
-				}
+				AuthorizedFailedUtils.checkReLogin(getActivity(), errorNo);
 				Log.v("error", errorNo + strMsg + t.toString());
 			}
 
