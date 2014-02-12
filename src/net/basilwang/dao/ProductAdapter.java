@@ -25,8 +25,6 @@ public class ProductAdapter extends BaseAdapter {
 	private Context context;
 	private List<Product> products;
 	private static HashMap<Integer, Boolean> isSelected;
-	private static HashMap<Integer, String> skuMap;
-	private static HashMap<Integer, String> amountMap;
 
 	public ProductAdapter(Context context, List<Product> products) {
 		this.context = context;
@@ -38,8 +36,6 @@ public class ProductAdapter extends BaseAdapter {
 	private void initData() {
 		for (int i = 0; i < products.size(); i++) {
 			getIsSelected().put(i, false);
-			getAmountMap().put(i, "");
-			getSkuMap().put(i, "");
 		}
 	}
 
@@ -130,12 +126,5 @@ public class ProductAdapter extends BaseAdapter {
 		ProductAdapter.isSelected = isSelected;
 	}
 
-	public static HashMap<Integer, String> getSkuMap() {
-		return skuMap;
-	}
-
-	public static HashMap<Integer, String> getAmountMap() {
-		return amountMap;
-	}
 
 }

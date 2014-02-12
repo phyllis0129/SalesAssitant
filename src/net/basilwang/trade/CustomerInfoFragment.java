@@ -88,7 +88,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				"数据加载中，请稍候....", true, false);
 		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
 		FinalHttp fh = new FinalHttp();
-//		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
+		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
 		fh.get(StaticParameter.getCustomer, new AjaxCallBack<Object>() {
 
 			@Override
