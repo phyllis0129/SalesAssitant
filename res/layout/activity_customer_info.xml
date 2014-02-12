@@ -61,12 +61,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/title"
-        android:layout_marginLeft="5dip"
+        android:layout_marginTop="10dip"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip" >
 
             <TextView
                 android:id="@+id/textView1"
@@ -86,7 +87,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/diver_line" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip" >
 
             <TextView
                 android:id="@+id/textView2"
@@ -106,7 +114,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/diver_line" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip" >
 
             <TextView
                 android:id="@+id/textView3"
@@ -126,7 +141,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/diver_line" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip" >
 
             <TextView
                 android:id="@+id/textView4"
@@ -143,6 +165,13 @@
                 android:text="打酱油的"
                 android:textSize="20sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:layout_marginTop="5dip"
+            android:background="@drawable/divline" >
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -151,7 +180,7 @@
         android:layout_height="40dip"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="应收货款"
         android:textSize="20sp" />
@@ -168,19 +197,30 @@
 
     <Button
         android:id="@+id/customer_returnGoods"
-        android:layout_width="wrap_content"
+        android:layout_width="60dip"
         android:layout_height="40dip"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/customer_paid"
-        android:background="@drawable/btn_bg_selected"
-        android:text="@string/return_goods" />
+        android:background="@drawable/btn_login_bg"
+        android:text="@string/return_goods"
+        android:textColor="#ffffffff" />
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_below="@id/customer_paid"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/divline"
+        android:orientation="horizontal" >
+    </LinearLayout>
 
     <TextView
         android:id="@+id/customer_record"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/customer_paid"
+        android:layout_below="@id/line1"
         android:layout_marginLeft="5dip"
         android:text="@string/record"
         android:textSize="20sp" />

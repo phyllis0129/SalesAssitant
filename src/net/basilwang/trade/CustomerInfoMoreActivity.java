@@ -156,6 +156,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 
 			break;
 		case R.id.customer_title_bar_btn_sure:// 编辑按钮
+			intent.putExtra("customer", mCustomer);
 			intent.setClass(this, EditCustomerActivity.class);
 			startActivityForResult(intent, EDIT_CUSTOMER);
 			break;
@@ -192,8 +193,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				mDialog.dismiss();
-				Toast.makeText(mContext, "读取失败:" + strMsg, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(mContext, "读取失败!", Toast.LENGTH_SHORT).show();
 				SaLog.log("CustomerInfoMoreActivity", strMsg);
 			}
 
