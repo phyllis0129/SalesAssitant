@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import net.basilwang.dao.CustomerAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.CustomerListUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
@@ -107,7 +108,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 		AjaxParams params = new AjaxParams();
 		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
 		FinalHttp fh = new FinalHttp();
-		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
+//		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
 		fh.get(StaticParameter.getCustomer, new AjaxCallBack<Object>() {
 
 			@Override
@@ -115,13 +116,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
 				if (errorNo == 401) {
-					Toast.makeText(getActivity(), "您的账号异常，请重新登录", Toast.LENGTH_SHORT)
-					.show();
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), LoginActivity.class);
-					getActivity().startActivity(intent);
-					SalesAssisteantActivity.INSTANCE.finish();
-					PreferenceUtils.clearData(getActivity());
+					AuthorizedFailedUtils.reLogin(getActivity());
 				}
 				Log.v("error", errorNo + strMsg + t.toString());
 				progressDialog.dismiss();
