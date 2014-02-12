@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="35dip"
         android:text="总类"
-        android:textSize="23sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/record_group_child_sum"
@@ -24,7 +24,7 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_alignParentRight="true"
         android:text="数量"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/record_group_child_amount"
@@ -33,10 +33,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/record_group_child_sum"
         android:layout_alignBottom="@+id/record_group_child_sum"
-        android:layout_marginRight="15dip"
+        android:layout_marginRight="8dip"
         android:layout_toLeftOf="@+id/textView2"
         android:text="总额"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView1"

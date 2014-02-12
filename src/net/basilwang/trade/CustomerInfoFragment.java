@@ -95,7 +95,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
-				AuthorizedFailedUtils.checkReLogin((SalesAssisteantActivity)getActivity(),errorNo);
+				AuthorizedFailedUtils.checkReLogin(
+						(SalesAssisteantActivity) getActivity(), errorNo);
 				Log.v("error", errorNo + strMsg + t.toString());
 				progressDialog.dismiss();
 			}

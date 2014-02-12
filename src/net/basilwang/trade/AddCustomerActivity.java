@@ -1,6 +1,7 @@
 package net.basilwang.trade;
 
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -14,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -30,12 +32,14 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 	private String cName, cTel, cAddress, cDescription;
 	private ProgressDialog mProgressDialog;
 	private boolean isSuccess = false;
+	private Context mContext;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_add_customer);
+		mContext = this;
 		initView();
 	}
 
@@ -119,6 +123,7 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 						super.onFailure(t, errorNo, strMsg);
 						Toast.makeText(getApplicationContext(), "添加失败，请稍后重试!",
 								Toast.LENGTH_SHORT).show();
+						AuthorizedFailedUtils.checkReLogin(mContext, errorNo);
 						SaLog.log("AddCUstomerActivity", "add_fail:" + strMsg);
 						mProgressDialog.dismiss();
 					}

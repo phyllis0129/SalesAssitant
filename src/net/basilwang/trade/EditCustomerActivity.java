@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -37,7 +38,6 @@ public class EditCustomerActivity extends Activity implements OnClickListener {
 	private ProgressDialog progressDialog;
 	private boolean isSuccess = false;
 	private Context mContext;
-	private Activity mActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,6 @@ public class EditCustomerActivity extends Activity implements OnClickListener {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_add_customer);
 		mContext = this;
-		mActivity = this;
 		intent = getIntent();
 		mCustomer = intent.getParcelableExtra("customer");
 		findViews();
@@ -95,6 +94,7 @@ public class EditCustomerActivity extends Activity implements OnClickListener {
 						super.onFailure(t, errorNo, strMsg);
 						Toast.makeText(mContext, "修改失败，请稍后重试！",
 								Toast.LENGTH_SHORT).show();
+						AuthorizedFailedUtils.checkReLogin(mContext, errorNo);
 						SaLog.log("editfffffffffffff", strMsg);
 						progressDialog.dismiss();
 					}

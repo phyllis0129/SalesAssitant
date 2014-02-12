@@ -6,6 +6,7 @@ import net.basilwang.entity.Customer;
 import net.basilwang.entity.Payment;
 import net.basilwang.entity.Record;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.AuthorizedFailedUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.RecordsExpandableAdapter;
 import net.basilwang.utils.SaLog;
@@ -193,6 +194,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				mDialog.dismiss();
+				AuthorizedFailedUtils.checkReLogin(mContext, errorNo);
 				Toast.makeText(mContext, "读取失败!", Toast.LENGTH_SHORT).show();
 				SaLog.log("CustomerInfoMoreActivity", strMsg);
 			}
@@ -215,6 +217,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 									String strMsg) {
 								super.onFailure(t, errorNo, strMsg);
 								mDialog.dismiss();
+								AuthorizedFailedUtils.checkReLogin(mContext,
+										errorNo);
 								Toast.makeText(mContext, "读取交易记录失败！" + strMsg,
 										Toast.LENGTH_SHORT).show();
 							}
