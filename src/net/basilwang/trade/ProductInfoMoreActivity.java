@@ -148,9 +148,8 @@ public class ProductInfoMoreActivity extends Activity implements
 		listView.setFadingEdgeLength(0);
 		listView.setCacheColorHint(0);
 
-		getProductSkuData(listView, position);
-
 		linearLayoutMain.addView(listView);// 往这个布局中加入listview
+
 
 		final AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle("选择产品规格").setView(linearLayoutMain)// 在这里把写好的这个listview的布局加载dialog中
@@ -170,7 +169,9 @@ public class ProductInfoMoreActivity extends Activity implements
 					}
 				}).create();
 		dialog.setCanceledOnTouchOutside(false);// 使除了dialog以外的地方不能被点击
-		dialog.show();
+
+		getProductSkuData(listView, position,dialog);
+
 		listView.setOnItemClickListener(new OnItemClickListener() {// 响应listview中的item的点击事件
 
 			@Override
@@ -182,9 +183,9 @@ public class ProductInfoMoreActivity extends Activity implements
 		});
 	}
 
-	private void getProductSkuData(final ListView listView, int position) {
-		final ProgressDialog progressDialog = ProgressDialog.show(this, null,
-				"数据加载中，请稍候....");
+	private void getProductSkuData(final ListView listView, int position, final AlertDialog dialog) {
+//		final ProgressDialog progressDialog = ProgressDialog.show(this, null,
+//				"数据加载中，请稍候....");
 		FinalHttp finalHttp = new FinalHttp();
 		finalHttp.addHeader("X-Token", PreferenceUtils.getPreferToken(this));
 		AjaxParams params = new AjaxParams();
@@ -197,8 +198,9 @@ public class ProductInfoMoreActivity extends Activity implements
 							String strMsg) {
 						super.onFailure(t, errorNo, strMsg);
 						Log.v("error", strMsg);
-						progressDialog.dismiss();
-						
+						AuthorizedFailedUtils.checkReLogin(
+								ProductInfoMoreActivity.this, errorNo);
+//						progressDialog.dismiss();
 						//TODO token 验证失败的情况
 					}
 
@@ -216,7 +218,8 @@ public class ProductInfoMoreActivity extends Activity implements
 						}
 						listView.setAdapter(new SimpleAdapter(ProductInfoMoreActivity.this, areaProductList, R.layout.productsku_dialog_item, new String[] { "name","amount" },
 								 new int[] { R.id.dialog_item_name,R.id.dialog_item_amount }));
-						progressDialog.dismiss();
+//						progressDialog.dismiss();
+						dialog.show();
 						super.onSuccess(t);
 					}
 
