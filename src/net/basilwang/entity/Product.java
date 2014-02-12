@@ -105,11 +105,11 @@ public class Product implements Parcelable {
 		this.unit = unit;
 	}
 
-	public List<AreaProductSku> getProductSkuList() {
+	public List<AreaProductSku> getAreaProductSkuList() {
 		return areaProductSkuList;
 	}
 
-	public void setProductSkuList(List<AreaProductSku> productSkuList) {
+	public void setAreaProductSkuList(List<AreaProductSku> productSkuList) {
 		this.areaProductSkuList = productSkuList;
 	}
 

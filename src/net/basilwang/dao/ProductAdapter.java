@@ -32,17 +32,15 @@ public class ProductAdapter extends BaseAdapter {
 		this.context = context;
 		this.products = products;
 		isSelected = new HashMap<Integer, Boolean>();
-		skuMap = new HashMap<Integer, String>();
-		amountMap = new HashMap<Integer, String>();
 		initData();
 	}
 
 	private void initData() {
-		for(int i=0; i<products.size();i++) {  
-            getIsSelected().put(i,false); 
-            getAmountMap().put(i, "");
-            getSkuMap().put(i, "");
-        }  
+		for (int i = 0; i < products.size(); i++) {
+			getIsSelected().put(i, false);
+			getAmountMap().put(i, "");
+			getSkuMap().put(i, "");
+		}
 	}
 
 	/*
@@ -84,27 +82,44 @@ public class ProductAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
-		if(null == convertView){
+		if (null == convertView) {
 			viewHolder = new ViewHolder();
-			convertView = LayoutInflater.from(context).inflate(R.layout.product_item, null, false);
-			viewHolder.name = (TextView) convertView.findViewById(R.id.product_item_name);
-			viewHolder.amount = (TextView) convertView.findViewById(R.id.product_item_selected_amount);
-			viewHolder.skus = (TextView) convertView.findViewById(R.id.product_item_skus);
-			viewHolder.cb = (CheckBox)convertView.findViewById(R.id.product_item_cb);
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.product_item, null, false);
+			viewHolder.name = (TextView) convertView
+					.findViewById(R.id.product_item_name);
+			viewHolder.amount = (TextView) convertView
+					.findViewById(R.id.product_item_selected_amount);
+			viewHolder.skus = (TextView) convertView
+					.findViewById(R.id.product_item_skus);
+			viewHolder.cb = (CheckBox) convertView
+					.findViewById(R.id.product_item_cb);
 			convertView.setTag(viewHolder);
-		}else{
+		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		viewHolder.name.setText(getItem(position).getName());
 		viewHolder.cb.setChecked(getIsSelected().get(position));
-		viewHolder.amount.setText(getAmountMap().get(position));
-		viewHolder.skus.setText(getSkuMap().get(position));
+		int amount = getItem(position).getAreaProductSkuList().size();
+		if (amount > 0) {
+			viewHolder.amount.setText("选中 " + amount + " 种");
+			String skuStr = "";
+			for (int i = 0; i < amount; i++) {
+				skuStr += getItem(position).getAreaProductSkuList().get(i)
+						.getProductSku().getName()
+						+ "；";
+			}
+			viewHolder.skus.setText(skuStr);
+		} else {
+			viewHolder.amount.setText("");
+			viewHolder.skus.setText("");
+		}
 		return convertView;
 	}
 
 	public class ViewHolder {
 		TextView name, amount, skus;
-		CheckBox cb;
+		public CheckBox cb;
 	}
 
 	public static HashMap<Integer, Boolean> getIsSelected() {
@@ -122,9 +137,5 @@ public class ProductAdapter extends BaseAdapter {
 	public static HashMap<Integer, String> getAmountMap() {
 		return amountMap;
 	}
-	
-	
-	
-	
 
 }

@@ -13,8 +13,7 @@
         <TextView
             android:id="@+id/dialog_item_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sada" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -26,8 +25,7 @@
         <TextView
             android:id="@+id/dialog_item_amount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sada" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
