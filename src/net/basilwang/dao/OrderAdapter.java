@@ -5,6 +5,7 @@ package net.basilwang.dao;
 
 import java.util.List;
 
+import net.basilwang.entity.OrderProduct;
 import net.basilwang.trade.R;
 import net.basilwang.view.SlideCutListView;
 import android.content.Context;
@@ -27,12 +28,12 @@ import android.widget.TextView;
 public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 
 	private Context mContext;
-	private List<OrderItem> mOrderItemList;
+	private List<OrderProduct> mOrderItemList;
 	private SlideCutListView mOrderListView;
 	private Holder mHolder;
 	public String onTouchedTag = "";
 
-	public OrderAdapter(Context context, List<OrderItem> orderItemList,
+	public OrderAdapter(Context context, List<OrderProduct> orderItemList,
 			SlideCutListView orderListView) {
 		this.mContext = context;
 		this.mOrderItemList = orderItemList;
@@ -51,7 +52,7 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 	}
 
 	@Override
-	public OrderItem getItem(int position) {
+	public OrderProduct getItem(int position) {
 		return mOrderItemList.get(position);
 	}
 
@@ -108,27 +109,27 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 	}
 
 	private void setContent(int position) {
-		mHolder.goodsStockTV.setText(mOrderItemList.get(position)
-				.getGoodsStock());
+		mHolder.goodsStockTV.setText("库存余量  "+mOrderItemList.get(position)
+				.getStock());
 		mHolder.goodsNameTV
-				.setText(mOrderItemList.get(position).getGoodsName());
+				.setText(mOrderItemList.get(position).getName());
 		mHolder.goodsSpecificationTV.setText(mOrderItemList.get(position)
-				.getGoodsSpecification());
+				.getAreaProductSkuName());
 		mHolder.goodsCountsET.setText(mOrderItemList.get(position)
-				.getGoodsCounts().toString());
+				.getAmount().toString());
 
 		mHolder.goodsCountsET.setTag(position);
 		mHolder.goodsUnitTV
-				.setText(mOrderItemList.get(position).getGoodsUnit());
-		if (mOrderItemList.get(position).getGoodsPrice() != 0) {
+				.setText(mOrderItemList.get(position).getUnit());
+		if (mOrderItemList.get(position).getPerPrice() != 0) {
 			mHolder.goodsPriceET.setText(mOrderItemList.get(position)
-					.getGoodsPrice().toString());
+					.getPerPrice().toString());
 		}
 
-		mHolder.goodsPriceUnitTV.setText(mOrderItemList.get(position)
-				.getGoodsPriceUnit());
+		mHolder.goodsPriceUnitTV.setText("元/"+mOrderItemList.get(position)
+				.getUnit());
 		mHolder.goodsTotalPriceTV.setText(mOrderItemList.get(position)
-				.getGoodsTotalPrice().toString()
+				.getTotalPrice().toString()
 				+ "￥");
 	}
 
@@ -169,12 +170,12 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 			int position = mOrderListView.getSlidePosition();
 			if (flag.equals("count")) {
 				mOrderItemList.get(position)
-						.setGoodsCounts(s.toString().trim());
+						.setStringAmount(s.toString().trim());
 			}
 			if (flag.equals("price")) {
-				mOrderItemList.get(position).setGoodsPrice(s.toString().trim());
+				mOrderItemList.get(position).setStringPrice(s.toString().trim());
 			}
-			mOrderItemList.get(position).setGoodsTotalPrice();
+			mOrderItemList.get(position).setNullTotalPrice();
 		}
 
 	}

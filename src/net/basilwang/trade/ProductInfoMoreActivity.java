@@ -12,7 +12,7 @@ import net.basilwang.dao.ProductAdapter;
 import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.AuthorizedFailedUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
@@ -23,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -38,6 +39,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 /**
  * @author Basilwang
@@ -80,7 +82,7 @@ public class ProductInfoMoreActivity extends Activity implements
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				Log.v("error", strMsg);
-				AuthorizedFailedUtils.checkReLogin(
+				ReLoginUtils.authorizedFailed(
 						ProductInfoMoreActivity.this, errorNo);
 				Toast.makeText(ProductInfoMoreActivity.this, "数据获取失败，稍后重试",
 						Toast.LENGTH_SHORT).show();
@@ -118,7 +120,13 @@ public class ProductInfoMoreActivity extends Activity implements
 		case R.id.goods_title_bar_btn_sure:
 			Intent intent = new Intent();
 			// TODO
-
+			ArrayList<Product> selectedProducts = new ArrayList<Product>();
+			for (int i = 0; i < products.size(); i++) {
+				if(ProductAdapter.getIsSelected().get(i))
+					selectedProducts.add(products.get(i));
+			}
+			Log.v("products json", JSON.toJSONString(selectedProducts));
+			intent.putParcelableArrayListExtra("selectedProducts", selectedProducts);
 			this.setResult(RESULT_OK, intent);
 			this.finish();
 			break;
@@ -146,11 +154,12 @@ public class ProductInfoMoreActivity extends Activity implements
 
 		// 往这个布局中加入listview
 		linearLayoutMain.addView(listView);
-		
-		showProductSkuDialog(position,linearLayoutMain,listView);
+
+		showProductSkuDialog(position, linearLayoutMain, listView);
 	}
 
-	private void showProductSkuDialog(final int position, LinearLayout linearLayoutMain, ListView listView) {
+	private void showProductSkuDialog(final int position,
+			LinearLayout linearLayoutMain, ListView listView) {
 		final SparseBooleanArray isCheckBoxSelectedArray = new SparseBooleanArray();
 		final AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle("选择产品规格").setView(linearLayoutMain)
@@ -208,7 +217,7 @@ public class ProductInfoMoreActivity extends Activity implements
 							String strMsg) {
 						super.onFailure(t, errorNo, strMsg);
 						Log.v("error", strMsg);
-						AuthorizedFailedUtils.checkReLogin(
+						ReLoginUtils.authorizedFailed(
 								ProductInfoMoreActivity.this, errorNo);
 					}
 

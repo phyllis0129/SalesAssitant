@@ -6,7 +6,7 @@ import java.util.List;
 import net.basilwang.dao.CustomerAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.AuthorizedFailedUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -95,7 +95,7 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
-				AuthorizedFailedUtils.checkReLogin(
+				ReLoginUtils.authorizedFailed(
 						(SalesAssisteantActivity) getActivity(), errorNo);
 				Log.v("error", errorNo + strMsg + t.toString());
 				progressDialog.dismiss();

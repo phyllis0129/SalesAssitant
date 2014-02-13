@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.basilwang.dao.OrderAdapter;
-import net.basilwang.dao.OrderItem;
+import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Customer;
+import net.basilwang.entity.OrderProduct;
+import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.AuthorizedFailedUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.basilwang.view.ResizeLayout;
@@ -36,7 +38,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,12 +53,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private View mView;
 	private SlideCutListView orderListView;
-	private TextView recrivableCounts;
-	private EditText realCounts;
+	private TextView receivable;
+	private EditText realcollection;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
 	private OrderAdapter orderAdapter;
-	private List<OrderItem> mOrderItemList;
+	private List<OrderProduct> orderProducts;
 	private List<Customer> customers;
 	private Spinner customerSpinner;
 
@@ -79,8 +80,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	private void bindData() {
-		mOrderItemList = new ArrayList<OrderItem>();
-		orderAdapter = new OrderAdapter(getActivity(), mOrderItemList,
+		orderProducts = new ArrayList<OrderProduct>();
+		orderAdapter = new OrderAdapter(getActivity(), orderProducts,
 				orderListView);
 		orderListView.setAdapter(orderAdapter);
 		customers = new ArrayList<Customer>();
@@ -92,9 +93,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void initView() {
 		orderListView = (SlideCutListView) mView
 				.findViewById(android.R.id.list);
-		recrivableCounts = (TextView) mView
+		receivable = (TextView) mView
 				.findViewById(R.id.counts_receivable);
-		realCounts = (EditText) mView.findViewById(R.id.counts_real);
+		realcollection = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
 		customerSpinner = (Spinner) mView.findViewById(R.id.customer_spinner);
@@ -155,7 +156,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
-				AuthorizedFailedUtils.checkReLogin(getActivity(), errorNo);
+				ReLoginUtils.authorizedFailed(getActivity(), errorNo);
 				Log.v("error", errorNo + strMsg + t.toString());
 			}
 
@@ -166,7 +167,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				ArrayList<String> customerNamelist = new ArrayList<String>();
 				customerNamelist.add("请选择");
-//				Log.v("customer id", customers.get(0).getId());
 				for (int i = 0; i < customers.size(); i++) {
 					customerNamelist.add(i + 1, customers.get(i).getName());
 				}
@@ -176,6 +176,11 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				customerSpinner.setAdapter(customerAdapter);
 				customerSpinner.setPrompt("请选择客户");
+				if(customers.isEmpty())
+					Toast.makeText(getActivity(), "呀，客户列表为空了", Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(getActivity(), "亲，客户列表获取成功了哦", Toast.LENGTH_SHORT).show();
+
 			}
 
 		});
@@ -183,19 +188,16 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	public void refreshRealCounts() {
 		Double totalCounts = 0.0;
-		for (int i = 0; i < this.mOrderItemList.size(); i++) {
-			totalCounts += mOrderItemList.get(i).getGoodsTotalPrice();
+		for (int i = 0; i < this.orderProducts.size(); i++) {
+			totalCounts += orderProducts.get(i).getTotalPrice();
 		}
-		this.recrivableCounts.setText(totalCounts.toString());
+		this.receivable.setText(totalCounts.toString());
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
-			Toast.makeText(getActivity(), "添加订单", Toast.LENGTH_SHORT).show();
-			OrderItem mOrderItem = new OrderItem("极光剑 new", "200*2", "瓶");
-			mOrderItemList.add(mOrderItem);
 			orderAdapter.notifyDataSetChanged();
 			Intent intent = new Intent(getActivity(),
 					ProductInfoMoreActivity.class);
@@ -204,11 +206,19 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			refreshRealCounts();
 			break;
 		case R.id.order_cancel_btn:
-			mOrderItemList.clear();
+			orderProducts.clear();
 			orderAdapter.notifyDataSetChanged();
 			refreshRealCounts();
 			break;
-
+		case R.id.order_sure_btn:
+			refreshRealCounts();
+			if(customerSpinner.getSelectedItem().toString().equals("请选择"))
+				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT).show();
+			else if(Double.parseDouble(receivable.getText().toString())==0)
+				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT).show();
+				
+			
+			break;
 		default:
 			break;
 		}
@@ -217,13 +227,42 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
+		if (resultCode == getActivity().RESULT_OK) {
+			List<Product> selectedProducts = data
+					.getParcelableArrayListExtra("selectedProducts");
+			for (int i = 0; i < selectedProducts.size(); i++) {
+				OrderProduct orderProduct = new OrderProduct();
+				Product product = selectedProducts.get(i);
+
+				orderProduct.setName(product.getName());
+				orderProduct.setUnit(product.getUnit());
+				for (int j = 0; j < product.getAreaProductSkuList().size(); j++) {
+					AreaProductSku areaProductSku = product
+							.getAreaProductSkuList().get(j);
+					orderProduct.setStock(areaProductSku.getAmount() + "");
+					orderProduct.setAreaProductSku(areaProductSku.getId());
+					orderProduct.setAreaProductSkuName(areaProductSku
+							.getProductSku().getName());
+				}
+				orderProduct.setNullTotalPrice();
+				if (orderProducts.contains(orderProduct)) {
+					Toast.makeText(
+							getActivity(),
+							orderProduct.getName() + " "
+									+ orderProduct.getAreaProductSkuName()
+									+ " 在订单中已存在", Toast.LENGTH_SHORT).show();
+				} else {
+					orderProducts.add(orderProduct);
+				}
+			}
+			orderAdapter.notifyDataSetChanged();
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
 	public void removeItem(RemoveDirection direction, int position) {
-		String tip = orderAdapter.getItem(position).getGoodsName() + " 订单";
+		String tip = orderAdapter.getItem(position).getName() + " 订单";
 		orderAdapter.remove(position);
 		refreshRealCounts();
 		switch (direction) {
@@ -244,9 +283,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		assignedCustomer = customers.get(position);
-		Log.v("selected", assignedCustomer.getName());
-		parent.setVisibility(View.VISIBLE);
+		assignedCustomer = position==0?null:customers.get(position-1);
 	}
 
 	@Override

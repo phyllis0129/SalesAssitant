@@ -19,8 +19,7 @@
             android:id="@+id/goods_stock"
             style="@style/myStyle.BlueBigText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="库存余量  3000" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,16 +42,14 @@
                     android:layout_centerVertical="true"
                     android:ellipsize="marquee"
                     android:ems="5"
-                    android:selectAllOnFocus="true"
-                    android:text="化肥化肥化肥" />
+                    android:selectAllOnFocus="true" />
 
                 <TextView
                     android:id="@+id/goods_Specification"
                     style="@style/myStyle.GrayNormalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/goods_name"
-                    android:text="200*20" />
+                    android:layout_below="@id/goods_name" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -77,8 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/goods_counts"
-                    android:layout_toRightOf="@id/goods_counts"
-                    android:text="袋" />
+                    android:layout_toRightOf="@id/goods_counts" />
 
                 <EditText
                     android:id="@+id/goods_price"
@@ -97,8 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/goods_price"
-                    android:layout_toRightOf="@id/goods_price"
-                    android:text="元/袋" />
+                    android:layout_toRightOf="@id/goods_price" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -120,8 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/goods_total_price_txt"
-                    android:text="1622￥" />
+                    android:layout_toRightOf="@id/goods_total_price_txt" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
@@ -136,8 +130,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/holo_red_dark"
             android:paddingLeft="20dip"
-            android:paddingRight="20dip"
-            android:text="删除" />
+            android:paddingRight="20dip" />
     </LinearLayout>
 
 </LinearLayout>

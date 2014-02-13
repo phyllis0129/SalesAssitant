@@ -2,7 +2,7 @@ package net.basilwang.listener;
 
 import java.util.List;
 
-import net.basilwang.dao.OrderItem;
+import net.basilwang.entity.OrderProduct;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,9 +11,9 @@ import android.widget.EditText;
 public class MyTextChangedListener implements TextWatcher {
 	
 	private EditText et;
-	private List<OrderItem> mOrderItemList;
+	private List<OrderProduct> mOrderItemList;
 	
-	public MyTextChangedListener(EditText et, List<OrderItem> mOrderItemList){
+	public MyTextChangedListener(EditText et, List<OrderProduct> mOrderItemList){
 		this.et = et;
 		this.mOrderItemList = mOrderItemList;
 	}

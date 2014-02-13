@@ -1,5 +1,6 @@
 package net.basilwang.trade;
 
+import net.basilwang.utils.ReLoginUtils;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -98,8 +99,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 //			newContent=new TransationsLogFragment();
 			break;
 		case 3:
-			title = "退出";
-			exit();
+			ReLoginUtils.logout(getActivity());
 			break;
 		}
 		if (newContent != null)

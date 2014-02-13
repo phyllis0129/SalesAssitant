@@ -1,7 +1,7 @@
 package net.basilwang.trade;
 
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.AuthorizedFailedUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -123,7 +123,7 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 						super.onFailure(t, errorNo, strMsg);
 						Toast.makeText(getApplicationContext(), "添加失败，请稍后重试!",
 								Toast.LENGTH_SHORT).show();
-						AuthorizedFailedUtils.checkReLogin(mContext, errorNo);
+						ReLoginUtils.authorizedFailed(mContext, errorNo);
 						SaLog.log("AddCUstomerActivity", "add_fail:" + strMsg);
 						mProgressDialog.dismiss();
 					}
