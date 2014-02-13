@@ -3,7 +3,6 @@ package net.basilwang.utils;
 import android.util.Log;
 
 public class SaLog {
-	// 10月25日17：58发布版本关闭过log版本号为5
 	private static boolean logflag = true;
 
 	// 开启服务CenterActivity 186行
