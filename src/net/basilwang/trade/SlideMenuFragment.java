@@ -14,16 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SlideMenuFragment extends ListFragment implements OnClickListener{
+public class SlideMenuFragment extends ListFragment implements OnClickListener {
 
 	private View slidingMenuView;
-//	private ImageView img_icon_top;
-	
+
+	// private ImageView img_icon_top;
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			
-			slidingMenuView=inflater.inflate(R.layout.sliding_menu, null);
-//		img_icon_top=(ImageView)slidingMenuView.findViewById(R.id.img_icon_top);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		slidingMenuView = inflater.inflate(R.layout.sliding_menu, null);
+		// img_icon_top=(ImageView)slidingMenuView.findViewById(R.id.img_icon_top);
 		return slidingMenuView;
 	}
 
@@ -31,26 +33,28 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		String[] menuNames = getResources().getStringArray(R.array.menu_items);
-//		SampleAdapter adapter = new SampleAdapter(getActivity());
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_title);
+		// SampleAdapter adapter = new SampleAdapter(getActivity());
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				R.layout.row_title);
 		for (int i = 0; i < menuNames.length; i++) {
-//			adapter.add(new SampleItem(menuNames[i]));
+			// adapter.add(new SampleItem(menuNames[i]));
 			adapter.add(menuNames[i]);
 			setListAdapter(adapter);
 		}
 	}
-////	private int getIconResc(int position) {
-////		int[] iconResc = {
-////				R.drawable.menu_search,
-////				R.drawable.menu_purchase, 
-////				R.drawable.menu_road,
-////				R.drawable.menu_youji,
-////				R.drawable.menu_bus,
-////				R.drawable.menu_setting,
-////				R.drawable.menu_help,
-////				R.drawable.ic_launcher};
-////		return iconResc[position];
-////	}
+
+	// // private int getIconResc(int position) {
+	// // int[] iconResc = {
+	// // R.drawable.menu_search,
+	// // R.drawable.menu_purchase,
+	// // R.drawable.menu_road,
+	// // R.drawable.menu_youji,
+	// // R.drawable.menu_bus,
+	// // R.drawable.menu_setting,
+	// // R.drawable.menu_help,
+	// // R.drawable.ic_launcher};
+	// // return iconResc[position];
+	// // }
 	private class SampleItem {
 		public String tag;
 
@@ -58,6 +62,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 			this.tag = tag;
 		}
 	}
+
 	private class SampleAdapter extends ArrayAdapter<SampleItem> {
 
 		public SampleAdapter(Context context) {
@@ -69,9 +74,9 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 				convertView = LayoutInflater.from(getContext()).inflate(
 						R.layout.sliding_menu_item, null);
 			}
-//			ImageView icon = (ImageView) convertView
-//					.findViewById(R.id.row_icon);
-//			icon.setImageResource(getItem(position).iconRes);
+			// ImageView icon = (ImageView) convertView
+			// .findViewById(R.id.row_icon);
+			// icon.setImageResource(getItem(position).iconRes);
 			TextView title = (TextView) convertView
 					.findViewById(R.id.row_title);
 			title.setText(getItem(position).tag);
@@ -96,36 +101,36 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener{
 			break;
 		case 2:
 			title = "交易记录";
-//			newContent=new TransationsLogFragment();
+			newContent = new TransactionRecordsFragment();
 			break;
 		case 3:
 			ReLoginUtils.logout(getActivity());
 			break;
 		}
 		if (newContent != null)
-			switchFragment(newContent,title);
+			switchFragment(newContent, title);
 	}
 
 	// the meat of switching the above fragment
-	private void switchFragment(Fragment fragment,String title) {
+	private void switchFragment(Fragment fragment, String title) {
 		if (getActivity() == null)
 			return;
 		if (getActivity() instanceof SalesAssisteantActivity) {
 			SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
-			saa.switchContent(fragment,title);
+			saa.switchContent(fragment, title);
 		}
 	}
 
 	private void exit() {
 		getActivity().finish();
-		
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		Fragment newContent = null;
-//		newContent=new MineFragment();
-//		switchFragment(newContent);
+		// newContent=new MineFragment();
+		// switchFragment(newContent);
 		Log.v("icon", "click");
 	}
 }

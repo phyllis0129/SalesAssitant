@@ -2,13 +2,13 @@ package net.basilwang.trade;
 
 import java.util.List;
 
+import net.basilwang.dao.RecordsExpandableAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.entity.Payment;
 import net.basilwang.entity.Record;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
-import net.basilwang.utils.RecordsExpandableAdapter;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
@@ -76,7 +76,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	private void init() {
 		getPayment(mId);
 		mRealcollectiong = "实收货款:";
-		mReceivable = "应收货款";
+		mReceivable = "应收货款:";
 		if (mCustomer != null) {
 			cName.setText(mCustomer.getName());
 			cTel.setText(mCustomer.getTel());
@@ -219,7 +219,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 								mDialog.dismiss();
 								ReLoginUtils.authorizedFailed(mContext,
 										errorNo);
-								Toast.makeText(mContext, "读取交易记录失败！" + strMsg,
+								Toast.makeText(mContext, "读取记录失败！" + strMsg,
 										Toast.LENGTH_SHORT).show();
 							}
 
@@ -241,32 +241,6 @@ public class CustomerInfoMoreActivity extends Activity implements
 			}
 
 		});
-		// fh.get(StaticParameter.getSummayproductsku + id,
-		// new AjaxCallBack<Object>() {
-		//
-		// @Override
-		// public void onFailure(Throwable t, int errorNo,
-		// String strMsg) {
-		// super.onFailure(t, errorNo, strMsg);
-		// Toast.makeText(mContext, "读取交易记录失败！" + strMsg,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		//
-		// @Override
-		// public void onSuccess(Object t) {
-		// super.onSuccess(t);
-		// records = JSON.parseArray(t.toString(), Record.class);
-		// if (records != null) {
-		// recordsAdapter = new RecordsExpandableAdapter(
-		// mContext, records);
-		// expandableListView.setAdapter(recordsAdapter);
-		// }
-		// }
-		// });
 	}
 
-	// private void getSummayproductsku(){
-	// FinalHttp fh = new FinalHttp();
-	// fh.addto
-	// }
 }

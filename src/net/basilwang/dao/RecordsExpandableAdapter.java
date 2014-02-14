@@ -1,4 +1,4 @@
-package net.basilwang.utils;
+package net.basilwang.dao;
 
 import java.util.List;
 
@@ -77,17 +77,9 @@ public class RecordsExpandableAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.record_group_child_amount);
 			recordGroupViewCache.pSum = (TextView) convertView
 					.findViewById(R.id.record_group_child_sum);
+			convertView.setTag(recordGroupViewCache);
 		} else {
 			recordGroupViewCache = (RecordGroupView) convertView.getTag();
-			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.record_group_item, null);
-			recordGroupViewCache = new RecordGroupView();
-			recordGroupViewCache.pName = (TextView) convertView
-					.findViewById(R.id.record_group_child_name);
-			recordGroupViewCache.pAmount = (TextView) convertView
-					.findViewById(R.id.record_group_child_amount);
-			recordGroupViewCache.pSum = (TextView) convertView
-					.findViewById(R.id.record_group_child_sum);
 		}
 		recordGroupViewCache.pName.setText(groupArray.get(groupPosition)
 				.getProductName());
@@ -113,17 +105,9 @@ public class RecordsExpandableAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.record_group_child_amount);
 			recordItemView.mSum = (TextView) convertView
 					.findViewById(R.id.record_group_child_sum);
+			convertView.setTag(recordItemView);
 		} else {
 			recordItemView = (RecordItemView) convertView.getTag();
-			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.record_group_child_item, null);
-			recordItemView = new RecordItemView();
-			recordItemView.mName = (TextView) convertView
-					.findViewById(R.id.record_group_child_name);
-			recordItemView.mAmount = (TextView) convertView
-					.findViewById(R.id.record_group_child_amount);
-			recordItemView.mSum = (TextView) convertView
-					.findViewById(R.id.record_group_child_sum);
 		}
 		recordItemView.mName.setText(groupArray.get(groupPosition)
 				.getProductSkus().get(childPosition).getProduSkuName());
