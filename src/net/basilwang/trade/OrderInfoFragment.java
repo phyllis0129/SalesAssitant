@@ -6,14 +6,18 @@ package net.basilwang.trade;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Customer;
+import net.basilwang.entity.Order;
 import net.basilwang.entity.OrderProduct;
 import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.SaLog;
 import net.basilwang.view.ResizeLayout;
 import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
@@ -93,8 +97,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void initView() {
 		orderListView = (SlideCutListView) mView
 				.findViewById(android.R.id.list);
-		receivable = (TextView) mView
-				.findViewById(R.id.counts_receivable);
+		receivable = (TextView) mView.findViewById(R.id.counts_receivable);
 		realcollection = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
@@ -146,8 +149,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	private void getCustomerList() {
-		AjaxParams params = new AjaxParams();
-		SaLog.log("token", PreferenceUtils.getPreferToken(getActivity()));
 		FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
 		fh.get(StaticParameter.getCustomer, new AjaxCallBack<Object>() {
@@ -176,10 +177,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				customerSpinner.setAdapter(customerAdapter);
 				customerSpinner.setPrompt("请选择客户");
-				if(customers.isEmpty())
-					Toast.makeText(getActivity(), "呀，客户列表为空了", Toast.LENGTH_SHORT).show();
+				if (customers.isEmpty())
+					Toast.makeText(getActivity(), "呀，客户列表为空了",
+							Toast.LENGTH_SHORT).show();
 				else
-					Toast.makeText(getActivity(), "亲，客户列表获取成功了哦", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "亲，客户列表获取成功了哦",
+							Toast.LENGTH_SHORT).show();
 
 			}
 
@@ -212,17 +215,71 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			break;
 		case R.id.order_sure_btn:
 			refreshRealCounts();
-			if(customerSpinner.getSelectedItem().toString().equals("请选择"))
-				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT).show();
-			else if(Double.parseDouble(receivable.getText().toString())==0)
-				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT).show();
-				
-			
+			if(orderProducts.isEmpty())
+				;
+			else if (customerSpinner.getSelectedItem().toString().equals("请选择"))
+				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
+						.show();
+			else if (Double.parseDouble(receivable.getText().toString()) == 0)
+				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT)
+						.show();
+			else if (!isPerOrdercompleted())
+				;
+			else
+				submitOrder();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void submitOrder() {
+		Order order = new Order();
+		order.setCustomer(assignedCustomer.getId());
+		order.setOrderProducts(orderProducts);
+		order.setStringReceivable(receivable.getText().toString());
+		order.setStringRealcollection(realcollection.getText()
+				.toString());
+		String orderJsonString = JSON.toJSONString(order);
+		Log.v("order json string", orderJsonString);
+		FinalHttp http = new FinalHttp();
+		http.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
+//		http.addHeader("Content-Type", "application/json");
+		AjaxParams params = new AjaxParams();
+		params.put("Json", orderJsonString);
+		http.post(StaticParameter.postOrderAdd, params, new AjaxCallBack<Object>() {
+
+			@Override
+			public void onFailure(Throwable t, int errorNo, String strMsg) {
+				super.onFailure(t, errorNo, strMsg);
+				Log.v("failure", strMsg);
+			}
+
+			@Override
+			public void onSuccess(Object t) {
+				Log.v("success", t.toString());
+				super.onSuccess(t);
+				Toast.makeText(getActivity(), "订单提交成功", Toast.LENGTH_SHORT).show();
+			}
+			
+			
+		});
+		
+	}
+
+	private boolean isPerOrdercompleted() {
+		for (int i = 0; i < orderProducts.size(); i++) {
+			if (orderProducts.get(i).getTotalPrice() == 0) {
+				Toast.makeText(
+						getActivity(),
+						"请将订单 " + orderProducts.get(i).getName() + " "
+								+ orderProducts.get(i).getAreaProductSkuName()
+								+ " 填写完整", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -231,29 +288,32 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			List<Product> selectedProducts = data
 					.getParcelableArrayListExtra("selectedProducts");
 			for (int i = 0; i < selectedProducts.size(); i++) {
-				OrderProduct orderProduct = new OrderProduct();
 				Product product = selectedProducts.get(i);
 
-				orderProduct.setName(product.getName());
-				orderProduct.setUnit(product.getUnit());
 				for (int j = 0; j < product.getAreaProductSkuList().size(); j++) {
+					OrderProduct orderProduct = new OrderProduct();
+
+					orderProduct.setName(product.getName());
+					orderProduct.setUnit(product.getUnit());
 					AreaProductSku areaProductSku = product
 							.getAreaProductSkuList().get(j);
 					orderProduct.setStock(areaProductSku.getAmount() + "");
 					orderProduct.setAreaProductSku(areaProductSku.getId());
 					orderProduct.setAreaProductSkuName(areaProductSku
 							.getProductSku().getName());
+					orderProduct.setNullTotalPrice();
+					if (orderProducts.contains(orderProduct)) {
+						Toast.makeText(
+								getActivity(),
+								orderProduct.getName() + " "
+										+ orderProduct.getAreaProductSkuName()
+										+ " 在订单中已存在", Toast.LENGTH_SHORT)
+								.show();
+					} else {
+						orderProducts.add(orderProduct);
+					}
 				}
-				orderProduct.setNullTotalPrice();
-				if (orderProducts.contains(orderProduct)) {
-					Toast.makeText(
-							getActivity(),
-							orderProduct.getName() + " "
-									+ orderProduct.getAreaProductSkuName()
-									+ " 在订单中已存在", Toast.LENGTH_SHORT).show();
-				} else {
-					orderProducts.add(orderProduct);
-				}
+
 			}
 			orderAdapter.notifyDataSetChanged();
 		}
@@ -283,7 +343,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		assignedCustomer = position==0?null:customers.get(position-1);
+		assignedCustomer = position == 0 ? null : customers.get(position - 1);
 	}
 
 	@Override
