@@ -3,11 +3,14 @@
  */
 package net.basilwang.trade;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.StringEntity;
 
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.entity.AreaProductSku;
@@ -15,6 +18,7 @@ import net.basilwang.entity.Customer;
 import net.basilwang.entity.Order;
 import net.basilwang.entity.OrderProduct;
 import net.basilwang.entity.Product;
+import net.basilwang.entity.ValidateResult;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.ReLoginUtils;
@@ -245,22 +249,27 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		Log.v("order json string", orderJsonString);
 		FinalHttp http = new FinalHttp();
 		http.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
-//		http.addHeader("Content-Type", "application/json");
-		AjaxParams params = new AjaxParams();
-		params.put("Json", orderJsonString);
-		http.post(StaticParameter.postOrderAdd, params, new AjaxCallBack<Object>() {
+		HttpEntity entity = null;
+		try {
+			entity = new StringEntity(orderJsonString);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		http.post(StaticParameter.postOrderAdd,entity, "application/json",new AjaxCallBack<Object>() {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
+				ReLoginUtils.authorizedFailed(getActivity(), errorNo);
 				Log.v("failure", strMsg);
 			}
 
 			@Override
 			public void onSuccess(Object t) {
 				Log.v("success", t.toString());
+				ValidateResult result = JSON.parseObject(t.toString(), ValidateResult.class);
+				Toast.makeText(getActivity(), result.getMessage(), Toast.LENGTH_SHORT).show();
 				super.onSuccess(t);
-				Toast.makeText(getActivity(), "订单提交成功", Toast.LENGTH_SHORT).show();
 			}
 			
 			
