@@ -18,6 +18,8 @@ import android.widget.Scroller;
  * 
  */
 public class SlideCutListView extends ListView {
+	
+	private static int position = -1;
 	/**
 	 * 当前滑动的ListView　position
 	 */
@@ -110,9 +112,10 @@ public class SlideCutListView extends ListView {
 			downY = (int) event.getY();
 
 			slidePosition = pointToPosition(downX, downY);
-
+			position = slidePosition;
 			// 无效的position, 不做任何处理
 			if (slidePosition == AdapterView.INVALID_POSITION) {
+				position = -1;
 				return super.dispatchTouchEvent(event);
 			}
 
@@ -285,6 +288,14 @@ public class SlideCutListView extends ListView {
 
 	public int getSlidePosition() {
 		return slidePosition;
+	}
+	
+	public static int getStaticPosition(){
+		return position;
+	}
+	
+	public static void setStaticPosition(int value){
+		position = value;
 	}
 	
 	

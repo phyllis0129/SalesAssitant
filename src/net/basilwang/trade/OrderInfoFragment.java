@@ -7,11 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.StringEntity;
-
 import net.basilwang.dao.OrderAdapter;
 import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Customer;
@@ -22,7 +17,6 @@ import net.basilwang.entity.ValidateResult;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.ReLoginUtils;
-import net.basilwang.utils.SaLog;
 import net.basilwang.view.ResizeLayout;
 import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
 import net.basilwang.view.SlideCutListView;
@@ -30,7 +24,11 @@ import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.StringEntity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -39,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -126,28 +125,34 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 			@Override
 			public void onKeyBoardStateChange(int state) {
-				Log.v("sadsadsadaasdsa", "saddddddddddd");
 				EditText onTouchedEditText = orderAdapter
 						.getonTouchedEditText();
-				switch (state) {
-				case ResizeLayout.KEYBOARD_STATE_HIDE:
-					btnLinearLayout.setVisibility(View.VISIBLE);
-					orderAdapter.onTouchedTag = "";
-					refreshRealCounts();
-					Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
-							.show();
-					break;
-				case ResizeLayout.KEYBOARD_STATE_SHOW:
-					btnLinearLayout.setVisibility(View.INVISIBLE);
-					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
-							.show();
-					if (onTouchedEditText != null) {
-						onTouchedEditText.requestFocus();
-						onTouchedEditText.setSelection(onTouchedEditText
-								.getText().length());
-					}
-					break;
+//				switch (state) {
+//				case ResizeLayout.KEYBOARD_STATE_HIDE:
+//					btnLinearLayout.setVisibility(View.VISIBLE);
+//					orderAdapter.onTouchedTag = "";
+//					refreshRealCounts();
+//					Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
+//							.show();
+////					break;
+//				case -1:
+////					btnLinearLayout.setVisibility(View.INVISIBLE);
+//					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
+//							.show();
+//					}
+				if(state>=0){
+					Log.v("state", state+"");
+					SlideCutListView.setStaticPosition(-2);
+				}else if(state==-2){
+					Log.v("state", state+"");
+					SlideCutListView.setStaticPosition(-1);
+					orderAdapter.notifyDataSetChanged();
+					orderListView.refreshDrawableState();
+				}else{
+					Log.v("state", state+"");
 				}
+				refreshRealCounts();
+				Log.v("state out", state+"");
 			}
 		});
 	}
@@ -297,7 +302,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		orderProducts.clear();
 		refreshRealCounts();
 		customerSpinner.setSelection(0);
-		Log.v("assignedCustomer name ", assignedCustomer.getName());
 		realcollection.setText("");
 	}
 

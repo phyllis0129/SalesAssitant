@@ -6,6 +6,7 @@ package net.basilwang.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
@@ -68,32 +69,55 @@ public class ResizeLayout extends RelativeLayout {
 	}
 
 	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// TODO Auto-generated method stub
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+
+	
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		// TODO Auto-generated method stub
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
+	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
-		if (!mHasInit) {
-			mHasInit = true;
-			mHeight = b;
-			if (mListener != null) {
-				mListener.onKeyBoardStateChange(KEYBOARD_STATE_INIT);
+		int position = SlideCutListView.getStaticPosition();
+			if(mListener!=null){
+				mListener.onKeyBoardStateChange(position);
 			}
-		} else {
-			mHeight = mHeight < b ? b : mHeight;
-		}
-		if (mHasInit && mHeight > b) {
-			mHasKeybord = true;
-			if (mListener != null) {
-				mListener.onKeyBoardStateChange(KEYBOARD_STATE_SHOW);
-			}
-			Log.w(TAG, "show keyboard.......");
-		}
-		if (mHasInit && mHasKeybord && mHeight == b) {
-			mHasKeybord = false;
-			if (mListener != null) {
-				mListener.onKeyBoardStateChange(KEYBOARD_STATE_HIDE);
-			}
-			Log.w(TAG, "hide keyboard.......");
-		}
+			
+//		SlideCutListView.setDefaultStaticPosition();
+//		if (!mHasInit) {
+//			mHasInit = true;
+//			mHeight = b;
+//			if (mListener != null) {
+//				mListener.onKeyBoardStateChange(KEYBOARD_STATE_INIT);
+//			}
+//			Log.w(TAG, "init keyboard.......");
+//		} else {
+//			mHeight = mHeight < b ? b : mHeight;
+//		}
+//		if (mHasInit && mHeight > b) {
+//			mHasKeybord = true;
+//			if (mListener != null) {
+//				mListener.onKeyBoardStateChange(KEYBOARD_STATE_SHOW);
+//			}
+//			Log.w(TAG, "show keyboard.......");
+//		}
+//		if (mHasInit && mHasKeybord && mHeight == b) {
+//			mHasKeybord = false;
+//			if (mListener != null) {
+//				mListener.onKeyBoardStateChange(KEYBOARD_STATE_HIDE);
+//			}
+//			Log.w(TAG, "hide keyboard.......");
+//		}
 	}
+	
+	
 
 	public interface onKybdsChangeListener {
 		public void onKeyBoardStateChange(int state);
