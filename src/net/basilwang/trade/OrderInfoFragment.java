@@ -213,13 +213,11 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			refreshRealCounts();
 			break;
 		case R.id.order_cancel_btn:
-			orderProducts.clear();
-			orderAdapter.notifyDataSetChanged();
-			refreshRealCounts();
+			clearAllData();
 			break;
 		case R.id.order_sure_btn:
 			refreshRealCounts();
-			if(orderProducts.isEmpty())
+			if (orderProducts.isEmpty())
 				;
 			else if (customerSpinner.getSelectedItem().toString().equals("请选择"))
 				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
@@ -229,7 +227,11 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 						.show();
 			else if (!isPerOrdercompleted())
 				;
-			else
+			else if (!isRealcollectionLegal()){
+				realcollection.setText(receivable.getText());
+				realcollection.setSelection(0, realcollection.getText().length());
+				Toast.makeText(getActivity(), "实收款不能大于应收款", Toast.LENGTH_SHORT).show();
+			}else
 				submitOrder();
 			break;
 		default:
@@ -238,13 +240,21 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	}
 
+	private boolean isRealcollectionLegal() {
+		String realcollectionStr = realcollection.getText().toString().trim();
+		if (realcollectionStr.isEmpty()
+				|| Double.parseDouble(realcollectionStr) <= Double
+						.parseDouble(receivable.getText().toString()))
+			return true;
+		return false;
+	}
+
 	private void submitOrder() {
 		Order order = new Order();
 		order.setCustomer(assignedCustomer.getId());
 		order.setOrderProducts(orderProducts);
 		order.setStringReceivable(receivable.getText().toString());
-		order.setStringRealcollection(realcollection.getText()
-				.toString());
+		order.setStringRealcollection(realcollection.getText().toString());
 		String orderJsonString = JSON.toJSONString(order);
 		Log.v("order json string", orderJsonString);
 		FinalHttp http = new FinalHttp();
@@ -255,26 +265,40 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		http.post(StaticParameter.postOrderAdd,entity, "application/json",new AjaxCallBack<Object>() {
+		http.post(StaticParameter.postOrderAdd, entity, "application/json",
+				new AjaxCallBack<Object>() {
 
-			@Override
-			public void onFailure(Throwable t, int errorNo, String strMsg) {
-				super.onFailure(t, errorNo, strMsg);
-				ReLoginUtils.authorizedFailed(getActivity(), errorNo);
-				Log.v("failure", strMsg);
-			}
+					@Override
+					public void onFailure(Throwable t, int errorNo,
+							String strMsg) {
+						super.onFailure(t, errorNo, strMsg);
+						ReLoginUtils.authorizedFailed(getActivity(), errorNo);
+						Log.v("failure", strMsg);
+					}
 
-			@Override
-			public void onSuccess(Object t) {
-				Log.v("success", t.toString());
-				ValidateResult result = JSON.parseObject(t.toString(), ValidateResult.class);
-				Toast.makeText(getActivity(), result.getMessage(), Toast.LENGTH_SHORT).show();
-				super.onSuccess(t);
-			}
-			
-			
-		});
-		
+					@Override
+					public void onSuccess(Object t) {
+						Log.v("success", t.toString());
+						ValidateResult result = JSON.parseObject(t.toString(),
+								ValidateResult.class);
+						Toast.makeText(getActivity(), result.getMessage(),
+								Toast.LENGTH_SHORT).show();
+						if (result.getSuccess().equals("true")) {
+							clearAllData();
+						}
+						super.onSuccess(t);
+					}
+
+				});
+
+	}
+
+	protected void clearAllData() {
+		orderProducts.clear();
+		refreshRealCounts();
+		customerSpinner.setSelection(0);
+		Log.v("assignedCustomer name ", assignedCustomer.getName());
+		realcollection.setText("");
 	}
 
 	private boolean isPerOrdercompleted() {

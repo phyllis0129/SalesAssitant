@@ -89,7 +89,7 @@ public class TransactionRecordsAdapter extends BaseExpandableListAdapter {
 		groupViewCache.gTime.setText(groupArray.get(groupPosition)
 				.getOrdertime());
 		groupViewCache.gReceivable.setText(groupArray.get(groupPosition)
-				.getRealcollection() + "元");
+				.getReceivable() + "元");
 		groupViewCache.gRealcollection.setText(groupArray.get(groupPosition)
 				.getRealcollection() + "元");
 		return convertView;
