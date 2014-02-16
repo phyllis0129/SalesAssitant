@@ -27,6 +27,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -58,6 +59,7 @@ public class ProductInfoMoreActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_product_info);
 		initView();
 	}
@@ -119,7 +121,6 @@ public class ProductInfoMoreActivity extends Activity implements
 			break;
 		case R.id.goods_title_bar_btn_sure:
 			Intent intent = new Intent();
-			// TODO
 			ArrayList<Product> selectedProducts = new ArrayList<Product>();
 			for (int i = 0; i < products.size(); i++) {
 				if(ProductAdapter.getIsSelected().get(i))
