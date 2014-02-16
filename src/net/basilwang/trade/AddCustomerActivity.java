@@ -86,9 +86,8 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
 				addCustomer();
-				finish();
+				dialog.dismiss();
 			}
 		});
 

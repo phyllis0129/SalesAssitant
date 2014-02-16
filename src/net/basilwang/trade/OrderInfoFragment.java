@@ -24,6 +24,7 @@ import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
@@ -160,7 +161,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void getCustomerList() {
 		FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
-		fh.get(StaticParameter.getCustomer, new AjaxCallBack<Object>() {
+		fh.get(StaticParameter.getCustomer+"1", new AjaxCallBack<Object>() {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
