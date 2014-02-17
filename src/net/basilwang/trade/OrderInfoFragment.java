@@ -19,17 +19,16 @@ import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.view.ResizeLayout;
 import net.basilwang.view.ResizeLayout.onKybdsChangeListener;
+import net.basilwang.view.SearchAutoCompleteTextView;
 import net.basilwang.view.SlideCutListView;
 import net.basilwang.view.SlideCutListView.RemoveDirection;
 import net.basilwang.view.SlideCutListView.RemoveListener;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -37,16 +36,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,18 +55,19 @@ import com.alibaba.fastjson.JSON;
  * 
  */
 public class OrderInfoFragment extends ListFragment implements OnClickListener,
-		RemoveListener, OnItemSelectedListener {
+		RemoveListener, OnItemClickListener {
 
 	private View mView;
 	private SlideCutListView orderListView;
 	private TextView receivable;
 	private EditText realcollection;
+	private SearchAutoCompleteTextView searchEditText;
 	private Button sureBtn, cancelBtn;
 	private RelativeLayout addBtn;
 	private OrderAdapter orderAdapter;
 	private List<OrderProduct> orderProducts;
 	private List<Customer> customers;
-	private Spinner customerSpinner;
+//	private Spinner customerSpinner;
 
 	private ResizeLayout headerLinearLayout;
 	private LinearLayout btnLinearLayout;
@@ -105,8 +104,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		realcollection = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
-		customerSpinner = (Spinner) mView.findViewById(R.id.customer_spinner);
-		customerSpinner.setOnItemSelectedListener(this);
+		searchEditText = (SearchAutoCompleteTextView)mView.findViewById(R.id.search_edit);
+//		customerSpinner = (Spinner) mView.findViewById(R.id.customer_spinner);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
@@ -121,7 +120,16 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		sureBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
 		addBtn.setOnClickListener(this);
-		customerSpinner.setOnItemSelectedListener(this);
+		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus)
+					((SearchAutoCompleteTextView)v).showDropDown();
+				
+			}
+		});
+		searchEditText.setOnItemClickListener(this);
 		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
 			@Override
@@ -177,16 +185,12 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
 				ArrayList<String> customerNamelist = new ArrayList<String>();
-				customerNamelist.add("请选择");
 				for (int i = 0; i < customers.size(); i++) {
-					customerNamelist.add(i + 1, customers.get(i).getName());
+					customerNamelist.add(i , customers.get(i).getName());
 				}
 				customerAdapter = new ArrayAdapter<String>(getActivity(),
 						android.R.layout.simple_spinner_item, customerNamelist);
-				customerAdapter
-						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				customerSpinner.setAdapter(customerAdapter);
-				customerSpinner.setPrompt("请选择客户");
+				searchEditText.setAdapter(customerAdapter);
 				if (customers.isEmpty())
 					Toast.makeText(getActivity(), "呀，客户列表为空了",
 							Toast.LENGTH_SHORT).show();
@@ -225,9 +229,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			refreshRealCounts();
 			if (orderProducts.isEmpty())
 				;
-			else if (customerSpinner.getSelectedItem().toString().equals("请选择"))
-				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
-						.show();
+//			else if (customerSpinner.getSelectedItem().toString().equals("请选择"))
+//				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
+//						.show();
 			else if (Double.parseDouble(receivable.getText().toString()) == 0)
 				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT)
 						.show();
@@ -302,7 +306,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	protected void clearAllData() {
 		orderProducts.clear();
 		refreshRealCounts();
-		customerSpinner.setSelection(0);
+//		customerSpinner.setSelection(0);
 		realcollection.setText("");
 	}
 
@@ -379,14 +383,10 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
+	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		assignedCustomer = position == 0 ? null : customers.get(position - 1);
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-
+		assignedCustomer = position >= 0 ? customers.get(position):null;
+		Toast.makeText(getActivity(), assignedCustomer.getName(), 2000).show();
 	}
 
 }

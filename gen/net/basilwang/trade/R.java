@@ -1143,7 +1143,6 @@ containing a value of this type.
         public static final int customer_record=0x7f05004c;
         public static final int customer_record_list=0x7f05004d;
         public static final int customer_returnGoods=0x7f05004a;
-        public static final int customer_spinner=0x7f050062;
         public static final int customer_spinner_item_name=0x7f05005a;
         public static final int customer_spinner_item_rb=0x7f05005b;
         public static final int customer_tel=0x7f050043;
@@ -1205,6 +1204,7 @@ containing a value of this type.
         public static final int record_group_child_sum=0x7f050081;
         public static final int right=0x7f050011;
         public static final int row_title=0x7f050083;
+        public static final int search_edit=0x7f050062;
         public static final int selected_view=0x7f050014;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
