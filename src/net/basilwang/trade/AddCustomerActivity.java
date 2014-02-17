@@ -17,6 +17,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -141,6 +142,8 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 							e.printStackTrace();
 						}
 						if (isSuccess) {
+							Intent intent = new Intent(AddCustomerActivity.this, CustomerInfoFragment.class);
+							AddCustomerActivity.this.setResult(RESULT_OK, intent);
 							finish();
 						} else {
 							Toast.makeText(getApplicationContext(),

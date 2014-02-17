@@ -5,21 +5,18 @@ package net.basilwang.utils;
 
 import java.util.List;
 
-import net.basilwang.dao.CustomerAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.trade.LoginActivity;
 import net.basilwang.trade.SalesAssisteantActivity;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -77,7 +74,7 @@ public class CustomerListUtils {
 				Log.v("customer id", mCustomers.get(0).getId());
 				for (int i = 0; i < mCustomers.size(); i++) {
 				}
-				mBaseAdapter = new CustomerAdapter(mContext, mCustomers);
+//				mBaseAdapter = new CustomerAdapter(mContext, mCustomers);
 				mAdapterView.setAdapter(mBaseAdapter);
 				if (isNeedProgressDialog)
 					mProgressDialog.dismiss();
