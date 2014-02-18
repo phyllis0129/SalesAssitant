@@ -122,8 +122,9 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus)
-					((SearchAutoCompleteTextView)v).showDropDown();
+					if(hasFocus)
+						((SearchAutoCompleteTextView)v).showDropDown();
+					
 				
 			}
 		});
@@ -187,7 +188,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					customerNamelist.add(i , customers.get(i).getName());
 				}
 				customerAdapter = new ArrayAdapter<Customer>(getActivity(),
-						android.R.layout.simple_spinner_item, customers);
+						R.layout.customer_dropdown_item, customers);
 				searchEditText.setAdapter(customerAdapter);
 				searchEditText.setThreshold(1);
 				if (customers.isEmpty())
