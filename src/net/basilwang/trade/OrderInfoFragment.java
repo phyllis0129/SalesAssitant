@@ -309,6 +309,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	protected void clearAllData() {
+		searchEditText.setText("");
 		orderProducts.clear();
 		refreshRealCounts();
 		realcollection.setText("");
