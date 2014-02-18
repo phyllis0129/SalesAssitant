@@ -1,5 +1,6 @@
 package net.basilwang.trade;
 
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.ReLoginUtils;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SlideMenuFragment extends ListFragment implements OnClickListener {
+public class SlideMenuFragment extends ListFragment {
 
 	private View slidingMenuView;
 
@@ -107,7 +109,7 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener {
 			ReLoginUtils.logout(getActivity());
 			break;
 		}
-		if (newContent != null)
+		if (checkNetwork()&&newContent != null)
 			switchFragment(newContent, title);
 	}
 
@@ -120,17 +122,13 @@ public class SlideMenuFragment extends ListFragment implements OnClickListener {
 			saa.switchContent(fragment, title);
 		}
 	}
-
-	private void exit() {
-		getActivity().finish();
-
+	
+	private boolean checkNetwork(){
+		if(NetworkUtils.isConnect(getActivity())){
+			return true;
+		}
+		Toast.makeText(getActivity(), "亲，您未联网哦", Toast.LENGTH_SHORT).show();
+		return false;
 	}
 
-	@Override
-	public void onClick(View v) {
-		Fragment newContent = null;
-		// newContent=new MineFragment();
-		// switchFragment(newContent);
-		Log.v("icon", "click");
-	}
 }

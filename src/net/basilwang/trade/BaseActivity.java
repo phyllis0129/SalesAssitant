@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,7 +19,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
  * 
  */
 public class BaseActivity extends SlidingFragmentActivity implements
-		OnClickListener, OnGroupClickListener {
+		OnClickListener {
 
 	private TextView titleTV;
 	private View title_bar;
@@ -78,21 +76,6 @@ public class BaseActivity extends SlidingFragmentActivity implements
 
 	public void setTitle(String title) {
 		titleTV.setText(title);
-	}
-
-	@Override
-	public boolean onGroupClick(ExpandableListView parent, View v,
-			int groupPosition, long id) {
-		// parent.
-		switch (parent.getChildAt(groupPosition).getId()) {
-		case R.id.title_bar_nav:
-			toggle();
-			break;
-
-		default:
-			break;
-		}
-		return false;
 	}
 
 	public RelativeLayout getTitleBack() {
