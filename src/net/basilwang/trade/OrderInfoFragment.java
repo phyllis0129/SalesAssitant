@@ -72,8 +72,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private ResizeLayout headerLinearLayout;
 	private LinearLayout btnLinearLayout;
 
-	private Customer assignedCustomer = null;
-
 	private ArrayAdapter<Customer> customerAdapter;
 
 	@Override
@@ -229,9 +227,14 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			refreshRealCounts();
 			if (orderProducts.isEmpty())
 				;
-//			else if (customerSpinner.getSelectedItem().toString().equals("请选择"))
-//				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
-//						.show();
+			else if (searchEditText.getText().toString().equals(""))
+				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
+						.show();
+			else if(searchEditText.getAssignedCustomer()==null){
+				Toast.makeText(getActivity(), "您选择的客户不存在", Toast.LENGTH_SHORT)
+					.show();
+				searchEditText.setSelection(0, searchEditText.getText().length());
+			}
 			else if (Double.parseDouble(receivable.getText().toString()) == 0)
 				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT)
 						.show();
@@ -261,7 +264,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private void submitOrder() {
 		Order order = new Order();
-		order.setCustomer(assignedCustomer.getId());
+		order.setCustomer(searchEditText.getAssignedCustomer().getId());
 		order.setOrderProducts(orderProducts);
 		order.setStringReceivable(receivable.getText().toString());
 		order.setStringRealcollection(realcollection.getText().toString());
@@ -306,8 +309,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	protected void clearAllData() {
 		orderProducts.clear();
 		refreshRealCounts();
-//		customerSpinner.setSelection(0);
 		realcollection.setText("");
+		orderAdapter.notifyDataSetChanged();
 	}
 
 	private boolean isPerOrdercompleted() {
@@ -385,8 +388,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		assignedCustomer = customerAdapter.getItem(position);
-		Toast.makeText(getActivity(), assignedCustomer.getName(), 2000).show();
+		searchEditText.setAssignedCustomer(customerAdapter.getItem(position));
+		Toast.makeText(getActivity(), searchEditText.getAssignedCustomer().getName(), 2000).show();
 	}
 
 }

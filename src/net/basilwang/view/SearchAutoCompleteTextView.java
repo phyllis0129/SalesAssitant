@@ -3,6 +3,7 @@
  */
 package net.basilwang.view;
 
+import net.basilwang.entity.Customer;
 import net.basilwang.trade.R;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView implements 
 	 * 删除按钮的引用
 	 */
     private Drawable mClearDrawable; 
+    private Customer assignedCustomer = null;
  
     public SearchAutoCompleteTextView(Context context) { 
     	this(context, null); 
@@ -77,8 +79,15 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView implements 
  
         return super.onTouchEvent(event); 
     } 
+    
+    
  
-    /**
+    @Override
+	public boolean enoughToFilter() {
+		return true;
+	}
+
+	/**
      * 当ClearEditText焦点发生变化的时候，判断里面字符串长度设置清除图标的显示与隐藏
      */
     @Override 
@@ -109,8 +118,6 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView implements 
     public void onTextChanged(CharSequence s, int start, int count, 
             int after) { 
         setClearIconVisible(s.length() > 0); 
-        if(s.length() > 0)
-        	showDropDown();
     } 
  
     @Override 
@@ -121,8 +128,7 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView implements 
  
     @Override 
     public void afterTextChanged(Editable s) { 
-    	 if(s.length() >= 0)
-         	showDropDown();
+    	 assignedCustomer = null;
     } 
     
    
@@ -145,6 +151,16 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView implements 
     	translateAnimation.setDuration(1000);
     	return translateAnimation;
     }
+
+	public Customer getAssignedCustomer() {
+		return assignedCustomer;
+	}
+
+	public void setAssignedCustomer(Customer assignedCustomer) {
+		this.assignedCustomer = assignedCustomer;
+	}
+    
+    
  
  
 

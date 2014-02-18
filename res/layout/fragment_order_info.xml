@@ -35,7 +35,6 @@
                     android:focusableInTouchMode="true"
                     android:text="客户:"
                     android:textSize="21sp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -50,9 +49,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/search_bar_edit_selector"
                     android:completionHint="最近的5条记录"
-                    android:completionThreshold="1"
                     android:drawableLeft="@drawable/search_bar_icon_normal"
-                    android:dropDownHeight="120dp"
+                    android:dropDownHeight="200dp"
                     android:hint="请输入关键字"
                     android:singleLine="true"
                     android:textSize="15.0dip" />
