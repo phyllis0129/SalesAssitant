@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author Basilwang
@@ -109,25 +110,23 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 	}
 
 	private void setContent(int position) {
-		mHolder.goodsStockTV.setText("库存余量  "+mOrderItemList.get(position)
-				.getStock());
-		mHolder.goodsNameTV
-				.setText(mOrderItemList.get(position).getName());
+		mHolder.goodsStockTV.setText("库存余量  "
+				+ mOrderItemList.get(position).getStock());
+		mHolder.goodsNameTV.setText(mOrderItemList.get(position).getName());
 		mHolder.goodsSpecificationTV.setText(mOrderItemList.get(position)
 				.getAreaProductSkuName());
-		mHolder.goodsCountsET.setText(mOrderItemList.get(position)
-				.getAmount().toString());
+		mHolder.goodsCountsET.setText(mOrderItemList.get(position).getAmount()
+				.toString());
 
 		mHolder.goodsCountsET.setTag(position);
-		mHolder.goodsUnitTV
-				.setText(mOrderItemList.get(position).getUnit());
+		mHolder.goodsUnitTV.setText(mOrderItemList.get(position).getUnit());
 		if (mOrderItemList.get(position).getPerPrice() != 0) {
 			mHolder.goodsPriceET.setText(mOrderItemList.get(position)
 					.getPerPrice().toString());
 		}
 
-		mHolder.goodsPriceUnitTV.setText("元/"+mOrderItemList.get(position)
-				.getUnit());
+		mHolder.goodsPriceUnitTV.setText("元/"
+				+ mOrderItemList.get(position).getUnit());
 		mHolder.goodsTotalPriceTV.setText(mOrderItemList.get(position)
 				.getTotalPrice().toString()
 				+ "￥");
@@ -169,11 +168,22 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 			Log.v("1111111`", "2222222222");
 			int position = mOrderListView.getSlidePosition();
 			if (flag.equals("count")) {
-				mOrderItemList.get(position)
-						.setStringAmount(s.toString().trim());
+				if (!s.toString().equals("")
+						&& Integer.parseInt(s.toString()) > Integer
+								.parseInt(mOrderItemList.get(position)
+										.getStock())) {
+					Toast.makeText(mContext, "所填数量超过库存", Toast.LENGTH_SHORT)
+							.show();
+					mHolder.goodsCountsET.setText(mOrderItemList.get(position)
+							.getStock());
+				} else {
+					mOrderItemList.get(position).setStringAmount(
+							s.toString().trim());
+				}
 			}
 			if (flag.equals("price")) {
-				mOrderItemList.get(position).setStringPrice(s.toString().trim());
+				mOrderItemList.get(position)
+						.setStringPrice(s.toString().trim());
 			}
 			mOrderItemList.get(position).setNullTotalPrice();
 		}

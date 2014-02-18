@@ -189,6 +189,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				customerAdapter = new ArrayAdapter<Customer>(getActivity(),
 						android.R.layout.simple_spinner_item, customers);
 				searchEditText.setAdapter(customerAdapter);
+				searchEditText.setThreshold(1);
 				if (customers.isEmpty())
 					Toast.makeText(getActivity(), "呀，客户列表为空了",
 							Toast.LENGTH_SHORT).show();

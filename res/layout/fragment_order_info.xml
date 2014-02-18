@@ -45,11 +45,12 @@
 
                 <net.basilwang.view.SearchAutoCompleteTextView
                     android:id="@+id/search_edit"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/search_bar_edit_selector"
                     android:completionHint="最近的5条记录"
                     android:drawableLeft="@drawable/search_bar_icon_normal"
+                    android:dropDownWidth="match_parent"
                     android:dropDownHeight="200dp"
                     android:hint="请输入关键字"
                     android:singleLine="true"
