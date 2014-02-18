@@ -74,7 +74,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 	private Customer assignedCustomer = null;
 
-	private ArrayAdapter<String> customerAdapter;
+	private ArrayAdapter<Customer> customerAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,8 +188,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				for (int i = 0; i < customers.size(); i++) {
 					customerNamelist.add(i , customers.get(i).getName());
 				}
-				customerAdapter = new ArrayAdapter<String>(getActivity(),
-						android.R.layout.simple_spinner_item, customerNamelist);
+				customerAdapter = new ArrayAdapter<Customer>(getActivity(),
+						android.R.layout.simple_spinner_item, customers);
 				searchEditText.setAdapter(customerAdapter);
 				if (customers.isEmpty())
 					Toast.makeText(getActivity(), "呀，客户列表为空了",
@@ -385,7 +385,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		assignedCustomer = position >= 0 ? customers.get(position):null;
+		assignedCustomer = customerAdapter.getItem(position);
 		Toast.makeText(getActivity(), assignedCustomer.getName(), 2000).show();
 	}
 

@@ -117,4 +117,11 @@ public class Customer implements Parcelable {
 		dest.writeString(id);
 	}
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
+	
+
 }
