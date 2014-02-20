@@ -23,7 +23,7 @@ public class ReLoginUtils {
 		}
 	}
 
-	public static void logout(Context context){
+	public static void logout(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, LoginActivity.class);
 		context.startActivity(intent);

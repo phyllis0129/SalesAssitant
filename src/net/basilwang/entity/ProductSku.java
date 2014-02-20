@@ -10,20 +10,19 @@ import android.os.Parcelable;
  * @author phyllis
  * 
  */
-public class ProductSku implements Parcelable{
-	
+public class ProductSku implements Parcelable {
+
 	private String id;
 	private String name;
-	
-	public ProductSku(){
-		
+
+	public ProductSku() {
+
 	}
-	
-	public ProductSku(String id, String name){
+
+	public ProductSku(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
 
 	// 1.必须实现Parcelable.Creator接口,否则在获取Person数据的时候，会报错，如下：
 	// android.os.BadParcelableException:
@@ -58,7 +57,7 @@ public class ProductSku implements Parcelable{
 		dest.writeString(id);
 		dest.writeString(name);
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -74,6 +73,5 @@ public class ProductSku implements Parcelable{
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 }

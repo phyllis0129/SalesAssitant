@@ -2,7 +2,6 @@ package net.basilwang.dao;
 
 import java.util.List;
 
-import net.basilwang.entity.Record;
 import net.basilwang.entity.TransactionRecords;
 import net.basilwang.trade.R;
 import android.content.Context;

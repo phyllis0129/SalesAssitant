@@ -22,7 +22,7 @@ public class PreferenceUtils {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("token", null);
 	}
-	
+
 	public static String getPreferLoginName(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("loginName", null);
@@ -43,8 +43,8 @@ public class PreferenceUtils {
 		editor.putString(key, value);
 		editor.commit();
 	}
-	
-	public static void clearData(Context context){
+
+	public static void clearData(Context context) {
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(context).edit();
 		editor.clear();

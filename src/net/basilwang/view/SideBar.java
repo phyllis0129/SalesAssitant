@@ -27,7 +27,6 @@ public class SideBar extends View {
 		this.mTextDialog = mTextDialog;
 	}
 
-
 	public SideBar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
@@ -80,7 +79,6 @@ public class SideBar extends View {
 
 		switch (action) {
 		case MotionEvent.ACTION_UP:
-			setBackgroundDrawable(new ColorDrawable(0x00000000));
 			choose = -1;//
 			invalidate();
 			if (mTextDialog != null) {
@@ -89,7 +87,6 @@ public class SideBar extends View {
 			break;
 
 		default:
-//			setBackgroundResource(R.drawable.sidebar_background);
 			if (oldChoose != c) {
 				if (c >= 0 && c < b.length) {
 					if (listener != null) {
@@ -99,7 +96,7 @@ public class SideBar extends View {
 						mTextDialog.setText(b[c]);
 						mTextDialog.setVisibility(View.VISIBLE);
 					}
-					
+
 					choose = c;
 					invalidate();
 				}

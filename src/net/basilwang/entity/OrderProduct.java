@@ -1,7 +1,5 @@
 package net.basilwang.entity;
 
-import android.widget.Toast;
-
 public class OrderProduct {
 
 	private String stock;

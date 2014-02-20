@@ -5,13 +5,12 @@ package net.basilwang.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
 /**
- * @author Basilwang
+ * @author phyllis
  * 
  */
-public class AreaProductSku implements Parcelable{
+public class AreaProductSku implements Parcelable {
 
 	private String id;
 	private int amount;
@@ -44,8 +43,9 @@ public class AreaProductSku implements Parcelable{
 
 		@Override
 		public AreaProductSku createFromParcel(Parcel source) {
-			AreaProductSku areaProductSku = new AreaProductSku(source.readString(),
-					source.readInt(), source.readValue(ProductSku.class.getClassLoader()));
+			AreaProductSku areaProductSku = new AreaProductSku(
+					source.readString(), source.readInt(),
+					source.readValue(ProductSku.class.getClassLoader()));
 			return areaProductSku;
 		}
 	};

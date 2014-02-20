@@ -15,7 +15,7 @@ import com.actionbarsherlock.app.ActionBar.LayoutParams;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 /**
- * @author basil
+ * @author phyllis
  * 
  */
 public class BaseActivity extends SlidingFragmentActivity implements
@@ -42,10 +42,6 @@ public class BaseActivity extends SlidingFragmentActivity implements
 		actionBar.setHomeButtonEnabled(true);
 
 		initView();
-		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-		// R.layout.title_bar);
-
 	}
 
 	private void initView() {
@@ -58,7 +54,6 @@ public class BaseActivity extends SlidingFragmentActivity implements
 		titleDel = (RelativeLayout) title_bar
 				.findViewById(R.id.title_bar_btn_del);
 		titleNav.setOnClickListener(this);
-
 	}
 
 	@Override
@@ -67,11 +62,9 @@ public class BaseActivity extends SlidingFragmentActivity implements
 		case R.id.title_bar_nav:
 			toggle();
 			break;
-
 		default:
 			break;
 		}
-
 	}
 
 	public void setTitle(String title) {

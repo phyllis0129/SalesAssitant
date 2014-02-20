@@ -47,7 +47,6 @@ public class SplashActivity extends Activity {
 	private void jump() {
 		splashImg.setVisibility(View.GONE);
 		Intent intent = new Intent();
-		boolean isFirstUsed = PreferenceUtils.getPreferIsFirstUsed(this);
 		String token = PreferenceUtils.getPreferToken(this);
 		if (token == null) {
 			intent.setClass(this, LoginActivity.class);

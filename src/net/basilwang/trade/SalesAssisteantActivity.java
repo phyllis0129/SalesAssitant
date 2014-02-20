@@ -1,6 +1,5 @@
 package net.basilwang.trade;
 
-import net.basilwang.utils.NetworkUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -31,7 +30,7 @@ public class SalesAssisteantActivity extends BaseActivity {
 		if (mContent == null) {
 			mContent = new OrderInfoFragment();
 		}
-		
+
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.content_frame, mContent).commit();

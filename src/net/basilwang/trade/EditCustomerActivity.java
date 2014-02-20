@@ -1,17 +1,18 @@
 package net.basilwang.trade;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.NetworkUtils;
-import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -131,7 +132,7 @@ public class EditCustomerActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.customer_title_bar_btn_sure:
-			if(NetworkUtils.isConnect(mContext)){
+			if (NetworkUtils.isConnect(mContext)) {
 				edit();
 			}
 			break;

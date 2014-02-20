@@ -2,8 +2,8 @@ package net.basilwang.trade;
 
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.NetworkUtils;
-import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;

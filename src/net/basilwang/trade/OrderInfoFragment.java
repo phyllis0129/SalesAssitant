@@ -44,7 +44,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,10 +67,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private OrderAdapter orderAdapter;
 	private List<OrderProduct> orderProducts;
 	private List<Customer> customers;
-	// private Spinner customerSpinner;
 
 	private ResizeLayout headerLinearLayout;
-	private LinearLayout btnLinearLayout;
 
 	private ArrayAdapter<Customer> customerAdapter;
 
@@ -105,13 +102,10 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
 		searchEditText = (SearchAutoCompleteTextView) mView
 				.findViewById(R.id.search_edit);
-		// customerSpinner = (Spinner)
-		// mView.findViewById(R.id.customer_spinner);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
 
-		btnLinearLayout = (LinearLayout) mView.findViewById(R.id.order_btn);
 		headerLinearLayout = (ResizeLayout) mView.findViewById(R.id.origin);
 		setListener();
 	}
@@ -137,21 +131,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 
 			@Override
 			public void onKeyBoardStateChange(int state) {
-				EditText onTouchedEditText = orderAdapter
-						.getonTouchedEditText();
-				// switch (state) {
-				// case ResizeLayout.KEYBOARD_STATE_HIDE:
-				// btnLinearLayout.setVisibility(View.VISIBLE);
-				// orderAdapter.onTouchedTag = "";
-				// refreshRealCounts();
-				// Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
-				// .show();
-				// // break;
-				// case -1:
-				// // btnLinearLayout.setVisibility(View.INVISIBLE);
-				// Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
-				// .show();
-				// }
 				if (state >= 0) {
 					Log.v("state", state + "");
 					SlideCutListView.setStaticPosition(-2);
@@ -405,7 +384,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			long id) {
 		searchEditText.setAssignedCustomer(customerAdapter.getItem(position));
 		Toast.makeText(getActivity(),
-				searchEditText.getAssignedCustomer().getName(), 2000).show();
+				searchEditText.getAssignedCustomer().getName(),
+				Toast.LENGTH_SHORT).show();
 	}
 
 }

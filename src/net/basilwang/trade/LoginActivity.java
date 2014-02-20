@@ -16,7 +16,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -52,10 +51,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// 隐藏软键
-		// InputMethodManager imm = (InputMethodManager)
-		// getSystemService(Context.INPUT_METHOD_SERVICE);
-		// imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 		switch (v.getId()) {
 		case R.id.login_btn:
 			checkLogin();
