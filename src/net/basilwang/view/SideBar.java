@@ -1,6 +1,5 @@
 package net.basilwang.view;
 
-import net.basilwang.trade.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -90,7 +89,7 @@ public class SideBar extends View {
 			break;
 
 		default:
-			setBackgroundResource(R.drawable.sidebar_background);
+//			setBackgroundResource(R.drawable.sidebar_background);
 			if (oldChoose != c) {
 				if (c >= 0 && c < b.length) {
 					if (listener != null) {
