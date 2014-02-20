@@ -227,7 +227,8 @@ public class CustomerInfoFragment extends Fragment implements OnClickListener {
 				t.printStackTrace();
 				ReLoginUtils.authorizedFailed(
 						(SalesAssisteantActivity) getActivity(), errorNo);
-				Log.v("error", errorNo + strMsg + t.toString());
+				Toast.makeText(getActivity(), "客户数据获取失败，稍后重试",
+						Toast.LENGTH_SHORT).show();
 				progressDialog.dismiss();
 			}
 

@@ -109,7 +109,7 @@ public class SlideMenuFragment extends ListFragment {
 			ReLoginUtils.logout(getActivity());
 			break;
 		}
-		if (checkNetwork()&&newContent != null)
+		if (NetworkUtils.isConnect(getActivity())&&newContent != null)
 			switchFragment(newContent, title);
 	}
 
@@ -123,12 +123,4 @@ public class SlideMenuFragment extends ListFragment {
 		}
 	}
 	
-	private boolean checkNetwork(){
-		if(NetworkUtils.isConnect(getActivity())){
-			return true;
-		}
-		Toast.makeText(getActivity(), "亲，您未联网哦", Toast.LENGTH_SHORT).show();
-		return false;
-	}
-
 }

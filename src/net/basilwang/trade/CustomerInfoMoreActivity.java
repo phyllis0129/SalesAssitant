@@ -7,6 +7,7 @@ import net.basilwang.entity.Customer;
 import net.basilwang.entity.Payment;
 import net.basilwang.entity.Record;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
@@ -74,7 +75,9 @@ public class CustomerInfoMoreActivity extends Activity implements
 	}
 
 	private void init() {
-		getPayment(mId);
+		if (NetworkUtils.isConnect(mContext)) {
+			getPayment(mId);
+		}
 		mRealcollectiong = "实收货款:";
 		mReceivable = "应收货款:";
 		if (mCustomer != null) {
@@ -195,7 +198,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 				super.onFailure(t, errorNo, strMsg);
 				mDialog.dismiss();
 				ReLoginUtils.authorizedFailed(mContext, errorNo);
-				Toast.makeText(mContext, "读取失败!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "客户产品交易记录读取失败，稍后再试",
+						Toast.LENGTH_SHORT).show();
 				SaLog.log("CustomerInfoMoreActivity", strMsg);
 			}
 
@@ -217,8 +221,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 									String strMsg) {
 								super.onFailure(t, errorNo, strMsg);
 								mDialog.dismiss();
-								ReLoginUtils.authorizedFailed(mContext,
-										errorNo);
+								ReLoginUtils
+										.authorizedFailed(mContext, errorNo);
 								Toast.makeText(mContext, "读取记录失败！" + strMsg,
 										Toast.LENGTH_SHORT).show();
 							}

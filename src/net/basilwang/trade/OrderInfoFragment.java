@@ -15,6 +15,7 @@ import net.basilwang.entity.OrderProduct;
 import net.basilwang.entity.Product;
 import net.basilwang.entity.ValidateResult;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.view.ResizeLayout;
@@ -67,7 +68,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private OrderAdapter orderAdapter;
 	private List<OrderProduct> orderProducts;
 	private List<Customer> customers;
-//	private Spinner customerSpinner;
+	// private Spinner customerSpinner;
 
 	private ResizeLayout headerLinearLayout;
 	private LinearLayout btnLinearLayout;
@@ -102,8 +103,10 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		realcollection = (EditText) mView.findViewById(R.id.counts_real);
 		sureBtn = (Button) mView.findViewById(R.id.order_sure_btn);
 		cancelBtn = (Button) mView.findViewById(R.id.order_cancel_btn);
-		searchEditText = (SearchAutoCompleteTextView)mView.findViewById(R.id.search_edit);
-//		customerSpinner = (Spinner) mView.findViewById(R.id.customer_spinner);
+		searchEditText = (SearchAutoCompleteTextView) mView
+				.findViewById(R.id.search_edit);
+		// customerSpinner = (Spinner)
+		// mView.findViewById(R.id.customer_spinner);
 		SalesAssisteantActivity saa = (SalesAssisteantActivity) getActivity();
 		addBtn = saa.getTitleAdd();
 		addBtn.setVisibility(View.VISIBLE);
@@ -119,13 +122,14 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		cancelBtn.setOnClickListener(this);
 		addBtn.setOnClickListener(this);
 		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-					if(hasFocus)
-						((SearchAutoCompleteTextView)v).showDropDown();
-					
-				
+				if (hasFocus) {
+					if (NetworkUtils.isConnect(getActivity())
+							&& !isCustomersEmpty())
+						((SearchAutoCompleteTextView) v).showDropDown();
+				}
 			}
 		});
 		searchEditText.setOnItemClickListener(this);
@@ -135,32 +139,32 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			public void onKeyBoardStateChange(int state) {
 				EditText onTouchedEditText = orderAdapter
 						.getonTouchedEditText();
-//				switch (state) {
-//				case ResizeLayout.KEYBOARD_STATE_HIDE:
-//					btnLinearLayout.setVisibility(View.VISIBLE);
-//					orderAdapter.onTouchedTag = "";
-//					refreshRealCounts();
-//					Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
-//							.show();
-////					break;
-//				case -1:
-////					btnLinearLayout.setVisibility(View.INVISIBLE);
-//					Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
-//							.show();
-//					}
-				if(state>=0){
-					Log.v("state", state+"");
+				// switch (state) {
+				// case ResizeLayout.KEYBOARD_STATE_HIDE:
+				// btnLinearLayout.setVisibility(View.VISIBLE);
+				// orderAdapter.onTouchedTag = "";
+				// refreshRealCounts();
+				// Toast.makeText(getActivity(), "软键盘隐藏", Toast.LENGTH_SHORT)
+				// .show();
+				// // break;
+				// case -1:
+				// // btnLinearLayout.setVisibility(View.INVISIBLE);
+				// Toast.makeText(getActivity(), "软键盘弹起", Toast.LENGTH_SHORT)
+				// .show();
+				// }
+				if (state >= 0) {
+					Log.v("state", state + "");
 					SlideCutListView.setStaticPosition(-2);
-				}else if(state==-2){
-					Log.v("state", state+"");
+				} else if (state == -2) {
+					Log.v("state", state + "");
 					SlideCutListView.setStaticPosition(-1);
 					orderAdapter.notifyDataSetChanged();
 					orderListView.refreshDrawableState();
-				}else{
-					Log.v("state", state+"");
+				} else {
+					Log.v("state", state + "");
 				}
 				refreshRealCounts();
-				Log.v("state out", state+"");
+				Log.v("state out", state + "");
 			}
 		});
 	}
@@ -168,14 +172,15 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	private void getCustomerList() {
 		FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
-		fh.get(StaticParameter.getCustomer+"1", new AjaxCallBack<Object>() {
+		fh.get(StaticParameter.getCustomer + "1", new AjaxCallBack<Object>() {
 
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				t.printStackTrace();
 				ReLoginUtils.authorizedFailed(getActivity(), errorNo);
-				Log.v("error", errorNo + strMsg + t.toString());
+				Toast.makeText(getActivity(), "客户数据获取失败，请检查是否连接网络",
+						Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -183,24 +188,26 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				super.onSuccess(t);
 				Log.v("customer list", t.toString());
 				customers = JSON.parseArray(t.toString(), Customer.class);
-				ArrayList<String> customerNamelist = new ArrayList<String>();
-				for (int i = 0; i < customers.size(); i++) {
-					customerNamelist.add(i , customers.get(i).getName());
-				}
-				customerAdapter = new ArrayAdapter<Customer>(getActivity(),
-						R.layout.customer_dropdown_item, customers);
-				searchEditText.setAdapter(customerAdapter);
-				searchEditText.setThreshold(1);
-				if (customers.isEmpty())
-					Toast.makeText(getActivity(), "呀，客户列表为空了",
-							Toast.LENGTH_SHORT).show();
-				else
+
+				if (!isCustomersEmpty()) {
 					Toast.makeText(getActivity(), "亲，客户列表获取成功了哦",
 							Toast.LENGTH_SHORT).show();
+					customerAdapter = new ArrayAdapter<Customer>(getActivity(),
+							R.layout.customer_dropdown_item, customers);
+					searchEditText.setAdapter(customerAdapter);
+					searchEditText.setThreshold(1);
+				}
 
 			}
 
 		});
+	}
+
+	private boolean isCustomersEmpty() {
+		if (!customers.isEmpty())
+			return false;
+		Toast.makeText(getActivity(), "呀，客户列表为空了", Toast.LENGTH_SHORT).show();
+		return true;
 	}
 
 	public void refreshRealCounts() {
@@ -216,43 +223,47 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.title_bar_btn_add:
 			orderAdapter.notifyDataSetChanged();
-			Intent intent = new Intent(getActivity(),
-					ProductInfoMoreActivity.class);
-
-			startActivityForResult(intent, 0);
 			refreshRealCounts();
+			if (NetworkUtils.isConnect(getActivity())) {
+				Intent intent = new Intent(getActivity(),
+						ProductInfoMoreActivity.class);
+				startActivityForResult(intent, 0);
+			}
 			break;
 		case R.id.order_cancel_btn:
 			clearAllData();
 			break;
 		case R.id.order_sure_btn:
 			refreshRealCounts();
-			if (orderProducts.isEmpty())
-				;
-			else if (searchEditText.getText().toString().equals(""))
-				Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT)
-						.show();
-			else if(searchEditText.getAssignedCustomer()==null){
-				Toast.makeText(getActivity(), "您选择的客户不存在", Toast.LENGTH_SHORT)
-					.show();
-				searchEditText.setSelection(0, searchEditText.getText().length());
-			}
-			else if (Double.parseDouble(receivable.getText().toString()) == 0)
-				Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT)
-						.show();
-			else if (!isPerOrdercompleted())
-				;
-			else if (!isRealcollectionLegal()){
-				realcollection.setText(receivable.getText());
-				realcollection.setSelection(0, realcollection.getText().length());
-				Toast.makeText(getActivity(), "实收款不能大于应收款", Toast.LENGTH_SHORT).show();
-			}else
-				submitOrder();
+			checkOrderIslegal();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void checkOrderIslegal() {
+		if (orderProducts.isEmpty())
+			;
+		else if (searchEditText.getText().toString().equals(""))
+			Toast.makeText(getActivity(), "请选择指定客户", Toast.LENGTH_SHORT).show();
+		else if (searchEditText.getAssignedCustomer() == null) {
+			Toast.makeText(getActivity(), "您选择的客户不存在", Toast.LENGTH_SHORT)
+					.show();
+			searchEditText.setSelection(0, searchEditText.getText().length());
+		} else if (Double.parseDouble(receivable.getText().toString()) == 0)
+			Toast.makeText(getActivity(), "请将订单填写完整", Toast.LENGTH_SHORT)
+					.show();
+		else if (!isPerOrdercompleted())
+			;
+		else if (!isRealcollectionLegal()) {
+			realcollection.setText(receivable.getText());
+			realcollection.setSelection(0, realcollection.getText().length());
+			Toast.makeText(getActivity(), "实收款不能大于应收款", Toast.LENGTH_SHORT)
+					.show();
+		} else if (NetworkUtils.isConnect(getActivity()))
+			submitOrder();
 	}
 
 	private boolean isRealcollectionLegal() {
@@ -288,7 +299,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 							String strMsg) {
 						super.onFailure(t, errorNo, strMsg);
 						ReLoginUtils.authorizedFailed(getActivity(), errorNo);
-						Log.v("failure", strMsg);
+						Toast.makeText(getActivity(), "订单提交失败，稍后重试",
+								Toast.LENGTH_SHORT).show();
 					}
 
 					@Override
@@ -392,7 +404,8 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		searchEditText.setAssignedCustomer(customerAdapter.getItem(position));
-		Toast.makeText(getActivity(), searchEditText.getAssignedCustomer().getName(), 2000).show();
+		Toast.makeText(getActivity(),
+				searchEditText.getAssignedCustomer().getName(), 2000).show();
 	}
 
 }

@@ -23,22 +23,18 @@ public class SalesAssisteantActivity extends BaseActivity {
 		setBehindContentView(R.layout.menu_frame);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.menu_frame, new SlideMenuFragment()).commit();
-		setContentView(R.layout.content_frame);
 
 		if (savedInstanceState != null) {
 			mContent = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mContent");
 		}
-		if (!NetworkUtils.isConnect(this)) {
-			Toast.makeText(this, "亲，您未联网哦", Toast.LENGTH_SHORT).show();
-			showMenu();
-		} else if (mContent == null) {
+		if (mContent == null) {
 			mContent = new OrderInfoFragment();
-		} else {
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.content_frame, mContent).commit();
 		}
-
+		
+		setContentView(R.layout.content_frame);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, mContent).commit();
 	}
 
 	private void initSlidingMenu() {

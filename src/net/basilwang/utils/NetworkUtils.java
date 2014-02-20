@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 public class NetworkUtils {
 	public static boolean isConnect(Context context) {
@@ -25,6 +26,7 @@ public class NetworkUtils {
 
 			Log.v("error", e.toString());
 		}
+		Toast.makeText(context, "亲，您未连接网络哦", Toast.LENGTH_SHORT).show();
 		return false;
 	}
 }

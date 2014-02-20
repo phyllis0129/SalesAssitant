@@ -1,6 +1,7 @@
 package net.basilwang.trade;
 
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
@@ -87,7 +88,9 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				addCustomer();
+				if (NetworkUtils.isConnect(mContext)) {
+					addCustomer();
+				}
 				dialog.dismiss();
 			}
 		});
@@ -142,8 +145,11 @@ public class AddCustomerActivity extends Activity implements OnClickListener {
 							e.printStackTrace();
 						}
 						if (isSuccess) {
-							Intent intent = new Intent(AddCustomerActivity.this, CustomerInfoFragment.class);
-							AddCustomerActivity.this.setResult(RESULT_OK, intent);
+							Intent intent = new Intent(
+									AddCustomerActivity.this,
+									CustomerInfoFragment.class);
+							AddCustomerActivity.this.setResult(RESULT_OK,
+									intent);
 							finish();
 						} else {
 							Toast.makeText(getApplicationContext(),

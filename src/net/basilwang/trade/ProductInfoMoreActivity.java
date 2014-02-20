@@ -12,8 +12,9 @@ import net.basilwang.dao.ProductAdapter;
 import net.basilwang.entity.AreaProductSku;
 import net.basilwang.entity.Product;
 import net.basilwang.libray.StaticParameter;
-import net.basilwang.utils.ReLoginUtils;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.PreferenceUtils;
+import net.basilwang.utils.ReLoginUtils;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -23,12 +24,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
@@ -40,10 +40,9 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 
 /**
- * @author Basilwang
+ * @author phyllis
  * 
  */
 public class ProductInfoMoreActivity extends Activity implements
@@ -84,8 +83,8 @@ public class ProductInfoMoreActivity extends Activity implements
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
 				Log.v("error", strMsg);
-				ReLoginUtils.authorizedFailed(
-						ProductInfoMoreActivity.this, errorNo);
+				ReLoginUtils.authorizedFailed(ProductInfoMoreActivity.this,
+						errorNo);
 				Toast.makeText(ProductInfoMoreActivity.this, "数据获取失败，稍后重试",
 						Toast.LENGTH_SHORT).show();
 				ProductInfoMoreActivity.this.finish();
@@ -97,15 +96,12 @@ public class ProductInfoMoreActivity extends Activity implements
 			public void onSuccess(Object t) {
 				Log.v("product", t.toString());
 				products = JSON.parseArray(t.toString(), Product.class);
-				List<String> productNames = new ArrayList<String>();
-				for (int i = 0; i < products.size(); i++) {
-					productNames.add(products.get(i).getName());
-				}
+				if (products.isEmpty())
+					Toast.makeText(ProductInfoMoreActivity.this, "该地区无任何商品",
+							Toast.LENGTH_SHORT).show();
 				productAdapter = new ProductAdapter(
 						ProductInfoMoreActivity.this, products);
 				productListView.setAdapter(productAdapter);
-				Log.v("product name", products.get(0).getName());
-				Log.v("product id", products.get(0).getId());
 				progressDialog.dismiss();
 				super.onSuccess(t);
 			}
@@ -123,11 +119,12 @@ public class ProductInfoMoreActivity extends Activity implements
 			Intent intent = new Intent();
 			ArrayList<Product> selectedProducts = new ArrayList<Product>();
 			for (int i = 0; i < products.size(); i++) {
-				if(ProductAdapter.getIsSelected().get(i))
+				if (ProductAdapter.getIsSelected().get(i))
 					selectedProducts.add(products.get(i));
 			}
 			Log.v("products json", JSON.toJSONString(selectedProducts));
-			intent.putParcelableArrayListExtra("selectedProducts", selectedProducts);
+			intent.putParcelableArrayListExtra("selectedProducts",
+					selectedProducts);
 			this.setResult(RESULT_OK, intent);
 			this.finish();
 			break;
@@ -140,7 +137,8 @@ public class ProductInfoMoreActivity extends Activity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		initDialogView(position);
+		if (NetworkUtils.isConnect(ProductInfoMoreActivity.this))
+			initDialogView(position);
 	}
 
 	private void initDialogView(int position) {
@@ -217,9 +215,9 @@ public class ProductInfoMoreActivity extends Activity implements
 					public void onFailure(Throwable t, int errorNo,
 							String strMsg) {
 						super.onFailure(t, errorNo, strMsg);
-						Log.v("error", strMsg);
 						ReLoginUtils.authorizedFailed(
 								ProductInfoMoreActivity.this, errorNo);
+
 					}
 
 					@Override

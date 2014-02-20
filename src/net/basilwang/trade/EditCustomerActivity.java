@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import net.basilwang.entity.Customer;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
@@ -130,7 +131,9 @@ public class EditCustomerActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.customer_title_bar_btn_sure:
-			edit();
+			if(NetworkUtils.isConnect(mContext)){
+				edit();
+			}
 			break;
 
 		default:

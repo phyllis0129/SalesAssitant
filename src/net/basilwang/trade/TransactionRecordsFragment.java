@@ -5,6 +5,7 @@ import java.util.List;
 import net.basilwang.dao.TransactionRecordsAdapter;
 import net.basilwang.entity.TransactionRecords;
 import net.basilwang.libray.StaticParameter;
+import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.PreferenceUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
@@ -130,7 +131,7 @@ public class TransactionRecordsFragment extends Fragment implements
 					public void onFailure(Throwable t, int errorNo,
 							String strMsg) {
 						super.onFailure(t, errorNo, strMsg);
-						Toast.makeText(mContext, "读取记录失败！" + strMsg,
+						Toast.makeText(mContext, "读取记录失败，请稍后再试！" + strMsg,
 								Toast.LENGTH_SHORT).show();
 						SaLog.log("Transaction records", strMsg);
 						mDialog.dismiss();
@@ -162,20 +163,23 @@ public class TransactionRecordsFragment extends Fragment implements
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.page_down:
-			getTransactionRecords(++pageNo);
-			break;
-		case R.id.page_up:
-			if (pageNo > 1) {
-				getTransactionRecords(--pageNo);
-			} else {
-				Toast.makeText(mContext, "已经是第一页", Toast.LENGTH_SHORT).show();
-			}
-			break;
+		if (NetworkUtils.isConnect(mContext)) {
+			switch (v.getId()) {
+			case R.id.page_down:
+				getTransactionRecords(++pageNo);
+				break;
+			case R.id.page_up:
+				if (pageNo > 1) {
+					getTransactionRecords(--pageNo);
+				} else {
+					Toast.makeText(mContext, "已经是第一页", Toast.LENGTH_SHORT)
+							.show();
+				}
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 
 	}
