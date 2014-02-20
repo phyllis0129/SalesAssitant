@@ -3,10 +3,12 @@
  */
 package net.basilwang.trade;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,8 +60,11 @@ public class BaseActivity extends SlidingFragmentActivity implements
 
 	@Override
 	public void onClick(View v) {
+		InputMethodManager imm = (InputMethodManager) this
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		switch (v.getId()) {
 		case R.id.title_bar_nav:
+			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			toggle();
 			break;
 		default:

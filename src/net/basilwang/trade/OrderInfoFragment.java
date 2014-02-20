@@ -30,6 +30,8 @@ import net.tsz.afinal.http.AjaxCallBack;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -210,7 +212,19 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			}
 			break;
 		case R.id.order_cancel_btn:
-			clearAllData();
+			AlertDialog dialog = new AlertDialog.Builder(getActivity())
+					.setTitle("确认清空订单列表？")
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									clearAllData();
+								}
+							}).create();
+			dialog.setCanceledOnTouchOutside(true);
+			if (!orderProducts.isEmpty())
+				dialog.show();
 			break;
 		case R.id.order_sure_btn:
 			refreshRealCounts();
@@ -241,8 +255,21 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			realcollection.setSelection(0, realcollection.getText().length());
 			Toast.makeText(getActivity(), "实收款不能大于应收款", Toast.LENGTH_SHORT)
 					.show();
-		} else if (NetworkUtils.isConnect(getActivity()))
-			submitOrder();
+		} else if (NetworkUtils.isConnect(getActivity())) {
+			AlertDialog dialog = new AlertDialog.Builder(getActivity())
+					.setTitle("确认订单无误？")
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									submitOrder();
+								}
+							}).create();
+			dialog.setCanceledOnTouchOutside(true);
+			dialog.show();
+		}
 	}
 
 	private boolean isRealcollectionLegal() {
@@ -360,23 +387,39 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	@Override
-	public void removeItem(RemoveDirection direction, int position) {
-		String tip = orderAdapter.getItem(position).getName() + " 订单";
-		orderAdapter.remove(position);
-		refreshRealCounts();
-		switch (direction) {
-		case RIGHT:
-			Toast.makeText(getActivity(), "向右删除  " + tip, Toast.LENGTH_SHORT)
-					.show();
-			break;
-		case LEFT:
-			Toast.makeText(getActivity(), "向左删除  " + tip, Toast.LENGTH_SHORT)
-					.show();
-			break;
+	public void removeItem(final RemoveDirection direction, final int position) {
+		AlertDialog dialog = new AlertDialog.Builder(getActivity())
+				.setTitle(
+						"删除订单 "
+								+ orderAdapter.getItem(position).getName()
+								+ " "
+								+ orderAdapter.getItem(position)
+										.getAreaProductSkuName() + " ?")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-		default:
-			break;
-		}
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String tip = orderAdapter.getItem(position).getName()
+								+ " 订单";
+						orderAdapter.remove(position);
+						refreshRealCounts();
+						switch (direction) {
+						case RIGHT:
+							Toast.makeText(getActivity(), "向右删除  " + tip,
+									Toast.LENGTH_SHORT).show();
+							break;
+						case LEFT:
+							Toast.makeText(getActivity(), "向左删除  " + tip,
+									Toast.LENGTH_SHORT).show();
+							break;
+
+						default:
+							break;
+						}
+					}
+				}).create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 	}
 
 	@Override
