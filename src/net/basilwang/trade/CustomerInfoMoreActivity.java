@@ -6,6 +6,7 @@ import net.basilwang.dao.RecordsExpandableAdapter;
 import net.basilwang.entity.Customer;
 import net.basilwang.entity.Payment;
 import net.basilwang.entity.Record;
+import net.basilwang.entity.ValidateResult;
 import net.basilwang.libray.StaticParameter;
 import net.basilwang.utils.NetworkUtils;
 import net.basilwang.utils.PreferenceUtils;
@@ -13,16 +14,23 @@ import net.basilwang.utils.ReLoginUtils;
 import net.basilwang.utils.SaLog;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter.AuthorityEntry;
 import android.os.Bundle;
 import android.text.util.Linkify;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
@@ -46,7 +54,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	private TextView cReceivable;
 	private TextView cRealcollectiong;
 	private TextView cDesc;
-	private Button cReturn;
+	private Button cReturn,repayment;
 	private RelativeLayout cBack;
 	private RelativeLayout cEdit;
 	private Intent intent;
@@ -92,6 +100,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cReceivable.setText(mReceivable);
 		cBack.setOnClickListener(this);
 		cReturn.setOnClickListener(this);
+		repayment.setOnClickListener(this);
 		cEdit.setOnClickListener(this);
 
 		// 二级分类关闭的触发事件
@@ -145,6 +154,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cRealcollectiong = (TextView) findViewById(R.id.customer_paid);
 		cDesc = (TextView) findViewById(R.id.customer_description);
 		cReturn = (Button) findViewById(R.id.customer_returnGoods);
+		repayment = (Button)findViewById(R.id.customer_returnMoney);
 		cBack = (RelativeLayout) findViewById(R.id.customer_title_bar_back);
 		cEdit = (RelativeLayout) findViewById(R.id.customer_title_bar_btn_sure);
 		expandableListView = (ExpandableListView) findViewById(R.id.customer_record_list);
@@ -164,11 +174,69 @@ public class CustomerInfoMoreActivity extends Activity implements
 			intent.setClass(this, EditCustomerActivity.class);
 			startActivityForResult(intent, EDIT_CUSTOMER);
 			break;
+		case R.id.customer_returnMoney:
+			if(NetworkUtils.isConnect(mContext))
+			{
+//				showPaymentDialog();
+			}
 
 		default:
 			break;
 		}
 
+	}
+
+	private void showPaymentDialog() {
+		View view = LayoutInflater.from(mContext).inflate(R.layout.payment_dialog, null);
+		((TextView)findViewById(R.id.payment_dialog_recievable)).setText(cReceivable.getText());
+		((TextView)findViewById(R.id.payment_dialog_real)).setText(cRealcollectiong.getText());
+		final double receivable = Double.parseDouble(cReceivable.getText().toString());
+		final double real = Double.parseDouble(cRealcollectiong.getText().toString());
+		final EditText payment = (EditText)view.findViewById(R.id.payment_dialog_repay);
+		AlertDialog dialog = new AlertDialog.Builder(this).setView(view).setTitle("补款详情").setPositiveButton("确定无误",new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if(Double.parseDouble(payment.getText().toString())>receivable-real){
+					payment.setSelection(0, payment.getText().length());
+					Toast.makeText(mContext, "补款额不能大于应收额-实收额", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				fillingPayment(payment.getText().toString());
+					
+			}
+		}).create();
+		dialog.show();
+	}
+
+	protected void fillingPayment(String payment) {
+		final ProgressDialog dialog = ProgressDialog.show(mContext, null, "正在提交...", false, false);
+		FinalHttp http = new FinalHttp();
+		http.addHeader("X-Token", PreferenceUtils.getPreferToken(mContext));
+		AjaxParams params = new AjaxParams();
+		params.put("id", mId);
+		params.put("price", payment);
+		http.post(StaticParameter.getFilling, params,new AjaxCallBack<Object>() {
+
+			@Override
+			public void onFailure(Throwable t, int errorNo, String strMsg) {
+				super.onFailure(t, errorNo, strMsg);
+				dialog.dismiss();
+				ReLoginUtils.authorizedFailed(mContext, errorNo);
+				Toast.makeText(mContext, "补交货款失败，稍后再试",
+						Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onSuccess(Object t) {
+				super.onSuccess(t);
+				dialog.dismiss();
+				Log.v("payment fill", t.toString());
+				ValidateResult result = JSON.parseObject(t.toString(), ValidateResult.class);
+				Toast.makeText(mContext, result.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+			
+		});
 	}
 
 	@Override
@@ -188,7 +256,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	}
 
 	private void getPayment(final String id) {
-		mDialog = ProgressDialog.show(mContext, null, "正在读取...", false, false);
+		mDialog = ProgressDialog.show(mContext, null, "正在获取数据...", false, false);
 		final FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(mContext));
 		fh.get(StaticParameter.getPayment + id, new AjaxCallBack<Object>() {

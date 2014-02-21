@@ -62,10 +62,11 @@
                     android:id="@+id/goods_counts"
                     style="@style/myStyle.BlackContentTitleText"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
+                    android:background="@drawable/search_bar_edit_selector"
                     android:ems="4"
-                    android:gravity="bottom"
+                    android:gravity="center_vertical"
                     android:inputType="number"
                     android:selectAllOnFocus="true" />
 
@@ -81,10 +82,11 @@
                     android:id="@+id/goods_price"
                     style="@style/myStyle.BlackContentTitleText"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:background="@drawable/search_bar_edit_selector"
                     android:ems="4"
-                    android:gravity="bottom"
+                    android:gravity="center_vertical"
                     android:hint="单价"
                     android:inputType="numberDecimal"
                     android:selectAllOnFocus="true" />
@@ -121,4 +123,5 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+</LinearLayout>

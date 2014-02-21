@@ -190,10 +190,20 @@
         android:layout_width="wrap_content"
         android:layout_height="40dip"
         android:layout_below="@id/customer_receivable"
+        android:layout_marginTop="3dp"
         android:layout_marginLeft="15dp"
         android:gravity="center_vertical"
         android:text="实收货款"
         android:textSize="20sp" />
+    <Button
+        android:id="@+id/customer_returnMoney"
+        android:layout_width="60dip"
+        android:layout_height="40dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/customer_receivable"
+        android:background="@drawable/btn_login_bg"
+        android:text="补款"
+        android:textColor="#ffffffff" />
 
     <Button
         android:id="@+id/customer_returnGoods"
