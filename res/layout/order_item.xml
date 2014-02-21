@@ -86,7 +86,8 @@
                     android:ems="4"
                     android:gravity="bottom"
                     android:hint="单价"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true" />
 
                 <TextView
                     android:id="@+id/price_unit"
