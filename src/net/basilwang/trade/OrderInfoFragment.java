@@ -128,6 +128,14 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				}
 			}
 		});
+		searchEditText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(!searchEditText.isPopupShowing())
+					searchEditText.showDropDown();
+			}
+		});
 		searchEditText.setOnItemClickListener(this);
 		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
