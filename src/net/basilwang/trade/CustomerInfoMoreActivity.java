@@ -177,7 +177,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		case R.id.customer_returnMoney:
 			if(NetworkUtils.isConnect(mContext))
 			{
-//				showPaymentDialog();
+				showPaymentDialog();
 			}
 
 		default:
@@ -188,10 +188,10 @@ public class CustomerInfoMoreActivity extends Activity implements
 
 	private void showPaymentDialog() {
 		View view = LayoutInflater.from(mContext).inflate(R.layout.payment_dialog, null);
-		((TextView)findViewById(R.id.payment_dialog_recievable)).setText(cReceivable.getText());
-		((TextView)findViewById(R.id.payment_dialog_real)).setText(cRealcollectiong.getText());
-		final double receivable = Double.parseDouble(cReceivable.getText().toString());
-		final double real = Double.parseDouble(cRealcollectiong.getText().toString());
+		((TextView)view.findViewById(R.id.payment_dialog_recievable)).setText(cReceivable.getText());
+		((TextView)view.findViewById(R.id.payment_dialog_real)).setText(cRealcollectiong.getText());
+		final float receivable = Float.parseFloat(mPayment.getReceivable());
+		final double real = Float.parseFloat(mPayment.getRealcollection());
 		final EditText payment = (EditText)view.findViewById(R.id.payment_dialog_repay);
 		AlertDialog dialog = new AlertDialog.Builder(this).setView(view).setTitle("补款详情").setPositiveButton("确定无误",new DialogInterface.OnClickListener() {
 			
