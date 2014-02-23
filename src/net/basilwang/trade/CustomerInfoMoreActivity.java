@@ -167,7 +167,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 			finish();
 			break;
 		case R.id.customer_returnGoods:// 退货按钮
-
+			intent.setClass(this, ReturnOrderActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.customer_title_bar_btn_sure:// 编辑按钮
 			intent.putExtra("customer", mCustomer);
@@ -221,6 +222,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 			@Override
 			public void onFailure(Throwable t, int errorNo, String strMsg) {
 				super.onFailure(t, errorNo, strMsg);
+				Log.e("sasasa", strMsg);
 				dialog.dismiss();
 				ReLoginUtils.authorizedFailed(mContext, errorNo);
 				Toast.makeText(mContext, "补交货款失败，稍后再试",
