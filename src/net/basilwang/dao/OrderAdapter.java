@@ -11,7 +11,6 @@ import net.basilwang.view.SlideCutListView;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -165,7 +164,6 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			Log.v("1111111`", "2222222222");
 			int position = mOrderListView.getSlidePosition();
 			if (flag.equals("count")) {
 				if (!s.toString().equals("")

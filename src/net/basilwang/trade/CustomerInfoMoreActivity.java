@@ -54,7 +54,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 	private TextView cReceivable;
 	private TextView cRealcollectiong;
 	private TextView cDesc;
-	private Button cReturn,repayment;
+	private Button cReturn, repayment;
 	private RelativeLayout cBack;
 	private RelativeLayout cEdit;
 	private Intent intent;
@@ -154,7 +154,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		cRealcollectiong = (TextView) findViewById(R.id.customer_paid);
 		cDesc = (TextView) findViewById(R.id.customer_description);
 		cReturn = (Button) findViewById(R.id.customer_returnGoods);
-		repayment = (Button)findViewById(R.id.customer_returnMoney);
+		repayment = (Button) findViewById(R.id.customer_returnMoney);
 		cBack = (RelativeLayout) findViewById(R.id.customer_title_bar_back);
 		cEdit = (RelativeLayout) findViewById(R.id.customer_title_bar_btn_sure);
 		expandableListView = (ExpandableListView) findViewById(R.id.customer_record_list);
@@ -168,6 +168,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 			break;
 		case R.id.customer_returnGoods:// 退货按钮
 			intent.setClass(this, ReturnOrderActivity.class);
+			intent.putExtra("customer", mCustomer);
 			startActivity(intent);
 			break;
 		case R.id.customer_title_bar_btn_sure:// 编辑按钮
@@ -176,8 +177,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 			startActivityForResult(intent, EDIT_CUSTOMER);
 			break;
 		case R.id.customer_returnMoney:
-			if(NetworkUtils.isConnect(mContext))
-			{
+			if (NetworkUtils.isConnect(mContext)) {
 				showPaymentDialog();
 			}
 
@@ -188,57 +188,73 @@ public class CustomerInfoMoreActivity extends Activity implements
 	}
 
 	private void showPaymentDialog() {
-		View view = LayoutInflater.from(mContext).inflate(R.layout.payment_dialog, null);
-		((TextView)view.findViewById(R.id.payment_dialog_recievable)).setText(cReceivable.getText());
-		((TextView)view.findViewById(R.id.payment_dialog_real)).setText(cRealcollectiong.getText());
+		View view = LayoutInflater.from(mContext).inflate(
+				R.layout.payment_dialog, null);
+		((TextView) view.findViewById(R.id.payment_dialog_recievable))
+				.setText(cReceivable.getText());
+		((TextView) view.findViewById(R.id.payment_dialog_real))
+				.setText(cRealcollectiong.getText());
 		final float receivable = Float.parseFloat(mPayment.getReceivable());
 		final double real = Float.parseFloat(mPayment.getRealcollection());
-		final EditText payment = (EditText)view.findViewById(R.id.payment_dialog_repay);
-		AlertDialog dialog = new AlertDialog.Builder(this).setView(view).setTitle("补款详情").setPositiveButton("确定无误",new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if(Double.parseDouble(payment.getText().toString())>receivable-real){
-					payment.setSelection(0, payment.getText().length());
-					Toast.makeText(mContext, "补款额不能大于应收额-实收额", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				fillingPayment(payment.getText().toString());
-					
-			}
-		}).create();
+		final EditText payment = (EditText) view
+				.findViewById(R.id.payment_dialog_repay);
+		AlertDialog dialog = new AlertDialog.Builder(this)
+				.setView(view)
+				.setTitle("补款详情")
+				.setPositiveButton("确定无误",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (Double.parseDouble(payment.getText()
+										.toString()) > receivable - real) {
+									payment.setSelection(0, payment.getText()
+											.length());
+									Toast.makeText(mContext, "补款额不能大于应收额-实收额",
+											Toast.LENGTH_SHORT).show();
+									return;
+								}
+								fillingPayment(payment.getText().toString());
+
+							}
+						}).create();
 		dialog.show();
 	}
 
 	protected void fillingPayment(String payment) {
-		final ProgressDialog dialog = ProgressDialog.show(mContext, null, "正在提交...", false, false);
+		final ProgressDialog dialog = ProgressDialog.show(mContext, null,
+				"正在提交...", false, false);
 		FinalHttp http = new FinalHttp();
 		http.addHeader("X-Token", PreferenceUtils.getPreferToken(mContext));
 		AjaxParams params = new AjaxParams();
-		params.put("id", mId);
 		params.put("price", payment);
-		http.post(StaticParameter.getFilling, params,new AjaxCallBack<Object>() {
+		http.post(StaticParameter.getFilling + mId, params,
+				new AjaxCallBack<Object>() {
 
-			@Override
-			public void onFailure(Throwable t, int errorNo, String strMsg) {
-				super.onFailure(t, errorNo, strMsg);
-				Log.e("sasasa", strMsg);
-				dialog.dismiss();
-				ReLoginUtils.authorizedFailed(mContext, errorNo);
-				Toast.makeText(mContext, "补交货款失败，稍后再试",
-						Toast.LENGTH_SHORT).show();
-			}
+					@Override
+					public void onFailure(Throwable t, int errorNo,
+							String strMsg) {
+						super.onFailure(t, errorNo, strMsg);
+						Log.e("sasasa", strMsg);
+						dialog.dismiss();
+						ReLoginUtils.authorizedFailed(mContext, errorNo);
+						Toast.makeText(mContext, "补交货款失败，稍后再试",
+								Toast.LENGTH_SHORT).show();
+					}
 
-			@Override
-			public void onSuccess(Object t) {
-				super.onSuccess(t);
-				dialog.dismiss();
-				Log.v("payment fill", t.toString());
-				ValidateResult result = JSON.parseObject(t.toString(), ValidateResult.class);
-				Toast.makeText(mContext, result.getMessage(), Toast.LENGTH_SHORT).show();
-			}
-			
-		});
+					@Override
+					public void onSuccess(Object t) {
+						super.onSuccess(t);
+						dialog.dismiss();
+						Log.v("payment fill", t.toString());
+						ValidateResult result = JSON.parseObject(t.toString(),
+								ValidateResult.class);
+						Toast.makeText(mContext, result.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
+
+				});
 	}
 
 	@Override
@@ -258,7 +274,8 @@ public class CustomerInfoMoreActivity extends Activity implements
 	}
 
 	private void getPayment(final String id) {
-		mDialog = ProgressDialog.show(mContext, null, "正在获取数据...", false, false);
+		mDialog = ProgressDialog
+				.show(mContext, null, "正在获取数据...", false, false);
 		final FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(mContext));
 		fh.get(StaticParameter.getPayment + id, new AjaxCallBack<Object>() {

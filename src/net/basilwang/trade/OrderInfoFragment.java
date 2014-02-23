@@ -258,12 +258,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					.show();
 		else if (!isPerOrdercompleted())
 			;
-		else if (!isRealcollectionLegal()) {
-			realcollection.setText(receivable.getText());
-			realcollection.setSelection(0, realcollection.getText().length());
-			Toast.makeText(getActivity(), "实收款不能大于应收款", Toast.LENGTH_SHORT)
-					.show();
-		} else if (NetworkUtils.isConnect(getActivity())) {
+		else if (NetworkUtils.isConnect(getActivity())) {
 			AlertDialog dialog = new AlertDialog.Builder(getActivity())
 					.setTitle("确认订单无误？")
 					.setPositiveButton("确定",
@@ -278,15 +273,6 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 			dialog.setCanceledOnTouchOutside(true);
 			dialog.show();
 		}
-	}
-
-	private boolean isRealcollectionLegal() {
-		String realcollectionStr = realcollection.getText().toString().trim();
-		if (realcollectionStr.isEmpty()
-				|| Double.parseDouble(realcollectionStr) <= Double
-						.parseDouble(receivable.getText().toString()))
-			return true;
-		return false;
 	}
 
 	private void submitOrder() {

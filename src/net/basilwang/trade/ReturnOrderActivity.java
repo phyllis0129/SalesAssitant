@@ -38,13 +38,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +63,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 	private OrderAdapter orderAdapter;
 	private List<OrderProduct> orderProducts;
 	private List<Customer> customers;
+	private RelativeLayout addBtn,backBtn;
 
 	private ResizeLayout headerLinearLayout;
 
@@ -76,6 +76,10 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.activity_return_order);
 		initView();
 		bindData();
+		Intent intent = getIntent();
+		searchEditText.setAssignedCustomer((Customer) intent.getParcelableExtra("customer")); 
+		searchEditText.setText(searchEditText.getAssignedCustomer().getName());
+		searchEditText.setClearIconVisible(false);
 	}
 
 	private void bindData() {
@@ -87,6 +91,8 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 	}
 
 	private void initView() {
+		addBtn = (RelativeLayout)findViewById(R.id.goods_title_bar_btn_add);
+		backBtn = (RelativeLayout)findViewById(R.id.goods_title_bar_back);
 		orderListView = (SlideCutListView) findViewById(android.R.id.list);
 		receivable = (TextView) findViewById(R.id.counts_receivable);
 		sureBtn = (Button) findViewById(R.id.order_sure_btn);
@@ -98,28 +104,11 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 
 	public void setListener() {
 		orderListView.setRemoveListener(this);
+		addBtn.setOnClickListener(this);
+		backBtn.setOnClickListener(this);
 		sureBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
-		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					if (NetworkUtils.isConnect(ReturnOrderActivity.this)
-							&& !isCustomersEmpty())
-						((SearchAutoCompleteTextView) v).showDropDown();
-				}
-			}
-		});
-		searchEditText.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if(!searchEditText.isPopupShowing())
-					searchEditText.showDropDown();
-			}
-		});
-		searchEditText.setOnItemClickListener(this);
+		searchEditText.setFocusable(false);
 		headerLinearLayout.setOnkbdStateListener(new onKybdsChangeListener() {
 
 			@Override
@@ -142,13 +131,6 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 	}
 
 
-	private boolean isCustomersEmpty() {
-		if (!customers.isEmpty())
-			return false;
-		Toast.makeText(this, "呀，客户列表为空了", Toast.LENGTH_SHORT).show();
-		return true;
-	}
-
 	public void refreshRealCounts() {
 		Double totalCounts = 0.0;
 		for (int i = 0; i < this.orderProducts.size(); i++) {
@@ -160,7 +142,10 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.title_bar_btn_add:
+		case R.id.goods_title_bar_back:
+			finish();
+			break;
+		case R.id.goods_title_bar_btn_add:
 			orderAdapter.notifyDataSetChanged();
 			refreshRealCounts();
 			if (NetworkUtils.isConnect(this)) {
@@ -197,13 +182,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 	private void checkOrderIslegal() {
 		if (orderProducts.isEmpty())
 			;
-		else if (searchEditText.getText().toString().equals(""))
-			Toast.makeText(this, "请选择指定客户", Toast.LENGTH_SHORT).show();
-		else if (searchEditText.getAssignedCustomer() == null) {
-			Toast.makeText(this, "您选择的客户不存在", Toast.LENGTH_SHORT)
-					.show();
-			searchEditText.setSelection(0, searchEditText.getText().length());
-		} else if (Double.parseDouble(receivable.getText().toString()) == 0)
+		else if (Double.parseDouble(receivable.getText().toString()) == 0)
 			Toast.makeText(this, "请将订单填写完整", Toast.LENGTH_SHORT)
 					.show();
 		else if (!isPerOrdercompleted())
