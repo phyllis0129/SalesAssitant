@@ -15,6 +15,6 @@ public class StaticParameter {
 	public static String getPayment = http + "api/customer/paymentsummary/";
 	public static String postOrderAdd = http + "api/order/add";
 	public static String getTransactionRecords = http + "api/order/index/";
-	public static String getFilling = http + "api/customer/Filling/";
+	public static String getFilling = http + "api/customer/filling/";
 
 }

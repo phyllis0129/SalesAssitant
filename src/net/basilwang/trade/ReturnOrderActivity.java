@@ -77,8 +77,9 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 		initView();
 		bindData();
 		Intent intent = getIntent();
-		searchEditText.setAssignedCustomer((Customer) intent.getParcelableExtra("customer")); 
-		searchEditText.setText(searchEditText.getAssignedCustomer().getName());
+		Customer customer = (Customer) intent.getParcelableExtra("customer");
+		searchEditText.setText(customer.getName());
+		searchEditText.setAssignedCustomer(customer); 
 		searchEditText.setClearIconVisible(false);
 	}
 
@@ -86,6 +87,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 		orderProducts = new ArrayList<OrderProduct>();
 		orderAdapter = new OrderAdapter(this, orderProducts,
 				orderListView);
+		orderAdapter.setFlag("return");
 		orderListView.setAdapter(orderAdapter);
 		customers = new ArrayList<Customer>();
 	}

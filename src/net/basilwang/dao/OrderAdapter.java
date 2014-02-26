@@ -32,6 +32,7 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 	private SlideCutListView mOrderListView;
 	private Holder mHolder;
 	public String onTouchedTag = "";
+	private String tag;
 
 	public OrderAdapter(Context context, List<OrderProduct> orderItemList,
 			SlideCutListView orderListView) {
@@ -166,7 +167,7 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 		public void afterTextChanged(Editable s) {
 			int position = mOrderListView.getSlidePosition();
 			if (flag.equals("count")) {
-				if (!s.toString().equals("")
+				if (tag.equals("add")&&!s.toString().equals("")
 						&& Integer.parseInt(s.toString()) > Integer
 								.parseInt(mOrderItemList.get(position)
 										.getStock())) {
@@ -217,6 +218,10 @@ public class OrderAdapter extends BaseAdapter implements OnTouchListener {
 		else if (v.getId() == R.id.goods_price)
 			onTouchedTag = "price";
 		return false;
+	}
+	
+	public void setFlag(String value){
+		tag = value;
 	}
 
 }

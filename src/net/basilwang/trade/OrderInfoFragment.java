@@ -88,6 +88,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 		orderProducts = new ArrayList<OrderProduct>();
 		orderAdapter = new OrderAdapter(getActivity(), orderProducts,
 				orderListView);
+		orderAdapter.setFlag("add");
 		orderListView.setAdapter(orderAdapter);
 		customers = new ArrayList<Customer>();
 		getCustomerList();

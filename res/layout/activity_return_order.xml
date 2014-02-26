@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="商品信息详情"
+            android:text="退货订单详情"
             android:textColor="#fff"
             android:textSize="23sp"
             android:textStyle="bold" />
@@ -183,7 +183,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_login_bg"
-            android:text="取  消"
+            android:text="清  空"
             android:textColor="#ffffffff"
             android:textSize="20sp" />
     </LinearLayout>

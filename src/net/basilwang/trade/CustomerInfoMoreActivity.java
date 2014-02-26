@@ -207,6 +207,12 @@ public class CustomerInfoMoreActivity extends Activity implements
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
+								if(payment.getText().toString().equals(""))
+								{
+									Toast.makeText(mContext, "补款额不能为空",
+											Toast.LENGTH_SHORT).show();
+									return;
+								}
 								if (Double.parseDouble(payment.getText()
 										.toString()) > receivable - real) {
 									payment.setSelection(0, payment.getText()
