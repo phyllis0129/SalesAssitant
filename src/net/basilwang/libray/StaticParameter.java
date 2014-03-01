@@ -13,8 +13,9 @@ public class StaticParameter {
 	public static String getSummayproductsku = http
 			+ "api/customer/summayproductsku/";
 	public static String getPayment = http + "api/customer/paymentsummary/";
-	public static String postOrderAdd = http + "api/order/add";
 	public static String getTransactionRecords = http + "api/order/index/";
+	public static String postOrderAdd = http + "api/order/add";
+	public static String postReturnOrderAdd = http + "api/order/return";
 	public static String getFilling = http + "api/customer/filling/";
 
 }

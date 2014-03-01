@@ -31,6 +31,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -160,6 +161,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 	}
 
 	private void getCustomerList() {
+		final ProgressDialog dialog = ProgressDialog.show(getActivity(),null, "正在获取客户列表数据...", false,false);
 		FinalHttp fh = new FinalHttp();
 		fh.addHeader("X-Token", PreferenceUtils.getPreferToken(getActivity()));
 		fh.get(StaticParameter.getCustomer + "1", new AjaxCallBack<Object>() {
@@ -171,6 +173,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 				ReLoginUtils.authorizedFailed(getActivity(), errorNo);
 				Toast.makeText(getActivity(), "客户数据获取失败，请检查是否连接网络",
 						Toast.LENGTH_SHORT).show();
+				dialog.dismiss();
 			}
 
 			@Override
@@ -187,6 +190,7 @@ public class OrderInfoFragment extends ListFragment implements OnClickListener,
 					searchEditText.setAdapter(customerAdapter);
 					searchEditText.setThreshold(1);
 				}
+				dialog.dismiss();
 
 			}
 

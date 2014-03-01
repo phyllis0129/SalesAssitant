@@ -198,7 +198,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									submitOrder();
+									submitReturnOrder();
 								}
 							}).create();
 			dialog.setCanceledOnTouchOutside(true);
@@ -206,7 +206,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	private void submitOrder() {
+	private void submitReturnOrder() {
 		Order order = new Order();
 		order.setCustomer(searchEditText.getAssignedCustomer().getId());
 		order.setOrderProducts(orderProducts);
@@ -221,7 +221,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		http.post(StaticParameter.postOrderAdd, entity, "application/json",
+		http.post(StaticParameter.postReturnOrderAdd, entity, "application/json",
 				new AjaxCallBack<Object>() {
 
 					@Override
@@ -231,6 +231,8 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 						ReLoginUtils.authorizedFailed(ReturnOrderActivity.this, errorNo);
 						Toast.makeText(ReturnOrderActivity.this, "订单提交失败，稍后重试",
 								Toast.LENGTH_SHORT).show();
+						Log.v("tui huo", strMsg);
+						
 					}
 
 					@Override
@@ -242,6 +244,7 @@ public class ReturnOrderActivity extends Activity implements OnClickListener,
 								Toast.LENGTH_SHORT).show();
 						if (result.getSuccess().equals("true")) {
 							clearAllData();
+							finish();
 						}
 						super.onSuccess(t);
 					}

@@ -21,7 +21,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter.AuthorityEntry;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -207,8 +206,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								if(payment.getText().toString().equals(""))
-								{
+								if (payment.getText().toString().equals("")) {
 									Toast.makeText(mContext, "补款额不能为空",
 											Toast.LENGTH_SHORT).show();
 									return;
@@ -235,7 +233,7 @@ public class CustomerInfoMoreActivity extends Activity implements
 		http.addHeader("X-Token", PreferenceUtils.getPreferToken(mContext));
 		AjaxParams params = new AjaxParams();
 		params.put("price", payment);
-		http.post(StaticParameter.getFilling + mId, params,
+		http.get(StaticParameter.getFilling + mId + "?price=" + payment,
 				new AjaxCallBack<Object>() {
 
 					@Override
@@ -256,8 +254,9 @@ public class CustomerInfoMoreActivity extends Activity implements
 						Log.v("payment fill", t.toString());
 						ValidateResult result = JSON.parseObject(t.toString(),
 								ValidateResult.class);
-						Toast.makeText(mContext, result.getMessage(),
+						Toast.makeText(mContext, "补款" + result.getMessage(),
 								Toast.LENGTH_SHORT).show();
+						init();
 					}
 
 				});
